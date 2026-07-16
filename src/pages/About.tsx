@@ -18,7 +18,7 @@ export const About = () => {
   })
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -200])
+  
 
   return (
     <>

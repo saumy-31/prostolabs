@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from '../components/ui/Button'
 import { SEO } from '../components/seo/SEO'
@@ -10,36 +10,7 @@ import {
   UploadCloud, ShieldCheck
 } from 'lucide-react'
 
-const FAQItem = ({ question, answer }: { question: string, answer: string }) => {
-  const [isOpen, setIsOpen] = useState(false)
 
-  return (
-    <div className="border-b border-gray-200 py-6">
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full justify-between items-center text-left focus:outline-none group"
-      >
-        <span className="text-lg font-medium group-hover:text-accent transition-colors pr-8">{question}</span>
-        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }} className="shrink-0">
-          <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-accent" />
-        </motion.div>
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <p className="pt-4 text-gray-500 leading-relaxed">{answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
 
 export const Careers = () => {
   const formRef = useRef<HTMLElement>(null)
