@@ -6,7 +6,7 @@ import { SEO } from '../components/seo/SEO'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { 
   Code, Palette, Bot, Settings, LineChart, CheckCircle2,
-  ChevronDown
+  ChevronDown, Wrench
 } from 'lucide-react'
 
 const servicesData = [
@@ -53,6 +53,20 @@ const servicesData = [
     ]
   },
   {
+    id: 'marketing',
+    title: 'Digital Marketing',
+    icon: LineChart,
+    desc: 'Data-driven growth strategies designed to increase your digital footprint. We handle technical performance optimization to ensure your digital products reach the right enterprise buyers at exactly the right time.',
+    bullets: [
+      'Technical SEO Optimization',
+      'Performance Marketing',
+      'Conversion Rate Optimization',
+      'Data Analytics & Tracking',
+      'Growth Strategy Consulting',
+      'B2B Lead Generation'
+    ]
+  },
+  {
     id: 'automation',
     title: 'Business Automation',
     icon: Settings,
@@ -67,17 +81,17 @@ const servicesData = [
     ]
   },
   {
-    id: 'marketing',
-    title: 'Digital Marketing',
-    icon: LineChart,
-    desc: 'Data-driven growth strategies designed to increase your digital footprint. We handle technical performance optimization to ensure your digital products reach the right enterprise buyers at exactly the right time.',
+    id: 'maintenance',
+    title: 'Website Maintenance',
+    icon: Wrench,
+    desc: 'Proactive monitoring, security patching, and continuous optimization for flawless uptime. We ensure your digital assets remain secure, highly performant, and up-to-date long after the initial launch.',
     bullets: [
-      'Technical SEO Optimization',
-      'Performance Marketing',
-      'Conversion Rate Optimization',
-      'Data Analytics & Tracking',
-      'Growth Strategy Consulting',
-      'B2B Lead Generation'
+      '24/7 Uptime Monitoring',
+      'Security & Vulnerability Patching',
+      'Performance Tuning',
+      'Codebase Refactoring',
+      'Regular Backups & Recovery',
+      'Dedicated Technical Support'
     ]
   }
 ]
@@ -90,7 +104,7 @@ export const Services = () => {
   // Starts collapsed by default
   const [expandedService, setExpandedService] = useState<string | null>(null)
   
-  // FIX: Intercept the Router state when the page loads
+  // Intercept the Router state when the page loads
   useEffect(() => {
     if (location.state && location.state.activeService) {
       // 1. Expand the target accordion immediately
@@ -307,21 +321,20 @@ export const Services = () => {
         </div>
       </section>
 
-     
-
-      {/* 7. FINAL CTA */}
-      <section className="py-24 px-6">
+      {/* 7. FINAL CTA (With Mobile Padding Fixes) */}
+      <section className="py-16 md:py-24 px-6">
         <div className="max-w-5xl mx-auto pl-0 lg:pl-12">
-          <AnimatedSection className="relative rounded-[3rem] overflow-hidden bg-primary text-white text-center py-24 px-6 md:px-12">
+          <AnimatedSection className="relative rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-primary text-white text-center py-16 md:py-24 px-6 md:px-12">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjEpIi8+PC9zdmc+')] opacity-50 mix-blend-overlay" />
             
             <div className="relative z-10">
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-8">Ready to build something exceptional?</h2>
-              <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6 md:mb-8">
+                Ready to build something <br className="hidden sm:block"/> <span className="text-accent">exceptional?</span>
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-400 mb-10 md:mb-12 max-w-2xl mx-auto">
                 Schedule a technical discovery call to discuss how ProstoLabs can architect your next phase of growth.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                {/* FIX: Changed the route destination here */}
                 <Link to="/start-project">
                   <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">Start Your Project</Button>
                 </Link>

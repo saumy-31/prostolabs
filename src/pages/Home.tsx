@@ -8,7 +8,7 @@ import {
   Briefcase, Zap, Layers, Heart, MessageSquare,
   ArrowRight, Activity, Target, 
   ShoppingBag, Cloud, Database, Server, 
-  Sparkles, Layout, BarChart3, MousePointer2
+  Sparkles, Layout, BarChart3, MousePointer2, Wrench
 } from 'lucide-react'
 
 export const Home = () => {
@@ -247,37 +247,38 @@ export const Home = () => {
         </section>
 
         {/* 3. SERVICES */}
-        <section className="py-24 px-6 bg-primary text-white">
-          <div className="max-w-7xl mx-auto">
-            <AnimatedSection className="mb-20 md:flex justify-between items-end">
-              <div className="max-w-2xl">
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Expertise built on precision.</h2>
-                <p className="text-xl text-gray-400">End-to-end capabilities tailored for modern enterprises.</p>
-              </div>
-              <Link to="/services" className="hidden md:inline-flex items-center gap-2 text-accent hover:text-white transition-colors font-medium">
-                View All Services <ArrowRight className="w-5 h-5" />
-              </Link>
-            </AnimatedSection>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { title: 'Website Development', icon: Code, desc: 'Production-ready, scalable architectures utilizing modern React frameworks.' },
-                { title: 'UI/UX Design', icon: Palette, desc: 'Interfaces that blend utility with elegance, focused entirely on user conversion.' },
-                { title: 'AI & Machine Learning', icon: Bot, desc: 'Custom LLMs and predictive analytics tailored to your proprietary data.' },
-                { title: 'Digital Marketing', icon: LineChart, desc: 'Data-driven growth strategies, SEO, and technical performance optimization.' },
-                { title: 'Business Automation', icon: Settings, desc: 'Algorithmic workflows that eliminate manual operational bottlenecks.' },
-              ].map((service, i) => (
-                <AnimatedSection key={service.title} delay={i * 0.1} className={i === 4 ? "md:col-span-2 lg:col-span-1" : ""}>
-                  <div className="group p-10 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-500 cursor-pointer h-full">
-                    <service.icon className="w-10 h-10 text-accent mb-8 transition-transform duration-500 group-hover:-translate-y-2" />
-                    <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-                    <p className="text-gray-400 leading-relaxed">{service.desc}</p>
-                  </div>
-                </AnimatedSection>
-              ))}
+      <section className="py-24 px-6 bg-primary text-white">
+        <div className="max-w-7xl mx-auto">
+          <AnimatedSection className="mb-20 md:flex justify-between items-end">
+            <div className="max-w-2xl">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Expertise built on precision.</h2>
+              <p className="text-xl text-gray-400">End-to-end capabilities tailored for modern enterprises.</p>
             </div>
+            <Link to="/services" className="hidden md:inline-flex items-center gap-2 text-accent hover:text-white transition-colors font-medium">
+              View All Services <ArrowRight className="w-5 h-5" />
+            </Link>
+          </AnimatedSection>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: 'Website Development', icon: Code, desc: 'Production-ready, scalable architectures utilizing modern React frameworks.' },
+              { title: 'UI/UX Design', icon: Palette, desc: 'Interfaces that blend utility with elegance, focused entirely on user conversion.' },
+              { title: 'AI & Machine Learning', icon: Bot, desc: 'Custom LLMs and predictive analytics tailored to your proprietary data.' },
+              { title: 'Digital Marketing', icon: LineChart, desc: 'Data-driven growth strategies, SEO, and technical performance optimization.' },
+              { title: 'Business Automation', icon: Settings, desc: 'Algorithmic workflows that eliminate manual operational bottlenecks.' },
+              { title: 'Website Maintenance', icon: Wrench, desc: 'Proactive monitoring, security patching, and continuous optimization for flawless uptime.' },
+            ].map((service, i) => (
+              <AnimatedSection key={service.title} delay={i * 0.1}>
+                <div className="group p-10 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-500 cursor-pointer h-full">
+                  <service.icon className="w-10 h-10 text-accent mb-8 transition-transform duration-500 group-hover:-translate-y-2" />
+                  <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{service.desc}</p>
+                </div>
+              </AnimatedSection>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* 4. WHY CHOOSE PROSTOLABS */}
         <section className="py-24 px-6 bg-surface/50">

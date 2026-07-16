@@ -19,10 +19,10 @@ export const Footer = () => {
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
                 <img
-                  src="/5CBCF654-557C-4E52-8DA9-680922E94A43.PNG"
-                  alt="ProstoLabs Logo"
-                  className="h-[34px] md:h-[36px] w-auto object-contain"
-                />
+  src="/log.png"
+  alt="ProstoLabs Logo"
+  className="h-[34px] md:h-[36px] w-auto object-contain"
+/>
                 <span className="text-xl md:text-2xl font-extrabold tracking-tight leading-none">
                   <span className="text-primary">Prosto</span>
                   <span className="text-accent">Labs</span>

@@ -35,8 +35,8 @@ export const CookieBanner = () => {
           // Smooth 250ms fade-out with a slight downward slide on dismiss
           exit={{ opacity: 0, y: 20, scale: 0.98, transition: { duration: 0.25, ease: 'easeOut' } }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          // UPDATED: Width reduced to 380px and shadow softened to 8% opacity
-          className="fixed bottom-4 left-4 right-4 md:bottom-8 md:left-8 md:right-auto w-auto md:w-[380px] z-[100] bg-[rgba(255,255,255,0.92)] backdrop-blur-[10px] rounded-[20px] border border-gray-100 border-l-[3px] border-l-primary shadow-[0_10px_30px_rgba(0,0,0,0.08)] p-5 md:p-6"
+          // UPDATED: Shifted to bottom-right (md:left-auto md:right-8) and removed the thick left border
+          className="fixed bottom-4 left-4 right-4 md:bottom-8 md:left-auto md:right-8 w-auto md:w-[380px] z-[100] bg-[rgba(255,255,255,0.92)] backdrop-blur-[10px] rounded-[20px] border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.08)] p-5 md:p-6"
         >
           {/* Refined Close Icon: Larger clickable area, subtle gray hover */}
           <button 

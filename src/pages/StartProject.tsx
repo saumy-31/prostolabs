@@ -28,8 +28,7 @@ export const StartProject = () => {
       </AnimatedSection>
 
       <AnimatedSection delay={0.2}>
-        {/* 
-          IMPORTANT FORM SUBMIT INSTRUCTIONS:
+        {/* IMPORTANT FORM SUBMIT INSTRUCTIONS:
           1. The first time you submit this form on your live site, FormSubmit will send a verification email to careers@flysava.com.
           2. You MUST click "Activate Form" in that email before subsequent submissions will work. 
         */}
@@ -84,6 +83,8 @@ export const StartProject = () => {
                     <option value="Business Automation">Business Automation</option>
                     <option value="Digital Marketing">Digital Marketing</option>
                     <option value="Multiple / Full Stack">Multiple / Full Stack</option>
+                    {/* ADDED OTHER OPTION HERE */}
+                    <option value="Other">Other</option>
                   </select>
                   <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                 </div>
