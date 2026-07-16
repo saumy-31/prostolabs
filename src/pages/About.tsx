@@ -5,10 +5,9 @@ import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { SEO } from '../components/seo/SEO'
 import { useRef } from 'react'
 import { 
-  Code, Palette, Lightbulb, PenTool, Eye, Users, 
-  Shield, BookOpen, Briefcase, Layers, Zap, Handshake, 
-  MessageSquare, Cpu, Cloud, Layout, CheckCircle2, Bot,
-  MonitorSmartphone, Server, ArrowRight, FileType2 // <--- Added this here
+  Code, Palette, Lightbulb, Briefcase, Layers, Zap, Handshake, 
+  MessageSquare,  Cloud, Layout, Bot,
+  MonitorSmartphone, Server, FileType2 // <--- Added this here
 } from 'lucide-react'
 
 export const About = () => {

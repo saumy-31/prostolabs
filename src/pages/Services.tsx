@@ -5,8 +5,7 @@ import { Button } from '../components/ui/Button'
 import { SEO } from '../components/seo/SEO'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { 
-  Code, Palette, Bot, Settings, LineChart, 
-  ArrowRight, CheckCircle2,
+  Code, Palette, Bot, Settings, LineChart, CheckCircle2,
   ChevronDown
 } from 'lucide-react'
 

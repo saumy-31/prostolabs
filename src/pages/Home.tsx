@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Button } from '../components/ui/Button'
 import { SEO } from '../components/seo/SEO'
@@ -7,42 +6,10 @@ import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { 
   Code, Palette, Bot, LineChart, Settings, 
   Briefcase, Zap, Layers, Heart, MessageSquare,
-  ArrowRight, ChevronDown, Activity, Target, 
+  ArrowRight, Activity, Target, 
   ShoppingBag, Cloud, Database, Server, 
   Sparkles, Layout, BarChart3, MousePointer2
 } from 'lucide-react'
-
-// --- FAQ Accordion Component ---
-const FAQItem = ({ question, answer }: { question: string, answer: string }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <div className="border-b border-gray-200 py-6">
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full justify-between items-center text-left focus:outline-none group"
-      >
-        <span className="text-lg font-medium group-hover:text-accent transition-colors">{question}</span>
-        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
-          <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-accent" />
-        </motion.div>
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <p className="pt-4 text-gray-500 leading-relaxed">{answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
 
 export const Home = () => {
   // --- Hero Mouse Parallax Configuration ---
@@ -133,7 +100,6 @@ export const Home = () => {
               </motion.div>
             </div>
 
-            {/* FIX: Reduced lg:h-[600px] to lg:h-[480px] to remove the invisible dead zone */}
             <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[480px] flex items-center justify-center perspective-[1200px] hidden sm:flex mt-10 lg:mt-0">
               <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-primary/5 blur-3xl rounded-full scale-75 opacity-70" />
               
@@ -245,7 +211,6 @@ export const Home = () => {
         </section>
 
         {/* 2. ABOUT PROSTOLABS */}
-        {/* FIX: Tightened the top padding to pull the section up */}
         <section className="pt-16 lg:pt-12 pb-24 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -376,7 +341,7 @@ export const Home = () => {
           </div>
         </section>
 
-        {/* 6. TECHNOLOGIES & INDUSTRIES (Split Grid) */}
+        {/* 6. TECHNOLOGIES & INDUSTRIES */}
         <section className="py-24 px-6 bg-surface overflow-hidden">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
             <AnimatedSection>
