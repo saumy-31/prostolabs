@@ -321,7 +321,8 @@ export const Services = () => {
                 Schedule a technical discovery call to discuss how ProstoLabs can architect your next phase of growth.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/contact">
+                {/* FIX: Changed the route destination here */}
+                <Link to="/start-project">
                   <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">Start Your Project</Button>
                 </Link>
               </div>

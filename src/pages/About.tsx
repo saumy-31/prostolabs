@@ -298,7 +298,8 @@ export const About = () => {
                 Whether you need a complete digital transformation or a highly specialized engineering team, we are ready.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/contact">
+                {/* FIX: Changed to="/contact" to to="/start-project" */}
+                <Link to="/start-project">
                   <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">Start Your Project</Button>
                 </Link>
                 <Link to="/contact">
@@ -309,7 +310,6 @@ export const About = () => {
           </AnimatedSection>
         </div>
       </section>
-
     </div>
     </>
   )

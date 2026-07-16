@@ -377,28 +377,32 @@ export const Home = () => {
         </section>
 
         {/* 8. FINAL CTA */}
-        <section className="py-24 px-6">
-          <div className="max-w-5xl mx-auto">
-            <AnimatedSection className="relative rounded-[3rem] overflow-hidden bg-primary text-white text-center py-24 px-6 md:px-12">
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjEpIi8+PC9zdmc+')] opacity-50 mix-blend-overlay" />
-              
-              <div className="relative z-10">
-                <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-8">Let's Build Something <br/> <span className="text-accent">Extraordinary.</span></h2>
-                <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-                  Ready to transform your digital presence? Partner with ProstoLabs to architect the future of your business.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                  <Link to="/start-project">
-                    <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">Start Your Project</Button>
-                  </Link>
-                  <Link to="/contact">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto text-white border-white/20 hover:bg-white/10 hover:border-white">Contact Sales</Button>
-                  </Link>
-                </div>
+      <section className="py-16 md:py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          {/* Adjusted mobile padding (py-16) and border-radius (rounded-[2rem]) */}
+          <AnimatedSection className="relative rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-primary text-white text-center py-16 md:py-24 px-6 md:px-12">
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjEpIi8+PC9zdmc+')] opacity-50 mix-blend-overlay" />
+            
+            <div className="relative z-10">
+              {/* Scaled down mobile text slightly and hid the <br/> on mobile to prevent awkward wrapping */}
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 md:mb-8">
+                Let's Build Something <br className="hidden sm:block"/> <span className="text-accent">Extraordinary.</span>
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-400 mb-10 md:mb-12 max-w-2xl mx-auto">
+                Ready to transform your digital presence? Partner with ProstoLabs to architect the future of your business.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link to="/start-project">
+                  <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">Start Your Project</Button>
+                </Link>
+                <Link to="/contact">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto text-white border-white/20 hover:bg-white/10 hover:border-white">Contact Sales</Button>
+                </Link>
               </div>
-            </AnimatedSection>
-          </div>
-        </section>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
 
       </div>
     </>
