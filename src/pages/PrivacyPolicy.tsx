@@ -15,7 +15,7 @@ export const PrivacyPolicy = () => {
         <AnimatedSection>
           <div className="mb-12">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Privacy Policy</h1>
-            <p className="text-gray-500">Effective Date: July 16, 2026</p>
+            
           </div>
 
           <div className="prose prose-lg text-gray-500">
