@@ -14,7 +14,7 @@ export const Footer = () => {
           <div className="lg:w-[30%] flex flex-col shrink-0">
             <Link to="/" className="inline-block mb-6 outline-none">
               <motion.div 
-                className="flex items-center gap-2.5"
+                className="flex items-center gap-1"
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
