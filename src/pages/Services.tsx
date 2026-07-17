@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Button } from '../components/ui/Button'
 import { SEO } from '../components/seo/SEO'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
+import { Helmet } from 'react-helmet-async'
 import { 
   Code, Palette, Bot, Settings, LineChart, CheckCircle2,
   ChevronDown, Wrench
@@ -97,6 +98,44 @@ const servicesData = [
 ]
 
 export const Services = () => {
+  // --- SEO Schema Configuration ---
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "ProstoLabs Digital Services",
+    "provider": {
+      "@type": "Organization",
+      "name": "ProstoLabs",
+      "url": "https://prostolabs.com/"
+    },
+    "description": "Premium technology services including custom web development, AI integration, UI/UX design, and digital marketing.",
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": "Worldwide"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "ProstoLabs Core Services",
+      "itemListElement": [
+        {
+          "@type": "OfferCatalog",
+          "name": "Web Development",
+          "description": "Custom Business Websites, Enterprise Web Applications, and Headless E-commerce Solutions."
+        },
+        {
+          "@type": "OfferCatalog",
+          "name": "AI & Machine Learning",
+          "description": "Custom LLM Integration, Predictive Data Analytics, and OpenAI API Implementation."
+        },
+        {
+          "@type": "OfferCatalog",
+          "name": "UI/UX & Product Design",
+          "description": "User Interface Design, High-Fidelity Prototyping, and Comprehensive Design Systems."
+        }
+      ]
+    }
+  };
+
   const containerRef = useRef<HTMLDivElement>(null)
   const servicesSectionRef = useRef<HTMLElement>(null)
   const location = useLocation()
@@ -142,6 +181,14 @@ export const Services = () => {
       description="Explore ProstoLabs' technology services including website development, AI solutions, UI/UX design, business automation, and digital marketing."
       path="/services"
     />
+    
+    {/* Schema Markup Injection */}
+    <Helmet>
+      <script type="application/ld+json">
+        {JSON.stringify(serviceSchema)}
+      </script>
+    </Helmet>
+
     <div className="relative bg-background overflow-hidden" ref={containerRef}>
       
       {/* Scroll Progress Indicator (Desktop Only) */}

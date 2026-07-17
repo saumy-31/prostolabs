@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button } from '../components/ui/Button'
 import { SEO } from '../components/seo/SEO'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
+import { Helmet } from 'react-helmet-async'
 import { 
   Code, Palette, Bot, LineChart, Settings, Wrench,
   Briefcase, Zap, Layers, Heart, MessageSquare,
@@ -12,6 +13,25 @@ import {
 } from 'lucide-react'
 
 export const Home = () => {
+  // --- SEO Schema Configuration ---
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ProstoLabs",
+    "url": "https://prostolabs.com/",
+    "logo": "https://prostolabs.com/logo.png", // Update with your actual logo path
+    "description": "Premium Web Development, AI & Digital Solutions for modern enterprises.",
+    "sameAs": [
+      "https://www.linkedin.com/company/prostolabs", // Update with actual links
+      "https://twitter.com/prostolabs"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "availableLanguage": ["English"]
+    }
+  };
+
   // --- Hero Mouse Parallax Configuration ---
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -47,6 +67,14 @@ export const Home = () => {
         path="/"
         keywords="ProstoLabs, Web Development, AI Solutions, UI UX Design, Digital Marketing, Software Company, Technology Agency, India"
       />
+      
+      {/* Schema Markup Injection */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(orgSchema)}
+        </script>
+      </Helmet>
+
       <div className="overflow-hidden bg-background">
         
         {/* 1. HERO SECTION */}

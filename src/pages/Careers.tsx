@@ -1,18 +1,47 @@
 import { useState, useRef, useEffect } from 'react'
-
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from '../components/ui/Button'
 import { SEO } from '../components/seo/SEO'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
+import { Helmet } from 'react-helmet-async'
 import { 
   Briefcase, Users, Terminal, TrendingUp, 
   MapPin, Clock, ChevronDown, CheckCircle2,
   UploadCloud, ShieldCheck
 } from 'lucide-react'
 
-
+// Extracted programs array to generate both the UI and the SEO Schema dynamically
+const internshipPrograms = [
+  { title: 'Web Development Intern', value: 'Web Development', location: 'Remote', duration: '1 Month • 2 Months • 3 Months' },
+  { title: 'UI/UX Design Intern', value: 'UI/UX Design', location: 'Remote', duration: '1 Month • 2 Months • 3 Months' },
+  { title: 'AI & Machine Learning Intern', value: 'AI & Machine Learning', location: 'Remote', duration: '1 Month • 2 Months • 3 Months' },
+  { title: 'Digital Marketing Intern', value: 'Digital Marketing', location: 'Remote', duration: '1 Month • 2 Months • 3 Months' }
+]
 
 export const Careers = () => {
+  // --- SEO Job Posting Schema Configuration ---
+  // Maps through the programs to create 4 distinct job listings for search engines
+  const jobsSchema = internshipPrograms.map(job => ({
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    "title": job.title,
+    "description": `Gain practical experience through mentorship, real-world projects, and hands-on learning as a ${job.title} at ProstoLabs. Duration: ${job.duration}.`,
+    "datePosted": "2026-07-17",
+    "validThrough": "2026-12-31",
+    "employmentType": "INTERN",
+    "hiringOrganization": {
+      "@type": "Organization",
+      "name": "ProstoLabs",
+      "sameAs": "https://prostolabs.com",
+      "logo": "https://prostolabs.com/logo.png"
+    },
+    "jobLocationType": "TELECOMMUTE", // Explicitly tells Google it is remote
+    "applicantLocationRequirements": {
+      "@type": "Country",
+      "name": "India"
+    }
+  }));
+
   const formRef = useRef<HTMLElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   
@@ -52,6 +81,14 @@ export const Careers = () => {
         description="Join ProstoLabs through our internship programs in Web Development, AI & Machine Learning, UI/UX Design, and Digital Marketing."
         path="/careers"
       />
+      
+      {/* Schema Markup Injection */}
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(jobsSchema)}
+        </script>
+      </Helmet>
+
       <div className="overflow-hidden bg-background">
         
         {/* 1. HERO SECTION */}
@@ -107,12 +144,7 @@ export const Careers = () => {
             </AnimatedSection>
 
             <div className="space-y-6">
-              {[
-                { title: 'Web Development Intern', value: 'Web Development', location: 'Remote', duration: '1 Month • 2 Months • 3 Months' },
-                { title: 'UI/UX Design Intern', value: 'UI/UX Design', location: 'Remote', duration: '1 Month • 2 Months • 3 Months' },
-                { title: 'AI & Machine Learning Intern', value: 'AI & Machine Learning', location: 'Remote', duration: '1 Month • 2 Months • 3 Months' },
-                { title: 'Digital Marketing Intern', value: 'Digital Marketing', location: 'Remote', duration: '1 Month • 2 Months • 3 Months' }
-              ].map((job, i) => (
+              {internshipPrograms.map((job, i) => (
                 <AnimatedSection key={job.title} delay={i * 0.1}>
                   <div className="flex flex-col md:flex-row md:items-center justify-between p-8 rounded-[2rem] bg-surface border border-gray-100 hover:border-primary/20 hover:shadow-lg transition-all duration-300 group">
                     <div>
@@ -169,8 +201,6 @@ export const Careers = () => {
             </div>
           </div>
         </section>
-
-        
 
         {/* 6. INTERNSHIP APPLICATION FORM */}
         <section ref={formRef} className="py-24 px-6 scroll-mt-24">
