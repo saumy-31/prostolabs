@@ -1,6 +1,6 @@
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { SEO } from '../components/seo/SEO'
-import { ShieldCheck, Mail, Sparkles } from 'lucide-react'
+import { ShieldCheck, Mail } from 'lucide-react'
 
 export const PrivacyPolicy = () => {
   return (

@@ -5,7 +5,7 @@ import { SEO } from '../components/seo/SEO'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { Helmet } from 'react-helmet-async'
 import { 
-  Code, Palette, Bot, LineChart, Settings, Wrench,
+  Code, Palette, Bot, LineChart, Wrench,
   Briefcase, Zap, Layers, Heart, MessageSquare,
   ArrowRight, Activity, Target, 
   ShoppingBag, Cloud,

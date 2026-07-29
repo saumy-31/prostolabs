@@ -1,12 +1,10 @@
 import { useState, useRef } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion,  AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { SEO } from '../components/seo/SEO'
 import { 
-  Code, Palette, Lightbulb, Briefcase, Layers, Zap, Handshake, 
-  MessageSquare, Cloud, Layout, Bot, MonitorSmartphone, Server, 
-  FileType2, Target, Activity, ShieldCheck, ArrowRight, Sparkles,
+  Code, Palette, Lightbulb, Target, Activity,  Sparkles,
   ChevronDown, CheckCircle2
 } from 'lucide-react'
 
