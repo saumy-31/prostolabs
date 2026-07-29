@@ -66,7 +66,7 @@ export const Footer = () => {
                 <li><Link to="/about" className="text-[#6B7280] hover:text-[#2563EB] transition-colors">About Us</Link></li>
                 <li><Link to="/careers" className="text-[#6B7280] hover:text-[#2563EB] transition-colors">Careers</Link></li>
                 <li><Link to="/contact" className="text-[#6B7280] hover:text-[#2563EB] transition-colors">Contact</Link></li>
-                <li><Link to="/start-project" className="text-[#2563EB] font-bold hover:underline">Start a Project</Link></li>
+                <li><Link to="/start-project" className="text-[#6B7280] hover:text-[#2563EB] transition-colors">Start a Project</Link></li>
               </ul>
             </div>
 
@@ -83,12 +83,12 @@ export const Footer = () => {
 
             {/* EXPLORE */}
             <div>
-              <h4 className="font-bold text-xs uppercase tracking-wider text-[#0A0A0A] mb-4 font-sans">Featured</h4>
+              <h4 className="font-bold text-xs uppercase tracking-wider text-[#0A0A0A] mb-4 font-sans">Explore</h4>
               <ul className="space-y-3 text-xs sm:text-sm font-medium">
                 <li>
                   <Link to="/flysava" className="inline-flex items-center gap-1.5 text-[#6B7280] hover:text-[#2563EB] transition-colors">
                     <span>FlySava</span>
-                    <span className="px-1.5 py-0.5 rounded-md bg-blue-50 text-[10px] font-bold text-[#2563EB]">Product</span>
+  
                   </Link>
                 </li>
               </ul>
@@ -110,8 +110,8 @@ export const Footer = () => {
         <div className="border-t border-gray-200/80 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-[#6B7280] font-medium">
           <p>© 2026 ProstoLabs. All rights reserved.</p>
           <p className="flex items-center gap-1">
-            <span>Built by</span>
-            <span className="font-bold text-[#0A0A0A]">ProstoLabs Engineering</span>
+            <span>Built with</span>
+            <span className="font-bold text-[#0A0A0A]"> 💙 by ProstoLabs</span>
           </p>
         </div>
 
