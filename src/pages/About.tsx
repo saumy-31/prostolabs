@@ -1,316 +1,431 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useState, useRef } from 'react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Button } from '../components/ui/Button'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { SEO } from '../components/seo/SEO'
-import { useRef } from 'react'
 import { 
   Code, Palette, Lightbulb, Briefcase, Layers, Zap, Handshake, 
-  MessageSquare,  Cloud, Layout, Bot,
-  MonitorSmartphone, Server, FileType2 // <--- Added this here
+  MessageSquare, Cloud, Layout, Bot, MonitorSmartphone, Server, 
+  FileType2, Target, Activity, ShieldCheck, ArrowRight, Sparkles,
+  ChevronDown, CheckCircle2
 } from 'lucide-react'
+
+// --- FAQ ACCORDION ITEM COMPONENT ---
+function FAQItem({ question, answer }: { question: string; answer: string }) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className="border border-gray-200/80 rounded-2xl bg-white overflow-hidden transition-all">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full p-6 text-left flex items-center justify-between gap-4 font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] transition-colors"
+      >
+        <span>{question}</span>
+        <ChevronDown 
+          className={`w-5 h-5 text-[#2563EB] transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
+            <div className="px-6 pb-6 text-sm md:text-base text-[#6B7280] font-medium leading-relaxed border-t border-gray-100 pt-4">
+              {answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 export const About = () => {
   const containerRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  })
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 200])
-  
 
   return (
     <>
-    <SEO 
-      title="About ProstoLabs | Building Digital Products That Drive Growth"
-      description="Learn about ProstoLabs, our mission, vision, and commitment to creating scalable digital products through innovation, design, and engineering."
-      path="/about"
-    />
-    <div className="overflow-hidden bg-background" ref={containerRef}>
+      <SEO 
+        title="About ProstoLabs | Web Development, AI & Digital Products"
+        description="Learn about ProstoLabs—our mission, values, journey, and commitment to building fast, high-quality digital products for growing businesses."
+        path="/about"
+      />
       
-      {/* 1. HERO SECTION */}
-      <section className="relative min-h-[85vh] flex items-center justify-center px-6 pt-20 pb-20 overflow-hidden">
-        {/* Abstract Animated Background */}
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-            className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] border-[1px] border-gray-200 rounded-full absolute"
-          />
-          <motion.div 
-            animate={{ rotate: -360 }}
-            transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
-            className="w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] border-[1px] border-gray-200 rounded-full absolute border-dashed"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background to-background" />
-        </div>
-
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <AnimatedSection>
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1.05] mb-8">
-              Engineering the <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-accent">Digital Frontier.</span>
-            </h1>
-            <p className="text-xl sm:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
-              We are a collective of engineers, designers, and strategists obsessed with building products that redefine what's possible on the web.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      
-
-      {/* 3. WHO WE ARE */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <AnimatedSection className="mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Who We Are</h2>
-            <p className="text-xl text-gray-500 max-w-2xl">A multi-disciplinary technology firm bridging the gap between complex engineering and human-centric design.</p>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: Code, title: "Engineering Excellence", desc: "We write clean, modular, and performant code. Our architectures are built to handle massive scale without compromising on speed." },
-              { icon: Palette, title: "Premium Design", desc: "Design is how it works. We craft interfaces that guide users naturally, utilizing whitespace, typography, and motion to build trust." },
-              { icon: Lightbulb, title: "Forward Innovation", desc: "We actively integrate emerging technologies, from custom LLM wrappers to predictive algorithms, keeping you ahead of the curve." }
-            ].map((item, i) => (
-              <AnimatedSection key={i} delay={i * 0.1}>
-                <div className="p-10 rounded-3xl bg-surface border border-gray-100 h-full group hover:bg-white hover:shadow-xl transition-all duration-500">
-                  <div className="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center mb-8 group-hover:-translate-y-2 transition-transform duration-500">
-                    <item.icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                  <p className="text-gray-500 leading-relaxed">{item.desc}</p>
-                </div>
-              </AnimatedSection>
-            ))}
+      <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900" ref={containerRef}>
+        
+        {/* ========================================================================= */}
+        {/* 1. HERO SECTION */}
+        {/* ========================================================================= */}
+        <section className="relative flex items-center justify-center px-6 pt-16 sm:pt-20 md:pt-24 pb-16 md:pb-20 overflow-hidden">
+          
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-20">
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+              className="w-[80vw] h-[80vw] max-w-[700px] max-h-[700px] border border-blue-200 rounded-full absolute"
+            />
+            <motion.div 
+              animate={{ rotate: -360 }}
+              transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+              className="w-[60vw] h-[60vw] max-w-[500px] max-h-[500px] border border-blue-300 rounded-full absolute border-dashed"
+            />
           </div>
-        </div>
-      </section>
 
-      {/* 4. MISSION */}
-      <section className="py-32 px-6 bg-primary text-white overflow-hidden relative">
-        {/* Abstract Dark SVG Graphic */}
-        <motion.div style={{ y: y1 }} className="absolute right-0 top-0 opacity-10 pointer-events-none hidden lg:block">
-          <svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="300" cy="300" r="299" stroke="white" strokeWidth="2"/>
-            <circle cx="300" cy="300" r="200" stroke="white" strokeWidth="2" strokeDasharray="10 10"/>
-            <circle cx="300" cy="300" r="100" stroke="white" strokeWidth="2"/>
-          </svg>
-        </motion.div>
-
-        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <AnimatedSection>
-            <span className="text-accent font-bold tracking-wider uppercase text-sm mb-6 block">Our Mission</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
-              Building technology that helps businesses grow.
-            </h2>
-          </AnimatedSection>
-          <AnimatedSection delay={0.2}>
-            <p className="text-xl md:text-2xl text-gray-400 leading-relaxed border-l-2 border-accent pl-8">
-              We help businesses build scalable websites, intelligent applications, and digital experiences that create lasting value.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* 5. VISION */}
-      <section className="py-32 px-6 bg-surface overflow-hidden">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <AnimatedSection>
-            <div className="aspect-square w-full max-w-md mx-auto relative flex items-center justify-center">
-              {/* Abstract Vision Graphic */}
-              <motion.div 
-                animate={{ rotate: 360, scale: [1, 1.05, 1] }} 
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-primary/5 rounded-[3rem] blur-xl"
-              />
-              <div className="relative z-10 grid grid-cols-2 gap-4 w-full h-full p-8">
-                <motion.div initial={{ height: "0%" }} whileInView={{ height: "100%" }} transition={{ duration: 1 }} className="bg-primary rounded-2xl" />
-                <motion.div initial={{ height: "0%" }} whileInView={{ height: "60%" }} transition={{ duration: 1, delay: 0.2 }} className="bg-accent rounded-2xl self-end" />
-                <motion.div initial={{ width: "0%" }} whileInView={{ width: "100%" }} transition={{ duration: 1, delay: 0.4 }} className="bg-gray-300 rounded-2xl col-span-2 h-32" />
+          <div className="max-w-[1100px] mx-auto text-center relative z-10">
+            <AnimatedSection>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-xs md:text-sm font-bold text-[#2563EB] mb-6">
+                <Sparkles size={14} className="text-[#2563EB]" />
+                <span>About ProstoLabs</span>
               </div>
-            </div>
-          </AnimatedSection>
-          <AnimatedSection delay={0.2}>
-            <span className="text-accent font-bold tracking-wider uppercase text-sm mb-6 block">Our Vision</span>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
-              Creating a smarter digital future.
-            </h2>
-            <p className="text-xl text-gray-500 leading-relaxed">
-              Our vision is to empower businesses with modern technology, exceptional design, and innovative solutions that create lasting impact.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
 
-      
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6 text-[#0A0A0A] font-sans">
+                We build digital products that <br className="hidden sm:block" />
+                <span className="text-[#2563EB]">grow your business.</span>
+              </h1>
 
-      {/* 7. OUR JOURNEY (Timeline) */}
-      <section className="py-32 px-6 bg-primary text-white overflow-hidden">
-        <div className="max-w-4xl mx-auto">
-          <AnimatedSection className="text-center mb-24">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Our Journey</h2>
-            <p className="text-xl text-gray-400">The milestones that shaped our methodology.</p>
-          </AnimatedSection>
-
-          <div className="relative">
-            {/* Center Line */}
-            <div className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2" />
-
-            {[
-              { year: 'Phase I', title: 'The Idea', desc: 'ProstoLabs was founded to bridge the gap between premium design and complex software engineering.' },
-              { year: 'Phase II', title: 'First Client Partnership', desc: 'Successfully delivered our first enterprise-scale application, setting the standard for our future work.' },
-              { year: 'Phase III', title: 'Growing the Collective', desc: 'Expanded our team with top-tier talent across UI/UX, full-stack development, and AI integration.' },
-              { year: 'Phase IV', title: 'Building Digital Ecosystems', desc: 'Transitioned from isolated projects to acting as the core technology partner for global businesses.' },
-              { year: 'Phase V', title: 'Future Vision', desc: 'Continuing to pioneer scalable architectures and seamlessly integrating AI into daily business operations.' },
-            ].map((item, i) => (
-              <AnimatedSection key={i} delay={i * 0.1} className={`relative flex items-center justify-between mb-16 md:mb-24 ${i % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
-                {/* Timeline Dot */}
-                <div className="absolute left-[15px] md:left-1/2 w-4 h-4 rounded-full bg-accent -translate-x-1/2 outline outline-4 outline-primary z-10" />
-                
-                {/* Empty Space for alignment on desktop */}
-                <div className="hidden md:block w-5/12" />
-                
-                {/* Content */}
-                <div className="w-full pl-12 md:pl-0 md:w-5/12">
-                  <span className="text-accent font-bold text-sm mb-2 block">{item.year}</span>
-                  <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-gray-400 leading-relaxed">{item.desc}</p>
-                </div>
-              </AnimatedSection>
-            ))}
+              <p className="text-base sm:text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto leading-relaxed font-medium">
+                ProstoLabs is a team of designers, engineers, and problem solvers. We help companies design, code, and launch custom web applications, mobile software, and AI tools.
+              </p>
+            </AnimatedSection>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 8. WHY BUSINESSES CHOOSE US */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <AnimatedSection className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Why Businesses Choose Us</h2>
-            <p className="text-xl text-gray-500">We deliver peace of mind alongside premium software.</p>
-          </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: Briefcase, title: 'Business-First Mindset', text: 'We optimize for ROI, not just lines of code.' },
-              { icon: Layers, title: 'Scalable Architecture', text: 'Built to handle 100 or 1,000,000 active users.' },
-              { icon: MonitorSmartphone, title: 'Premium Design', text: 'Aesthetics that build trust and drive conversion.' },
-              { icon: Zap, title: 'Performance Optimization', text: 'Lightning-fast load times and Lighthouse scores.' },
-              { icon: Handshake, title: 'Long-Term Partnership', text: 'We maintain and scale your product post-launch.' },
-              { icon: MessageSquare, title: 'Transparent Communication', text: 'Direct lines to your lead engineers and designers.' },
-            ].map((feature, i) => (
-              <AnimatedSection key={i} delay={i * 0.1}>
-                <div className="p-8 rounded-2xl bg-surface border border-gray-100 flex items-start gap-4">
-                  <feature.icon className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed">{feature.text}</p>
-                  </div>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 9. TECHNOLOGIES WE LOVE */}
-      <section className="py-32 px-6 bg-surface overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center">
-          <AnimatedSection className="mb-16">
-            <h2 className="text-4xl font-bold tracking-tight mb-6">Technologies We Love</h2>
-            <p className="text-xl text-gray-500 max-w-2xl mx-auto">We use a strict, modern tech stack to ensure reliability, security, and developer velocity.</p>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {[
-              { name: 'React', icon: Code },
-              { name: 'TypeScript', icon: FileType2 },
-              { name: 'Node.js', icon: Server },
-              { name: 'Python', icon: Code },
-              { name: 'AI Solutions', icon: Bot },
-              { name: 'Figma', icon: Palette },
-              { name: 'Tailwind CSS', icon: Layout },
-              { name: 'Cloud Native', icon: Cloud },
-            ].map((tech, i) => {
-              // React requires dynamic components to start with a Capital letter
-              const Icon = tech.icon; 
-              
-              return (
-                <AnimatedSection key={i} delay={i * 0.05}>
-                  <div className="p-6 rounded-2xl bg-background border border-gray-100 shadow-sm hover:shadow-md hover:border-accent/50 transition-all duration-300 flex flex-col items-center justify-center gap-4 group cursor-default">
-                    <Icon className="w-8 h-8 text-gray-400 group-hover:text-primary transition-colors" />
-                    <span className="font-semibold text-sm">{tech.name}</span>
+        {/* ========================================================================= */}
+        {/* 2. IMPACT METRICS BAR */}
+        {/* ========================================================================= */}
+        <section className="py-12 px-6 bg-white border-y border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              {[
+                { value: "100%", label: "Client Satisfaction" },
+                { value: "< 1s", label: "Average Load Speed" },
+                { value: "99.9%", label: "Guaranteed Uptime" },
+                { value: "24/7", label: "Monitoring & Care" },
+              ].map((stat, idx) => (
+                <AnimatedSection key={idx} delay={idx * 0.05}>
+                  <div className="p-4">
+                    <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#2563EB] tracking-tight font-sans">{stat.value}</p>
+                    <p className="text-xs sm:text-sm font-bold text-[#6B7280] mt-2 uppercase tracking-wider">{stat.label}</p>
                   </div>
                 </AnimatedSection>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* 10. OUR WORKING PRINCIPLES (Process) */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <AnimatedSection className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">How We Build</h2>
-            <p className="text-xl text-gray-500">A systematic approach to eliminating risk and ensuring success.</p>
-          </AnimatedSection>
-
-          <div className="flex flex-col lg:flex-row items-start justify-between relative">
-            <div className="hidden lg:block absolute top-12 left-10 right-10 h-[2px] bg-gray-100 z-0" />
-            
-            {[
-              { step: '01', title: 'Discover', desc: 'Understanding your business logic.' },
-              { step: '02', title: 'Strategy', desc: 'Architecting the solution.' },
-              { step: '03', title: 'Design', desc: 'Crafting the interface.' },
-              { step: '04', title: 'Dev', desc: 'Writing scalable code.' },
-              { step: '05', title: 'Launch', desc: 'Zero-downtime deployment.' },
-              { step: '06', title: 'Iterate', desc: 'Continuous improvement.' },
-            ].map((process, i) => (
-              <AnimatedSection key={i} delay={i * 0.1} className="relative z-10 flex flex-row lg:flex-col items-center lg:items-center gap-6 lg:gap-4 mb-8 lg:mb-0 w-full lg:w-1/6">
-                <div className="w-12 h-12 rounded-full bg-surface border-4 border-white shadow-sm flex items-center justify-center font-bold text-accent shrink-0">
-                  {process.step}
-                </div>
-                <div className="text-left lg:text-center">
-                  <h4 className="font-bold mb-1">{process.title}</h4>
-                  <p className="text-sm text-gray-500">{process.desc}</p>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      
-
-      {/* 13. FINAL CALL TO ACTION */}
-      <section className="py-32 px-6">
-        <div className="max-w-5xl mx-auto">
-          <AnimatedSection className="relative rounded-[3rem] overflow-hidden bg-primary text-white text-center py-24 px-6 md:px-12">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjEpIi8+PC9zdmc+')] opacity-50 mix-blend-overlay" />
-            
-            <div className="relative z-10">
-              <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-8">Let's Build Something <br/> <span className="text-accent">Exceptional.</span></h2>
-              <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-                Whether you need a complete digital transformation or a highly specialized engineering team, we are ready.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                {/* FIX: Changed to="/contact" to to="/start-project" */}
-                <Link to="/start-project">
-                  <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">Start Your Project</Button>
-                </Link>
-                <Link to="/contact">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto text-white border-white/20 hover:bg-white/10 hover:border-white">Contact Us</Button>
-                </Link>
-              </div>
+              ))}
             </div>
-          </AnimatedSection>
-        </div>
-      </section>
-    </div>
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 3. WHO WE ARE */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                Who We Are
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                A dedicated engineering studio focused on clean execution and real results.
+              </p>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { 
+                  icon: Code, 
+                  title: "Engineering Excellence", 
+                  desc: "We write clean, modular, and performant code. Our software architectures are built to run fast and scale seamlessly." 
+                },
+                { 
+                  icon: Palette, 
+                  title: "Thoughtful Design", 
+                  desc: "Design is about usability. We create visual interfaces that guide users naturally, build trust, and increase conversions." 
+                },
+                { 
+                  icon: Lightbulb, 
+                  title: "Smart Automation", 
+                  desc: "We integrate practical AI tools and smart workflows that save time, eliminate manual work, and improve efficiency." 
+                }
+              ].map((item, i) => (
+                <AnimatedSection key={i} delay={i * 0.1}>
+                  <div className="p-8 rounded-[28px] bg-white border border-gray-200/80 h-full group hover:shadow-xl hover:border-[#2563EB]/40 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <item.icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-xl font-bold text-[#0A0A0A] mb-3 font-sans">{item.title}</h3>
+                      <p className="text-sm text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 4. MISSION & VISION */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            {/* OUR MISSION */}
+            <AnimatedSection>
+              <div className="p-8 sm:p-12 rounded-[32px] bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] text-white h-full flex flex-col justify-between shadow-xl">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-blue-100 font-bold text-xs uppercase tracking-wider mb-6 border border-white/20">
+                    <Target size={14} />
+                    <span>Our Mission</span>
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 font-sans leading-tight">
+                    Building reliable technology that helps businesses grow.
+                  </h2>
+                  <p className="text-sm sm:text-base text-blue-100 leading-relaxed font-medium">
+                    We help companies launch fast, secure, and user-friendly web products that increase lead generation, streamline operations, and deliver long-term value.
+                  </p>
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* OUR VISION */}
+            <AnimatedSection delay={0.15}>
+              <div className="p-8 sm:p-12 rounded-[32px] bg-white border border-gray-200/80 text-[#0A0A0A] h-full flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-6">
+                    <Activity size={14} />
+                    <span>Our Vision</span>
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 font-sans text-[#0A0A0A] leading-tight">
+                    Creating a simpler, smarter digital future.
+                  </h2>
+                  <p className="text-sm sm:text-base text-[#6B7280] leading-relaxed font-medium">
+                    Our goal is to be a trusted global partner for growing companies, delivering exceptional web technology and AI solutions that bring real, measurable impact.
+                  </p>
+                </div>
+              </div>
+            </AnimatedSection>
+
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 5. OUR JOURNEY (TIMELINE) */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+          <div className="max-w-[1000px] mx-auto">
+            
+            <AnimatedSection className="text-center mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                Our Journey
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                How we evolved into a full-service web development and AI studio.
+              </p>
+            </AnimatedSection>
+
+            <div className="relative">
+              {/* Vertical Center Line */}
+              <div className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gray-200 -translate-x-1/2" />
+
+              {[
+                { year: 'Phase I', title: 'The Launch', desc: 'ProstoLabs was founded to connect modern UI design with scalable web software.' },
+                { year: 'Phase II', title: 'First Core Products', desc: 'Successfully engineered custom platforms for early clients, setting our standard for performance.' },
+                { year: 'Phase III', title: 'Expanding the Team', desc: 'Added specialists in React, mobile applications, cloud infrastructure, and AI workflow automation.' },
+                { year: 'Phase IV', title: 'AI & Automation', desc: 'Integrated AI capabilities directly into web apps and customer support systems.' },
+                { year: 'Phase V', title: 'Global Operations', desc: 'Partnering with businesses worldwide as their primary software design and development engine.' },
+              ].map((item, i) => (
+                <AnimatedSection 
+                  key={i} 
+                  delay={i * 0.08} 
+                  className={`relative flex items-center justify-between mb-12 md:mb-16 ${i % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'}`}
+                >
+                  {/* Timeline Dot */}
+                  <div className="absolute left-[15px] md:left-1/2 w-4 h-4 rounded-full bg-[#2563EB] -translate-x-1/2 outline outline-4 outline-[#FAFAFA] shadow-md z-10" />
+                  
+                  {/* Spacer for desktop layout balance */}
+                  <div className="hidden md:block w-5/12" />
+                  
+                  {/* Timeline Card */}
+                  <div className="w-full pl-12 md:pl-0 md:w-5/12">
+                    <div className="p-6 rounded-[20px] bg-white border border-gray-200/80 hover:border-[#2563EB]/40 transition-colors shadow-sm">
+                      <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-1 block">{item.year}</span>
+                      <h3 className="text-lg font-bold text-[#0A0A0A] mb-2 font-sans">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 6. HOW WE BUILD (PROCESS) */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                How We Build
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                A simple 6-step approach to launching your product on time.
+              </p>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+              {[
+                { step: '01', title: 'Discover', desc: 'Understanding your business requirements.' },
+                { step: '02', title: 'Plan', desc: 'Mapping user flows and software layout.' },
+                { step: '03', title: 'Design', desc: 'Crafting clean UI wireframes and screens.' },
+                { step: '04', title: 'Code', desc: 'Writing fast, secure, and modular code.' },
+                { step: '05', title: 'Launch', desc: 'Testing and zero-downtime deployment.' },
+                { step: '06', title: 'Support', desc: 'Ongoing updates and feature maintenance.' },
+              ].map((process, i) => (
+                <AnimatedSection key={i} delay={i * 0.08}>
+                  <div className="p-5 rounded-[20px] bg-[#FAFAFA] border border-gray-200/80 h-full flex flex-col justify-between hover:border-[#2563EB]/40 transition-colors">
+                    <span className="text-xs font-bold text-[#2563EB] mb-3 block">{process.step}</span>
+                    <div>
+                      <h4 className="font-bold text-sm text-[#0A0A0A] mb-1 font-sans">{process.title}</h4>
+                      <p className="text-xs text-[#6B7280] font-medium leading-relaxed">{process.desc}</p>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 7. OUR CORE VALUES */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+          <div className="max-w-[1300px] mx-auto">
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
+                <span>Our Culture</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                Our Guiding Principles
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                How we operate and collaborate with every client partner.
+              </p>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { title: "No Corporate Jargon", desc: "We speak plainly and explain complex technical details in simple language." },
+                { title: "Transparent Pricing", desc: "Clear scopes, fixed timelines, and no unexpected invoice surprises." },
+                { title: "Security by Default", desc: "SSL encryption, API authentication, and data protection baked into every product." },
+                { title: "Speed & Reliability", desc: "Every line of code is optimized so your software loads fast on all screens." }
+              ].map((val, i) => (
+                <AnimatedSection key={i} delay={i * 0.08}>
+                  <div className="p-6 rounded-[24px] bg-white border border-gray-200/80 h-full shadow-sm">
+                    <CheckCircle2 className="w-8 h-8 text-[#2563EB] mb-4" />
+                    <h3 className="font-bold text-lg text-[#0A0A0A] mb-2 font-sans">{val.title}</h3>
+                    <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{val.desc}</p>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 8. FAQ ACCORDION */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+          <div className="max-w-[900px] mx-auto">
+            <AnimatedSection className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                Everything you need to know about partnering with ProstoLabs.
+              </p>
+            </AnimatedSection>
+
+            <div className="space-y-4">
+              {[
+                { 
+                  q: "What types of products do you build?", 
+                  a: "We design and develop custom websites, complex web applications, cross-platform mobile apps, and custom AI tools tailored to your operational workflows." 
+                },
+                { 
+                  q: "How long does a typical project take?", 
+                  a: "Project timelines vary by scope. Standard websites and landing pages take 2 to 4 weeks, while complex web portals and software apps take 6 to 12 weeks." 
+                },
+                { 
+                  q: "Do you provide maintenance after launch?", 
+                  a: "Yes! We offer ongoing product care packages that cover security updates, 24/7 server monitoring, speed optimization, and feature updates." 
+                },
+                { 
+                  q: "How do we communicate during development?", 
+                  a: "You will have direct access to your lead developers and designers via Slack/WhatsApp, along with weekly video updates and live preview staging links." 
+                }
+              ].map((faq, idx) => (
+                <AnimatedSection key={idx} delay={idx * 0.05}>
+                  <FAQItem question={faq.q} answer={faq.a} />
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 9. FINAL CALL TO ACTION */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+          <div className="max-w-[1300px] mx-auto">
+            <AnimatedSection className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-[#2563EB] via-[#1D4ED8] to-[#1E3A8A] text-white text-center py-16 md:py-20 px-6 sm:px-12 shadow-xl">
+              <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight font-sans leading-tight">
+                  Let's build something great together.
+                </h2>
+                <p className="text-sm sm:text-base text-blue-100 font-medium leading-relaxed">
+                  Whether you need a custom web app, mobile software, or an AI integration, our team is ready to deliver.
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center gap-3.5 pt-2">
+                  <Link to="/start-project">
+                    <motion.button 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full sm:w-auto h-12 px-7 bg-white text-[#2563EB] rounded-2xl font-bold text-sm shadow-md hover:bg-blue-50 transition-colors cursor-pointer"
+                    >
+                      Start Your Project
+                    </motion.button>
+                  </Link>
+                  <Link to="/contact">
+                    <motion.button 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full sm:w-auto h-12 px-7 bg-white/10 text-white rounded-2xl font-bold text-sm border border-white/20 hover:bg-white/20 transition-colors cursor-pointer"
+                    >
+                      Contact Us
+                    </motion.button>
+                  </Link>
+                </div>
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+
+      </div>
     </>
   )
 }

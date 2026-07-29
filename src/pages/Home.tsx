@@ -8,9 +8,12 @@ import {
   Code, Palette, Bot, LineChart, Settings, Wrench,
   Briefcase, Zap, Layers, Heart, MessageSquare,
   ArrowRight, Activity, Target, 
-  ShoppingBag, Cloud, Database, Server, 
-  Sparkles, Layout, BarChart3, MousePointer2
+  ShoppingBag, Cloud,
+  Sparkles, BarChart3, ShieldCheck, Smartphone
 } from 'lucide-react'
+
+// --- SAAS EASING CURVE ---
+const easeSaaS = [0.16, 1, 0.3, 1] as const
 
 export const Home = () => {
   // --- SEO Schema Configuration ---
@@ -19,10 +22,10 @@ export const Home = () => {
     "@type": "Organization",
     "name": "ProstoLabs",
     "url": "https://prostolabs.com/",
-    "logo": "https://prostolabs.com/logo.png", // Update with your actual logo path
-    "description": "Premium Web Development, AI & Digital Solutions for modern enterprises.",
+    "logo": "https://prostolabs.com/logo.png",
+    "description": "ProstoLabs builds custom web applications, mobile apps, AI integrations, and digital products for growing businesses.",
     "sameAs": [
-      "https://www.linkedin.com/company/prostolabs", // Update with actual links
+      "https://www.linkedin.com/company/prostolabs",
       "https://twitter.com/prostolabs"
     ],
     "contactPoint": {
@@ -62,10 +65,10 @@ export const Home = () => {
   return (
     <>
       <SEO 
-        title="ProstoLabs | Premium Web Development, AI & Digital Solutions"
-        description="ProstoLabs builds premium websites, AI solutions, UI/UX experiences, and digital products that help businesses grow through modern technology."
+        title="ProstoLabs | Software Development, AI & Web Products"
+        description="ProstoLabs engineers custom web applications, mobile apps, AI automations, and UI/UX design to help businesses innovate and grow."
         path="/"
-        keywords="ProstoLabs, Web Development, AI Solutions, UI UX Design, Digital Marketing, Software Company, Technology Agency, India"
+        keywords="ProstoLabs, Custom Software Development, AI Automations, Web Applications, Mobile Apps, UI UX Design"
       />
       
       {/* Schema Markup Injection */}
@@ -75,337 +78,385 @@ export const Home = () => {
         </script>
       </Helmet>
 
-      <div className="overflow-hidden bg-background">
+      <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900">
         
+        {/* ========================================================================= */}
         {/* 1. HERO SECTION */}
+        {/* ========================================================================= */}
+        {/* ========================================================================= */}
+        {/* 1. HERO SECTION */}
+        {/* ========================================================================= */}
         <section 
           onMouseMove={handleMouseMove}
-          className="relative flex justify-center px-6 pt-6 md:pt-6 lg:pt-10 pb-12 md:pb-16 lg:pb-12 overflow-hidden"
+          className="relative flex justify-center px-6 pt-20 sm:pt-24 pb-12 md:pb-16 overflow-hidden"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-transparent pointer-events-none" />
+          {/* Subtle Ambient Background Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-[radial-gradient(ellipse_at_center,_rgba(37,99,235,0.06)_0%,_transparent_70%)] pointer-events-none" />
           
-          <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-12 lg:gap-8 items-start relative z-10">
+          <div className="max-w-[1300px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10 -mt-2 sm:-mt-4">
             
-            <div className="text-left mt-0 lg:mt-4">
+            {/* HERO TEXT COLUMN */}
+            <div className="text-left">
               <motion.div
-                initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-surface border border-gray-100 text-xs md:text-sm font-medium mb-5 md:mb-8"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-xs md:text-sm font-bold text-[#2563EB] mb-4 sm:mb-5 transform-gpu"
               >
-                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                Empowering Global Enterprises
+                <Sparkles size={14} className="text-[#2563EB]" />
+                <span>Web Apps, AI & Digital Solutions</span>
               </motion.div>
               
               <motion.h1 
-                initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="text-[44px] leading-[1.08] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter md:leading-[1.05] mb-4 md:mb-6"
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1, ease: easeSaaS }}
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-[#0A0A0A] mb-6 font-sans transform-gpu"
               >
-                Building Digital <br className="hidden md:block" />
-                Experiences That <br className="hidden md:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-accent">Drive Business.</span>
+                Modern Digital Products Built to <span className="text-[#2563EB]">Grow Your Business.</span>
               </motion.h1>
               
-              <motion.div
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+                className="text-base sm:text-lg md:text-xl text-[#6B7280] max-w-xl mb-8 leading-relaxed font-medium transform-gpu"
               >
-                {/* Mobile-optimized short paragraph */}
-                <p className="block md:hidden text-lg text-gray-500 mb-8 leading-relaxed">
-                  We build modern digital experiences that help businesses grow and innovate.
-                </p>
-                {/* Desktop premium paragraph */}
-                <p className="hidden md:block text-xl text-gray-500 max-w-xl mb-10 leading-relaxed">
-                  We design and build modern digital experiences that help businesses grow, innovate, and stay ahead in an ever-evolving digital world.
-                </p>
-              </motion.div>
+                We design and engineer high-performance web applications, mobile software, AI integrations, and custom platforms tailored to your business goals.
+              </motion.p>
               
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="flex flex-col sm:flex-row items-center gap-3 md:gap-4"
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="flex flex-col sm:flex-row items-center gap-3.5"
               >
-                <Link to="/start-project" className="w-full sm:w-auto"><Button size="lg" className="w-full">Start a Project</Button></Link>
-                <Link to="/services" className="w-full sm:w-auto"><Button variant="secondary" size="lg" className="w-full">Explore Services</Button></Link>
+                <Link to="/start-project" className="w-full sm:w-auto">
+                  <motion.button 
+                    whileHover={{ scale: 1.02, backgroundColor: "#1D4ED8" }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full sm:w-auto h-12 px-7 rounded-2xl bg-[#2563EB] text-white font-bold text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all"
+                  >
+                    <span>Start Your Project</span>
+                    <ArrowRight size={16} />
+                  </motion.button>
+                </Link>
+                <Link to="/services" className="w-full sm:w-auto">
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full sm:w-auto h-12 px-7 rounded-2xl bg-white border border-gray-200 text-[#0A0A0A] font-bold text-sm hover:bg-gray-50 transition-all cursor-pointer flex items-center justify-center"
+                  >
+                    Explore Solutions
+                  </motion.button>
+                </Link>
               </motion.div>
             </div>
 
-            {/* Illustration now visible on mobile (removed hidden sm:flex), scaled down height */}
-            <div className="relative w-full h-[260px] sm:h-[400px] md:h-[500px] lg:h-[480px] flex items-center justify-center perspective-[1200px] mt-2 md:mt-10 lg:mt-0">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-primary/5 blur-3xl rounded-full scale-75 opacity-70" />
+            {/* HERO INTERACTIVE ILLUSTRATION */}
+            <div className="relative w-full h-[300px] sm:h-[420px] md:h-[480px] flex items-center justify-center perspective-[1200px] mt-4 lg:mt-0">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#2563EB]/15 via-blue-400/10 to-cyan-400/5 blur-3xl rounded-full scale-90 opacity-70" />
               
               <motion.div
                 style={{ rotateX, rotateY, x: translateXBase, y: translateYBase }}
-                initial={{ opacity: 0, scale: 0.9, filter: 'blur(15px)' }}
-                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-10 w-full max-w-[500px] aspect-[4/3] bg-white/70 backdrop-blur-2xl border border-white rounded-2xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.1)] flex overflow-hidden transform-style-3d"
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: easeSaaS }}
+                className="relative z-10 w-full max-w-[500px] aspect-[4/3] bg-[#090D16] border border-gray-800 rounded-[24px] shadow-2xl p-2.5 sm:p-4 flex flex-col justify-between overflow-hidden transform-gpu"
               >
-                {/* Dashboard Widget Sidebar - Hidden on mobile for cleaner look */}
-                <div className="hidden md:flex w-48 bg-surface/50 border-r border-gray-100 flex-col items-start p-4 gap-6">
-                  <div className="w-full h-8 rounded-lg bg-primary/5 flex items-center justify-start px-2 gap-2">
-                    <Layout className="w-4 h-4 text-primary" />
-                    <span className="text-xs font-semibold">Dashboard</span>
-                  </div>
-                  <div className="w-full h-8 rounded-lg flex items-center justify-start px-2 gap-2 opacity-50">
-                    <Database className="w-4 h-4 text-primary" />
-                    <span className="text-xs font-semibold">Database</span>
-                  </div>
-                  <div className="w-full h-8 rounded-lg flex items-center justify-start px-2 gap-2 opacity-50">
-                    <Server className="w-4 h-4 text-primary" />
-                    <span className="text-xs font-semibold">Server</span>
-                  </div>
-                </div>
-
-                {/* Main Code Editor Window */}
-                <div className="flex-1 p-4 md:p-6 flex flex-col gap-4 md:gap-6 bg-white/40">
-                  <div className="flex justify-between items-center w-full">
-                    <div className="w-20 md:w-24 h-3 md:h-4 bg-gray-200 rounded-full" />
-                    <div className="w-6 h-6 md:w-8 md:h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                      <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-500 rounded-full animate-pulse" />
+                <div className="w-full h-full bg-[#0F172A] rounded-2xl p-3 sm:p-5 flex flex-col justify-between border border-white/10 relative overflow-hidden">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono text-gray-300 bg-white/5 px-2.5 py-1 rounded-md border border-white/5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>prostolabs.com</span>
                     </div>
                   </div>
 
-                  <div className="bg-[#111111] rounded-xl p-3 md:p-4 shadow-inner text-[9px] sm:text-[10px] md:text-xs font-mono leading-relaxed overflow-hidden">
-                    <div className="flex gap-1.5 mb-2 md:mb-3">
-                      <div className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full bg-gray-700" />
-                      <div className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full bg-gray-700" />
-                      <div className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full bg-gray-700" />
-                    </div>
-                    <span className="text-[#FF7B72]">export const</span> <span className="text-[#79C0FF]">SystemArchitecture</span> <span className="text-white">=</span> <span className="text-[#D2A8FF]">()</span> <span className="text-[#FF7B72]">{`=>`}</span> <span className="text-[#D2A8FF]">{`{`}</span><br/>
-                    &nbsp;&nbsp;<span className="text-[#FF7B72]">return</span> <span className="text-[#8B949E]">(</span><br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-[#7EE787]">&lt;EnterpriseScale</span><br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-[#79C0FF]">users</span>=<span className="text-[#A5D6FF]">"1,000,000+"</span><br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-[#79C0FF]">latency</span>=<span className="text-[#A5D6FF]">"&lt;10ms"</span><br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-[#7EE787]">/&gt;</span><br/>
-                    &nbsp;&nbsp;<span className="text-[#8B949E]">)</span><br/>
-                    <span className="text-[#D2A8FF]">{`}`}</span>
+                  <div className="space-y-3 my-auto">
+                    <div className="w-3/4 h-3 bg-gradient-to-r from-blue-400 to-indigo-300 rounded-full" />
+                    <div className="w-1/2 h-2.5 bg-white/40 rounded-full" />
+                    <div className="w-5/6 h-2.5 bg-white/20 rounded-full" />
                   </div>
 
-                  <div className="flex gap-3 md:gap-4 mt-auto">
-                    <div className="flex-1 h-14 md:h-20 bg-surface rounded-xl border border-gray-100 flex items-end p-1.5 md:p-2 gap-1 md:gap-1.5">
-                      {[40, 70, 45, 90, 65, 80].map((h, i) => (
-                        <motion.div 
-                          key={i} 
-                          initial={{ height: 0 }}
-                          animate={{ height: `${h}%` }}
-                          transition={{ duration: 1, delay: 0.8 + (i * 0.1) }}
-                          className="flex-1 bg-primary/10 rounded-t-sm"
-                        />
-                      ))}
+                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/10">
+                    <div className="h-10 bg-white/5 rounded-lg p-2 flex items-center gap-2">
+                      <div className="w-3 h-3 rounded bg-blue-500/50" />
+                      <div className="w-10 h-1.5 bg-white/40 rounded" />
                     </div>
-                    <div className="w-14 h-14 md:w-20 md:h-20 bg-accent/10 rounded-xl border border-accent/20 flex items-center justify-center">
-                      <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-accent" />
+                    <div className="h-10 bg-white/5 rounded-lg p-2 flex items-center gap-2">
+                      <div className="w-3 h-3 rounded bg-emerald-500/50" />
+                      <div className="w-10 h-1.5 bg-white/40 rounded" />
+                    </div>
+                    <div className="h-10 bg-white/5 rounded-lg p-2 flex items-center gap-2">
+                      <div className="w-3 h-3 rounded bg-amber-500/50" />
+                      <div className="w-10 h-1.5 bg-white/40 rounded" />
                     </div>
                   </div>
                 </div>
               </motion.div>
 
-              {/* Floating Cards - Hidden on mobile to reduce clutter */}
+              {/* Floating Performance Pill */}
               <motion.div
                 style={{ x: translateXFloat1, y: translateYFloat1 }}
-                initial={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
-                className="hidden md:flex absolute top-10 right-0 lg:-right-8 z-20 bg-white p-4 rounded-xl shadow-2xl border border-gray-100 items-center gap-4"
+                initial={{ opacity: 0, y: -15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="hidden sm:flex absolute top-6 right-0 lg:-right-6 z-20 bg-white p-3.5 rounded-2xl shadow-xl border border-gray-200/90 items-center gap-3.5"
               >
-                <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-green-500" />
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                  <BarChart3 className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 font-medium">Conversion Rate</p>
-                  <p className="text-lg font-bold text-primary">+42.8%</p>
+                  <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Performance Score</p>
+                  <p className="text-base font-extrabold text-[#0A0A0A]">99 / 100</p>
                 </div>
               </motion.div>
 
+              {/* Floating AI Pill */}
               <motion.div
                 style={{ x: translateXFloat2, y: translateYFloat2 }}
-                initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 1.2, delay: 1, ease: "easeOut" }}
-                className="hidden md:flex absolute bottom-16 left-0 lg:-left-12 z-30 bg-primary text-white p-4 rounded-xl shadow-2xl border border-gray-800 items-center gap-3"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.7 }}
+                className="hidden sm:flex absolute bottom-8 left-0 lg:-left-6 z-30 bg-[#2563EB] text-white p-3.5 rounded-2xl shadow-xl items-center gap-3"
               >
-                <Bot className="w-5 h-5 text-accent" />
+                <Bot className="w-5 h-5 text-blue-200" />
                 <div>
-                  <p className="text-sm font-semibold">AI Workflow Active</p>
-                  <p className="text-xs text-gray-400">Processing 12k tasks/s</p>
+                  <p className="text-xs font-bold">AI Automations</p>
+                  <p className="text-[10px] text-blue-100">Live Workflow Active</p>
                 </div>
               </motion.div>
-
-              <motion.div
-                style={{ x: translateXBase, y: translateYBase }}
-                animate={{ x: [0, 150, 50, 0], y: [0, -100, 20, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                className="hidden md:block absolute top-1/2 left-1/3 z-40 text-black pointer-events-none drop-shadow-md"
-              >
-                <MousePointer2 className="w-6 h-6 fill-white" />
-              </motion.div>
             </div>
+
           </div>
         </section>
 
-        {/* 2. ABOUT PROSTOLABS */}
-        <section className="pt-12 md:pt-16 lg:pt-12 pb-16 md:pb-24 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
+
+        {/* ========================================================================= */}
+        {/* 2. ABOUT PROSTOLABS SECTION */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-white border-y border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              
               <AnimatedSection>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 md:mb-8 leading-tight">
-                  Building technology that drives  <span className="text-accent">businesses grow.</span>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-4">
+                  <span>About ProstoLabs</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-6 leading-tight font-sans">
+                  We build digital products that <span className="text-[#2563EB]">scale your business.</span>
                 </h2>
-                <p className="text-lg md:text-xl text-gray-500 mb-8 leading-relaxed">
-                  ProstoLabs helps businesses build modern digital products through design, engineering, AI, and innovation. We create scalable solutions that deliver real business value.
+                <p className="text-base sm:text-lg text-[#6B7280] mb-8 leading-relaxed font-medium">
+                  From custom web applications and mobile software to AI automations and websites, we create technology built around your exact operational goals.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
-                  <div>
-                    <h4 className="font-bold text-lg mb-2 flex items-center gap-2"><Target className="w-5 h-5 text-accent"/> Our Mission</h4>
-                    <p className="text-gray-500 text-sm leading-relaxed">To build innovative digital solutions that help businesses grow.</p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200/80">
+                    <h3 className="font-bold text-base text-[#0A0A0A] mb-1.5 flex items-center gap-2">
+                      <Target className="w-5 h-5 text-[#2563EB]" /> Our Mission
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">
+                      Deliver reliable software and digital tools that increase efficiency and revenue.
+                    </p>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-lg mb-2 flex items-center gap-2"><Activity className="w-5 h-5 text-accent"/> Our Vision</h4>
-                    <p className="text-gray-500 text-sm leading-relaxed"> To become a trusted global technology company known for quality, innovation, and impact.</p>
+                  
+                  <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200/80">
+                    <h3 className="font-bold text-base text-[#0A0A0A] mb-1.5 flex items-center gap-2">
+                      <Activity className="w-5 h-5 text-[#2563EB]" /> Our Vision
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">
+                      Be a premier global technology partner for ambitious, forward-thinking businesses.
+                    </p>
                   </div>
                 </div>
               </AnimatedSection>
+
               <AnimatedSection delay={0.2}>
-                <div className="relative aspect-square rounded-3xl overflow-hidden bg-surface border border-gray-100 flex items-center justify-center group shadow-xl">
+                <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden bg-gray-100 border border-gray-200/90 shadow-lg group">
                   <img 
                     src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
-                    alt="ProstoLabs Engineering Team" 
+                    alt="ProstoLabs Team" 
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
               </AnimatedSection>
+
             </div>
           </div>
         </section>
 
-        {/* 3. SERVICES (6 ITEMS) */}
-        <section className="py-16 md:py-24 px-6 bg-primary text-white">
-          <div className="max-w-7xl mx-auto">
-            <AnimatedSection className="mb-12 md:mb-20 md:flex justify-between items-end">
-              <div className="max-w-2xl">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 md:mb-6">Expertise built on precision.</h2>
-                <p className="text-lg md:text-xl text-gray-400">End-to-end capabilities tailored for modern enterprises.</p>
+
+        {/* ========================================================================= */}
+        {/* 3. SERVICES SECTION (6 BENTO CARDS - FULL PRODUCT SCOPE) */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
+                <span>Core Capabilities</span>
               </div>
-              <Link to="/services" className="hidden md:inline-flex items-center gap-2 text-accent hover:text-white transition-colors font-medium">
-                View All Services <ArrowRight className="w-5 h-5" />
-              </Link>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                Technology solutions for modern growth.
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                End-to-end digital engineering tailored to your industry.
+              </p>
             </AnimatedSection>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { title: 'Website Development', icon: Code, desc: 'Production-ready, scalable architectures utilizing modern React frameworks.' },
-                { title: 'UI/UX Design', icon: Palette, desc: 'Interfaces that blend utility with elegance, focused entirely on user conversion.' },
-                { title: 'AI & Machine Learning', icon: Bot, desc: 'Custom LLMs and predictive analytics tailored to your proprietary data.' },
-                { title: 'Digital Marketing', icon: LineChart, desc: 'Data-driven growth strategies, SEO, and technical performance optimization.' },
-                { title: 'Business Automation', icon: Settings, desc: 'Algorithmic workflows that eliminate manual operational bottlenecks.' },
-                { title: 'Website Maintenance', icon: Wrench, desc: 'Proactive monitoring, security patching, and continuous optimization for flawless uptime.' },
+                { title: 'Web Applications & Portals', icon: Code, desc: 'Custom web portals, SaaS platforms, and enterprise dashboards built for speed.' },
+                { title: 'Mobile App Development', icon: Smartphone, desc: 'Cross-platform iOS and Android mobile applications with smooth native performance.' },
+                { title: 'AI & Machine Learning', icon: Bot, desc: 'Custom AI chatbots, intelligent workflows, and data automations for your business.' },
+                { title: 'UI/UX & Product Design', icon: Palette, desc: 'Intuitive visual layouts designed to guide users seamlessly from start to finish.' },
+                { title: 'SEO & Performance', icon: LineChart, desc: 'Technical speed optimization and search configuration to maximize discoverability.' },
+                { title: 'Maintenance & Product Care', icon: Wrench, desc: '24/7 server monitoring, security updates, and continuous feature updates.' },
               ].map((service, i) => (
-                <AnimatedSection key={service.title} delay={i * 0.1}>
-                  <div className="group p-8 md:p-10 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-500 cursor-pointer h-full">
-                    <service.icon className="w-8 h-8 md:w-10 md:h-10 text-accent mb-6 md:mb-8 transition-transform duration-500 group-hover:-translate-y-2" />
-                    <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{service.title}</h3>
-                    <p className="text-sm md:text-base text-gray-400 leading-relaxed">{service.desc}</p>
+                <AnimatedSection key={service.title} delay={i * 0.08}>
+                  <div className="group p-8 rounded-[28px] bg-white border border-gray-200/80 hover:border-[#2563EB]/40 hover:shadow-xl transition-all duration-300 h-full flex flex-col justify-between">
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <service.icon size={22} />
+                      </div>
+                      <h3 className="text-xl font-bold text-[#0A0A0A] mb-2.5 font-sans">{service.title}</h3>
+                      <p className="text-sm text-[#6B7280] leading-relaxed font-medium">{service.desc}</p>
+                    </div>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
-            
-            {/* Mobile View All Services Button */}
-            <AnimatedSection delay={0.2} className="mt-8 block md:hidden">
-               <Link to="/services">
-                 <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
-                   View All Services
-                 </Button>
-               </Link>
-            </AnimatedSection>
+
+            <div className="mt-10 text-center">
+              <Link to="/services">
+                <Button variant="outline" className="border-gray-300 text-[#0A0A0A] hover:bg-gray-100">
+                  Explore All Capabilities <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
+
           </div>
         </section>
 
-        {/* 4. WHY CHOOSE PROSTOLABS */}
-        <section className="py-16 md:py-24 px-6 bg-surface/50">
-          <div className="max-w-7xl mx-auto">
-            <AnimatedSection className="text-left md:text-center max-w-3xl mx-auto mb-12 md:mb-20">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 md:mb-6">The ProstoLabs Advantage</h2>
-              <p className="text-lg md:text-xl text-gray-500">We don't just take orders. We act as your strategic technical partner.</p>
+
+        {/* ========================================================================= */}
+        {/* 4. WHY CHOOSE PROSTOLABS SECTION */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                Why companies partner with ProstoLabs
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                We handle design, code, security, and cloud infrastructure so you can scale.
+              </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 md:gap-y-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
-                { icon: Briefcase, title: 'Business-First Approach', text: 'We analyze your business model before writing a single line of code to ensure positive ROI.' },
-                { icon: Layers, title: 'Modern Technology Stack', text: 'We exclusively use bleeding-edge, production-tested frameworks to guarantee longevity.' },
-                { icon: Cloud, title: 'Scalable Architecture', text: 'Infrastructure designed to handle your growth from 100 to 1,000,000 active users.' },
-                { icon: Zap, title: 'Performance Focused', text: 'Milliseconds matter. We optimize for perfect Lighthouse scores and instantaneous load times.' },
-                { icon: Heart, title: 'Long-Term Partnership', text: 'We maintain, scale, and iterate on your product long after the initial launch date.' },
-                { icon: MessageSquare, title: 'Transparent Communication', text: 'Direct access to your lead engineers and designers. No account manager middle-men.' },
+                { icon: Briefcase, title: 'Value-Driven Engineering', text: 'Every product feature is built with clear ROI and user conversion in mind.' },
+                { icon: Zap, title: 'High-Speed Architecture', text: 'Optimized code structures ensuring near-instantaneous load times on all devices.' },
+                { icon: Layers, title: 'Scalable Cloud Setup', text: 'Built to support growth effortlessly from early adopters to thousands of active users.' },
+                { icon: MessageSquare, title: 'Direct Developer Access', text: 'Work directly with your engineers and designers without agency middlemen.' },
+                { icon: ShieldCheck, title: 'Enterprise Security', text: 'Built-in SSL encryption, secure API integrations, and data protection standards.' },
+                { icon: Heart, title: 'Long-Term Partnership', text: 'We maintain, scale, and update your product long after the initial deployment.' },
               ].map((item, i) => (
-                <AnimatedSection key={i} delay={i * 0.1} className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-background border border-gray-100 shadow-sm flex items-center justify-center">
-                    <item.icon className="w-6 h-6 text-primary" />
+                <AnimatedSection key={i} delay={i * 0.08} className="flex gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
+                    <item.icon size={22} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg mb-1 md:mb-2">{item.title}</h3>
-                    <p className="text-sm md:text-base text-gray-500 leading-relaxed">{item.text}</p>
+                    <h3 className="font-bold text-lg text-[#0A0A0A] mb-1 font-sans">{item.title}</h3>
+                    <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{item.text}</p>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
+
           </div>
         </section>
 
-        {/* 5. OUR PROCESS */}
-        <section className="py-16 md:py-24 px-6">
-          <div className="max-w-7xl mx-auto">
-            <AnimatedSection className="mb-12 md:mb-20">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 md:mb-6">Engineering Lifecycle</h2>
-              <p className="text-lg md:text-xl text-gray-500">A meticulously refined process ensuring flawless delivery.</p>
+
+        {/* ========================================================================= */}
+        {/* 5. OUR PROCESS SECTION */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="mb-12 sm:mb-16 text-center max-w-2xl mx-auto">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                How we build your product
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                A simple, transparent process from initial concept to launch.
+              </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { step: '01', title: 'Discover', desc: 'Requirements gathering and feasibility analysis.' },
-                { step: '02', title: 'Strategy', desc: 'Architecture planning and technical documentation.' },
-                { step: '03', title: 'Design', desc: 'Wireframing, prototyping, and high-fidelity UI.' },
-                { step: '04', title: 'Development', desc: 'Agile sprints with clean, modular coding.' },
-                { step: '05', title: 'Testing', desc: 'Rigorous QA, security, and performance audits.' },
-                { step: '06', title: 'Launch', desc: 'Zero-downtime deployment and CI/CD setup.' },
-                { step: '07', title: 'Support', desc: 'Ongoing maintenance, scaling, and feature iterations.' },
+                { step: '01', title: 'Discover', desc: 'We review your goals, product requirements, and target users.' },
+                { step: '02', title: 'Plan', desc: 'We map out the application architecture and user flows.' },
+                { step: '03', title: 'Design', desc: 'We build visual prototypes and UI screens for your review.' },
+                { step: '04', title: 'Build', desc: 'We code your application using modern, high-speed frameworks.' },
+                { step: '05', title: 'Test', desc: 'We inspect performance, cross-device usability, and security.' },
+                { step: '06', title: 'Deploy', desc: 'We launch your product live to cloud servers and domain endpoints.' },
+                { step: '07', title: 'Support', desc: 'We maintain updates, monitor servers, and roll out new features.' },
               ].map((phase, i) => (
-                <AnimatedSection key={phase.step} delay={i * 0.1}>
-                  <div className="pt-6 md:pt-8 border-t border-gray-200 relative group">
-                    <div className="absolute top-0 left-0 w-0 h-[2px] bg-primary transition-all duration-500 group-hover:w-full" />
-                    <span className="text-xs md:text-sm font-bold text-accent mb-3 md:mb-4 block">{phase.step}</span>
-                    <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">{phase.title}</h3>
-                    <p className="text-sm md:text-base text-gray-500">{phase.desc}</p>
+                <AnimatedSection key={phase.step} delay={i * 0.08}>
+                  <div className="p-6 rounded-[24px] bg-white border border-gray-200/80 h-full relative group">
+                    <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-2 block">{phase.step}</span>
+                    <h3 className="text-xl font-bold text-[#0A0A0A] mb-2 font-sans">{phase.title}</h3>
+                    <p className="text-xs sm:text-sm text-[#6B7280] font-medium leading-relaxed">{phase.desc}</p>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
+
           </div>
         </section>
 
-        {/* 6. TECHNOLOGIES & INDUSTRIES */}
-        <section className="py-16 md:py-24 px-6 bg-surface overflow-hidden">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
+
+        {/* ========================================================================= */}
+        {/* 6. TECHNOLOGIES & INDUSTRIES SECTION */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            
+            {/* TECHNOLOGIES WE MASTER */}
             <AnimatedSection>
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-10">Technologies We Master</h2>
-              <div className="flex flex-wrap gap-2 md:gap-3">
-                {['React', 'TypeScript', 'Node.js', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'Python', 'OpenAI API', 'GraphQL', 'PostgreSQL', 'Figma', 'AWS'].map((tech) => (
-                  <span key={tech} className="px-4 py-2 md:px-5 md:py-3 rounded-full bg-background border border-gray-100 text-xs md:text-sm font-medium hover:border-accent hover:text-accent transition-colors cursor-default">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A] mb-6 sm:mb-8 font-sans">
+                Technologies We Master
+              </h2>
+              <div className="flex flex-wrap gap-2.5 sm:gap-3">
+                {[
+                  'React', 'TypeScript', 'Node.js', 'Next.js', 'Tailwind CSS', 
+                  'Framer Motion', 'Python', 'OpenAI API', 'GraphQL', 
+                  'PostgreSQL', 'Figma', 'AWS'
+                ].map((tech) => (
+                  <span 
+                    key={tech} 
+                    className="px-4 py-2.5 rounded-full bg-gray-50 border border-gray-200/80 text-xs sm:text-sm font-semibold text-[#0A0A0A] hover:border-[#2563EB] hover:text-[#2563EB] hover:bg-blue-50/50 transition-all duration-200 cursor-default select-none"
+                  >
                     {tech}
                   </span>
                 ))}
               </div>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.2}>
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-10">Industries We Serve</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
+            {/* INDUSTRIES WE SERVE */}
+            <AnimatedSection delay={0.15}>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A] mb-6 sm:mb-8 font-sans">
+                Industries We Serve
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4">
                 {[
                   { name: 'Healthcare', icon: Heart },
                   { name: 'SaaS', icon: Cloud },
@@ -414,35 +465,52 @@ export const Home = () => {
                   { name: 'Startups', icon: Zap },
                   { name: 'Education', icon: Target },
                 ].map((industry) => (
-                  <div key={industry.name} className="p-4 md:p-6 rounded-2xl bg-background border border-gray-100 text-center hover:bg-primary hover:text-white transition-all duration-300 group">
-                    <industry.icon className="w-6 h-6 md:w-8 md:h-8 mx-auto mb-3 md:mb-4 text-gray-400 group-hover:text-accent transition-colors" />
-                    <span className="font-semibold text-xs md:text-sm">{industry.name}</span>
+                  <div 
+                    key={industry.name} 
+                    className="p-5 sm:p-6 rounded-[20px] bg-white border border-gray-200/80 text-center hover:border-[#2563EB]/40 hover:shadow-lg transition-all duration-300 group cursor-default"
+                  >
+                    <industry.icon className="w-7 h-7 sm:w-8 sm:h-8 mx-auto mb-3 text-gray-400 group-hover:text-[#2563EB] transition-colors" />
+                    <span className="font-bold text-xs sm:text-sm text-[#0A0A0A] font-sans">{industry.name}</span>
                   </div>
                 ))}
               </div>
             </AnimatedSection>
+
           </div>
         </section>
 
-        {/* 8. FINAL CTA (With Mobile Padding Fixes) */}
+
+        {/* ========================================================================= */}
+        {/* 7. FINAL CTA BANNER */}
+        {/* ========================================================================= */}
         <section className="py-16 md:py-24 px-6">
-          <div className="max-w-5xl mx-auto">
-            <AnimatedSection className="relative rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-primary text-white text-center py-16 md:py-24 px-6 md:px-12">
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjEpIi8+PC9zdmc+')] opacity-50 mix-blend-overlay" />
-              
-              <div className="relative z-10">
-                <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 md:mb-8">
-                  Let's Build Something <br className="hidden sm:block"/> <span className="text-accent">Extraordinary.</span>
+          <div className="max-w-[1300px] mx-auto">
+            <AnimatedSection className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-[#2563EB] via-[#1D4ED8] to-[#1E3A8A] text-white text-center py-16 md:py-20 px-6 sm:px-12 shadow-xl">
+              <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight font-sans leading-tight">
+                  Ready to build your next digital product?
                 </h2>
-                <p className="text-lg sm:text-xl text-gray-400 mb-10 md:mb-12 max-w-2xl mx-auto">
-                  Ready to transform your digital presence? Partner with ProstoLabs to architect the future of your business.
+                <p className="text-sm sm:text-base text-blue-100 font-medium leading-relaxed">
+                  Partner with ProstoLabs to design and deploy custom software, web apps, or AI tools. Get a clear project proposal today.
                 </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-center gap-3.5 pt-2">
                   <Link to="/start-project">
-                    <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">Start Your Project</Button>
+                    <motion.button 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full sm:w-auto h-12 px-7 bg-white text-[#2563EB] rounded-2xl font-bold text-sm shadow-md hover:bg-blue-50 transition-colors cursor-pointer"
+                    >
+                      Start Your Project
+                    </motion.button>
                   </Link>
                   <Link to="/contact">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto text-white border-white/20 hover:bg-white/10 hover:border-white">Contact Sales</Button>
+                    <motion.button 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full sm:w-auto h-12 px-7 bg-white/10 text-white rounded-2xl font-bold text-sm border border-white/20 hover:bg-white/20 transition-colors cursor-pointer"
+                    >
+                      Talk to Our Team
+                    </motion.button>
                   </Link>
                 </div>
               </div>
