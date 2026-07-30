@@ -6,7 +6,7 @@ import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { Helmet } from 'react-helmet-async'
 import { 
   Code, Palette, Bot, LineChart, Wrench,
-  Briefcase, Zap, Layers, Heart, MessageSquare,
+  Briefcase, Zap, Layers, Heart, MessageSquare, Search, Rocket, Headphones,
   ArrowRight, Activity, Target, 
   ShoppingBag, Cloud,
   Sparkles, BarChart3, ShieldCheck, Smartphone
@@ -81,10 +81,7 @@ export const Home = () => {
       <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900">
         
         {/* ========================================================================= */}
-        {/* 1. HERO SECTION */}
-        {/* ========================================================================= */}
-        {/* ========================================================================= */}
-        {/* 1. HERO SECTION */}
+        {/* 1. HERO SECTION (UNTOUCHED - IMAGE PRESERVED) */}
         {/* ========================================================================= */}
         <section 
           onMouseMove={handleMouseMove}
@@ -238,7 +235,7 @@ export const Home = () => {
 
 
         {/* ========================================================================= */}
-        {/* 2. ABOUT PROSTOLABS SECTION */}
+        {/* 2. ABOUT PROSTOLABS SECTION (TEAM IMAGE HIDDEN ON MOBILE USING hidden md:block) */}
         {/* ========================================================================= */}
         <section className="py-16 md:py-24 px-6 bg-white border-y border-gray-200/80">
           <div className="max-w-[1300px] mx-auto">
@@ -276,11 +273,12 @@ export const Home = () => {
                 </div>
               </AnimatedSection>
 
-              <AnimatedSection delay={0.2}>
+              {/* TEAM IMAGE: Hidden on mobile (<768px) with 'hidden md:block', visible on tablet and desktop */}
+              <AnimatedSection delay={0.2} className="hidden md:block">
                 <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden bg-gray-100 border border-gray-200/90 shadow-lg group">
                   <img 
                     src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
-                    alt="ProstoLabs Team" 
+                    alt="ProstoLabs Team working together" 
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
@@ -293,7 +291,7 @@ export const Home = () => {
 
 
         {/* ========================================================================= */}
-        {/* 3. SERVICES SECTION (6 BENTO CARDS - FULL PRODUCT SCOPE) */}
+        {/* 3. SERVICES SECTION */}
         {/* ========================================================================= */}
         <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
           <div className="max-w-[1300px] mx-auto">
@@ -385,41 +383,68 @@ export const Home = () => {
         </section>
 
 
+       {/* ========================================================================= */}
+        {/* 5. OUR PROCESS SECTION (PREMIUM ROADMAP) */}
         {/* ========================================================================= */}
-        {/* 5. OUR PROCESS SECTION */}
-        {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
-          <div className="max-w-[1300px] mx-auto">
+        <section className="py-20 md:py-32 px-6 bg-[#FAFAFA] relative overflow-hidden" id="process">
+          {/* Subtle Grid Background */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+               style={{ backgroundImage: 'radial-gradient(#2563EB 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+          
+          <div className="max-w-[1300px] mx-auto relative">
             
-            <AnimatedSection className="mb-12 sm:mb-16 text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
-                How we build your product
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-24">
+              <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-4">
+                <span>The Roadmap</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-4 font-sans">
+                A transparent path to launch.
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
-                A simple, transparent process from initial concept to launch.
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium px-4">
+                We follow a rigorous, high-speed engineering process to turn your concept into a market-ready product.
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4 relative">
               {[
-                { step: '01', title: 'Discover', desc: 'We review your goals, product requirements, and target users.' },
-                { step: '02', title: 'Plan', desc: 'We map out the application architecture and user flows.' },
-                { step: '03', title: 'Design', desc: 'We build visual prototypes and UI screens for your review.' },
-                { step: '04', title: 'Build', desc: 'We code your application using modern, high-speed frameworks.' },
-                { step: '05', title: 'Test', desc: 'We inspect performance, cross-device usability, and security.' },
-                { step: '06', title: 'Deploy', desc: 'We launch your product live to cloud servers and domain endpoints.' },
-                { step: '07', title: 'Support', desc: 'We maintain updates, monitor servers, and roll out new features.' },
-              ].map((phase, i) => (
-                <AnimatedSection key={phase.step} delay={i * 0.08}>
-                  <div className="p-6 rounded-[24px] bg-white border border-gray-200/80 h-full relative group">
-                    <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-2 block">{phase.step}</span>
-                    <h3 className="text-xl font-bold text-[#0A0A0A] mb-2 font-sans">{phase.title}</h3>
-                    <p className="text-xs sm:text-sm text-[#6B7280] font-medium leading-relaxed">{phase.desc}</p>
-                  </div>
-                </AnimatedSection>
-              ))}
+                { step: '01', title: 'Discover', desc: 'Requirements analysis and goal setting.', icon: Search },
+                { step: '02', title: 'Plan', desc: 'Architecture mapping and flow design.', icon: Target },
+                { step: '03', title: 'Design', desc: 'UI/UX prototyping and visual drafting.', icon: Palette },
+                { step: '04', title: 'Build', desc: 'High-performance engineering.', icon: Code },
+                { step: '05', title: 'Test', desc: 'QA, performance, and security audits.', icon: ShieldCheck },
+                { step: '06', title: 'Deploy', desc: 'Cloud infrastructure launch.', icon: Rocket },
+                { step: '07', title: 'Support', desc: 'Maintenance and active scaling.', icon: Headphones },
+              ].map((phase, i) => {
+                const IconComp = phase.icon
+                return (
+                  <AnimatedSection key={phase.step} delay={i * 0.08} className="relative">
+                    <motion.div 
+                      whileHover={{ y: -8 }}
+                      className="group p-6 rounded-3xl bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#2563EB]/30 transition-all duration-300 h-full flex flex-col"
+                    >
+                      <div className="flex flex-col items-center text-center space-y-4">
+                        <div className="relative">
+                          <div className="w-12 h-12 rounded-full bg-[#2563EB] text-white flex items-center justify-center font-black text-sm shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+                            {phase.step}
+                          </div>
+                        </div>
+                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
+                          <IconComp size={20} />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-black text-[#0A0A0A] mb-2 font-sans">{phase.title}</h3>
+                          <p className="text-[11px] sm:text-xs text-[#6B7280] font-medium leading-relaxed">{phase.desc}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                    {/* Desktop Connector Line */}
+                    {i < 6 && (
+                      <div className="hidden lg:block absolute top-[90px] -right-4 w-8 h-px bg-gray-200 z-0" />
+                    )}
+                  </AnimatedSection>
+                )
+              })}
             </div>
-
           </div>
         </section>
 
