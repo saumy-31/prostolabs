@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     
     /* Add this line right here */
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
 
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -21,6 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["src"],
+  "include": ["src", "scripts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
