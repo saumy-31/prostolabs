@@ -86,9 +86,13 @@ export const Footer = () => {
               <h4 className="font-bold text-xs uppercase tracking-wider text-[#0A0A0A] mb-4 font-sans">Explore</h4>
               <ul className="space-y-3 text-xs sm:text-sm font-medium">
                 <li>
+                  <Link to="/resources" className="text-[#6B7280] hover:text-[#2563EB] transition-colors">
+                    Resources
+                  </Link>
+                </li>
+                <li>
                   <Link to="/flysava" className="inline-flex items-center gap-1.5 text-[#6B7280] hover:text-[#2563EB] transition-colors">
                     <span>FlySava</span>
-  
                   </Link>
                 </li>
               </ul>

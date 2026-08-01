@@ -14,7 +14,9 @@ import { ThankYou } from './pages/ThankYou'
 import { FlySava } from './pages/FlySava'
 import { PrivacyPolicy } from './pages/PrivacyPolicy'
 import { TermsConditions } from './pages/TermsConditions'
-import { NotFound } from './pages/NotFound' // <-- We will create this next
+import { Resources } from './pages/Resources'
+import { ResourceArticle } from './pages/ResourceArticle'
+import { NotFound } from './pages/NotFound'
 
 export default function App() {
   return (
@@ -23,7 +25,7 @@ export default function App() {
         <ScrollToTop />
         <div className="min-h-screen flex flex-col relative bg-background">
           <Navbar />
-          <main className="flex-grow ">
+          <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -35,6 +37,11 @@ export default function App() {
               <Route path="/flysava" element={<FlySava />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsConditions />} />
+              
+              {/* Resources Knowledge Hub Routes */}
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/resources/:slug" element={<ResourceArticle />} />
+
               {/* 404 Route */}
               <Route path="*" element={<NotFound />} />
             </Routes>

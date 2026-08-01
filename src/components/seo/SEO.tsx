@@ -13,16 +13,18 @@ export const SEO = ({ title, description, path, keywords }: SEOProps) => {
   const defaultImage = `${siteUrl}/logo.png`
 
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "ProstoLabs",
-    "url": siteUrl,
-    "logo": defaultImage,
-    "email": "hello@prostolabs.com",
-    "sameAs": [
-      "https://instagram.com/prostolabs"
-    ]
-  }
+ "@context":"https://schema.org",
+ "@type":"Organization",
+ "name":"ProstoLabs",
+ "url":"https://prostolabs.com",
+ "logo":"https://prostolabs.com/logo.png",
+ "email":"hello@prostolabs.com",
+ "description":"Premium website development and digital product engineering company.",
+ "foundingDate":"2026",
+ "sameAs":[
+   "https://instagram.com/prostolabs"
+ ]
+}
 
   return (
     <Helmet>
