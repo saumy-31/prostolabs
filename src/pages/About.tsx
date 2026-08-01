@@ -1,12 +1,35 @@
 import { useState, useRef } from 'react'
-import { motion,  AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { SEO } from '../components/seo/SEO'
+import { resources } from '../data/resourcesData'
 import { 
-  Code, Palette, Lightbulb, Target, Activity,  Sparkles,
-  ChevronDown, CheckCircle2
+  Code, Palette, Lightbulb, Target, Activity, Sparkles,
+  ChevronDown, CheckCircle2, ShieldCheck, Cpu, Clock,
+  ArrowUpRight, ArrowRight, MessageSquare, Layers, Briefcase, Globe,
+  BookOpen
 } from 'lucide-react'
+
+// --- FAQ DATA FOR COMPONENT & AUTOMATIC SCHEMA INJECTION ---
+const faqData = [
+  {
+    question: "What types of digital products does ProstoLabs build?",
+    answer: "We design and develop custom web applications, enterprise client portals, mobile applications, high-performance marketing websites, and AI automation workflows tailored to your business operations."
+  },
+  {
+    question: "How long does a typical project take from discovery to launch?",
+    answer: "Project timelines vary by functional scope. Custom business websites typically take 2 to 4 weeks, while complex custom web applications and multi-role software platforms range from 6 to 10 weeks."
+  },
+  {
+    question: "Do you provide ongoing technical support and maintenance after launch?",
+    answer: "Yes. ProstoLabs offers comprehensive monthly maintenance plans covering 24/7 uptime monitoring, daily encrypted cloud backups, security patching, Core Web Vitals optimization, and dedicated support hours."
+  },
+  {
+    question: "How do we communicate with your team during development?",
+    answer: "You work directly with your lead engineers and designers via direct messaging channels (Slack/WhatsApp), paired with weekly video updates and live staging preview links throughout the project lifecycle."
+  }
+]
 
 // --- FAQ ACCORDION ITEM COMPONENT ---
 function FAQItem({ question, answer }: { question: string; answer: string }) {
@@ -16,7 +39,9 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
     <div className="border border-gray-200/80 rounded-2xl bg-white overflow-hidden transition-all">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-6 text-left flex items-center justify-between gap-4 font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] transition-colors"
+        aria-expanded={isOpen}
+        aria-label={`Toggle answer for: ${question}`}
+        className="w-full p-6 text-left flex items-center justify-between gap-4 font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 transition-colors font-sans"
       >
         <span>{question}</span>
         <ChevronDown 
@@ -43,19 +68,25 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export const About = () => {
   const containerRef = useRef(null)
+  
+  // Sort resources by date (newest first) and grab the top 3
+  const latestArticles = [...resources]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3)
 
   return (
     <>
       <SEO 
-        title="About ProstoLabs | Web Development, AI & Digital Products"
-        description="Learn about ProstoLabs—our mission, values, journey, and commitment to building fast, high-quality digital products for growing businesses."
+        title="About ProstoLabs | Digital Product Studio & Web Engineering"
+        description="Learn about ProstoLabs—our engineering philosophy, product journey, values, and commitment to building fast, high-performance web products for growing businesses worldwide."
         path="/about"
+        faq={faqData}
       />
       
       <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900" ref={containerRef}>
         
         {/* ========================================================================= */}
-        {/* 1. HERO SECTION */}
+        {/* 1. HERO SECTION (MEMORABLE & BRAND-FOCUSED STORYTELLING)                  */}
         {/* ========================================================================= */}
         <section className="relative flex items-center justify-center px-6 pt-16 sm:pt-20 md:pt-24 pb-16 md:pb-20 overflow-hidden">
           
@@ -76,16 +107,16 @@ export const About = () => {
             <AnimatedSection>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-xs md:text-sm font-bold text-[#2563EB] mb-6">
                 <Sparkles size={14} className="text-[#2563EB]" />
-                <span>About ProstoLabs</span>
+                <span>The Engineering Studio</span>
               </div>
 
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6 text-[#0A0A0A] font-sans">
-                We build digital products that <br className="hidden sm:block" />
-                <span className="text-[#2563EB]">grow your business.</span>
+                Engineering Modern Digital Products for <br className="hidden sm:block" />
+                <span className="text-[#2563EB]">Ambitious Businesses Worldwide.</span>
               </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto leading-relaxed font-medium">
-                ProstoLabs is a team of designers, engineers, and problem solvers. We help companies design, code, and launch custom web applications, mobile software, and AI tools.
+                ProstoLabs is an independent technology studio. We pair clean software engineering with functional UI/UX design to build fast, scalable web platforms, AI tools, and digital products that drive long-term business performance.
               </p>
             </AnimatedSection>
           </div>
@@ -93,16 +124,16 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 2. IMPACT METRICS BAR */}
+        {/* 2. REALISTIC TRUST METRICS                                                */}
         {/* ========================================================================= */}
         <section className="py-12 px-6 bg-white border-y border-gray-200/80">
           <div className="max-w-[1300px] mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               {[
-                { value: "100%", label: "Client Satisfaction" },
-                { value: "< 1s", label: "Average Load Speed" },
-                { value: "99.9%", label: "Guaranteed Uptime" },
-                { value: "24/7", label: "Monitoring & Care" },
+                { value: "Custom", label: "Digital Products" },
+                { value: "AI-Powered", label: "Workflow Solutions" },
+                { value: "Modern", label: "Technology Stack" },
+                { value: "Global", label: "Client Collaboration" },
               ].map((stat, idx) => (
                 <AnimatedSection key={idx} delay={idx * 0.05}>
                   <div className="p-4">
@@ -117,7 +148,7 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 3. WHO WE ARE */}
+        {/* 3. WHO WE ARE                                                             */}
         {/* ========================================================================= */}
         <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
           <div className="max-w-[1300px] mx-auto">
@@ -127,7 +158,7 @@ export const About = () => {
                 Who We Are
               </h2>
               <p className="text-base sm:text-lg text-[#6B7280] font-medium">
-                A dedicated engineering studio focused on clean execution and real results.
+                A dedicated engineering team focused on technical craft, speed, and business outcomes.
               </p>
             </AnimatedSection>
 
@@ -135,18 +166,18 @@ export const About = () => {
               {[
                 { 
                   icon: Code, 
-                  title: "Engineering Excellence", 
-                  desc: "We write clean, modular, and performant code. Our software architectures are built to run fast and scale seamlessly." 
+                  title: "Engineering Craft", 
+                  desc: "We write clean, modular, and performant code using modern frameworks. Our software architectures are built from day one to run fast and scale seamlessly." 
                 },
                 { 
                   icon: Palette, 
-                  title: "Thoughtful Design", 
-                  desc: "Design is about usability. We create visual interfaces that guide users naturally, build trust, and increase conversions." 
+                  title: "Functional Design", 
+                  desc: "Design is about usability and clarity. We craft visual interfaces that guide users naturally, project brand authority, and increase lead conversions." 
                 },
                 { 
                   icon: Lightbulb, 
-                  title: "Smart Automation", 
-                  desc: "We integrate practical AI tools and smart workflows that save time, eliminate manual work, and improve efficiency." 
+                  title: "Smart Automations", 
+                  desc: "We integrate practical AI engines and automated workflows that eliminate manual operational tasks, saving your team valuable weekly working hours." 
                 }
               ].map((item, i) => (
                 <AnimatedSection key={i} delay={i * 0.1}>
@@ -168,9 +199,54 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 4. MISSION & VISION */}
+        {/* 4. WHY BUSINESSES CHOOSE PROSTOLABS                                       */}
         {/* ========================================================================= */}
         <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
+                <span>The ProstoLabs Difference</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+                Why Businesses Choose ProstoLabs
+              </h2>
+              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+                We combine technical rigor with commercial awareness to deliver digital assets that perform.
+              </p>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {[
+                { icon: Target, title: 'Business-First Thinking', text: 'Every line of code and UI component is engineered with your conversion paths and commercial goals in mind.' },
+                { icon: MessageSquare, title: 'Transparent Communication', text: 'Direct, clear collaboration with lead engineers and designers without account management barriers.' },
+                { icon: Cpu, title: 'Performance Focused', text: 'Sub-second mobile rendering speeds and Core Web Vitals optimization built directly into site architecture.' },
+                { icon: Layers, title: 'Scalable Architecture', text: 'Modern component-driven setups ready to adapt as active user concurrency and business scope expand.' },
+                { icon: ShieldCheck, title: 'Long-Term Partnership', text: 'Ongoing cloud care, security monitoring, and product enhancements long after initial deployment.' },
+                { icon: Sparkles, title: 'Continuous Innovation', text: 'Integrating modern web standards, AI engines, and automation tools to keep your business ahead of competitors.' },
+              ].map((item, i) => (
+                <AnimatedSection key={i} delay={i * 0.08}>
+                  <div className="p-8 rounded-[28px] bg-[#FAFAFA] border border-gray-200/80 shadow-2xs hover:shadow-lg hover:border-[#2563EB]/30 transition-all duration-300 h-full flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
+                        <item.icon size={22} />
+                      </div>
+                      <h3 className="font-bold text-xl text-[#0A0A0A] font-sans">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{item.text}</p>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 5. MISSION & VISION                                                       */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
           <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
             
             {/* OUR MISSION */}
@@ -185,7 +261,7 @@ export const About = () => {
                     Building reliable technology that helps businesses grow.
                   </h2>
                   <p className="text-sm sm:text-base text-blue-100 leading-relaxed font-medium">
-                    We help companies launch fast, secure, and user-friendly web products that increase lead generation, streamline operations, and deliver long-term value.
+                    We help companies launch fast, secure, and user-friendly web products that increase lead generation, streamline operational workflows, and deliver lasting brand equity.
                   </p>
                 </div>
               </div>
@@ -203,7 +279,7 @@ export const About = () => {
                     Creating a simpler, smarter digital future.
                   </h2>
                   <p className="text-sm sm:text-base text-[#6B7280] leading-relaxed font-medium">
-                    Our goal is to be a trusted global partner for growing companies, delivering exceptional web technology and AI solutions that bring real, measurable impact.
+                    Our goal is to be a trusted global partner for ambitious companies, delivering clean software platforms and smart AI integrations that produce measurable real-world impact.
                   </p>
                 </div>
               </div>
@@ -214,9 +290,9 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 5. OUR JOURNEY (TIMELINE) */}
+        {/* 6. OUR JOURNEY (REALISTIC STORY-DRIVEN MILESTONES)                        */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
           <div className="max-w-[1000px] mx-auto">
             
             <AnimatedSection className="text-center mb-16">
@@ -224,7 +300,7 @@ export const About = () => {
                 Our Journey
               </h2>
               <p className="text-base sm:text-lg text-[#6B7280] font-medium">
-                How we evolved into a full-service web development and AI studio.
+                How we evolved into an independent web engineering and AI product studio.
               </p>
             </AnimatedSection>
 
@@ -233,11 +309,11 @@ export const About = () => {
               <div className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gray-200 -translate-x-1/2" />
 
               {[
-                { year: 'Phase I', title: 'The Launch', desc: 'ProstoLabs was founded to connect modern UI design with scalable web software.' },
-                { year: 'Phase II', title: 'First Core Products', desc: 'Successfully engineered custom platforms for early clients, setting our standard for performance.' },
-                { year: 'Phase III', title: 'Expanding the Team', desc: 'Added specialists in React, mobile applications, cloud infrastructure, and AI workflow automation.' },
-                { year: 'Phase IV', title: 'AI & Automation', desc: 'Integrated AI capabilities directly into web apps and customer support systems.' },
-                { year: 'Phase V', title: 'Global Operations', desc: 'Partnering with businesses worldwide as their primary software design and development engine.' },
+                { label: 'Founding', title: 'Establishing ProstoLabs', desc: 'ProstoLabs was established with a focus on pairing clean software architecture with conversion-driven UI/UX design.' },
+                { label: 'First Products', title: 'Building Core Web Platforms', desc: 'Engineered custom software applications and web portals for early client partners, setting our baseline for performance.' },
+                { label: 'Flagship Product', title: 'Building FlySava', desc: 'Designed and deployed FlySava, a custom aviation web platform featuring automated booking workflows and real-time scheduling.' },
+                { label: 'AI Expansion', title: 'Integrating AI & Automations', desc: 'Expanded our capabilities to include custom AI knowledge assistants, automated lead routers, and operational webhooks.' },
+                { label: 'Global Collaboration', title: 'Growing Client Partnerships', desc: 'Partnering with businesses internationally as a reliable long-term engineering, design, and cloud support team.' },
               ].map((item, i) => (
                 <AnimatedSection 
                   key={i} 
@@ -245,15 +321,15 @@ export const About = () => {
                   className={`relative flex items-center justify-between mb-12 md:mb-16 ${i % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'}`}
                 >
                   {/* Timeline Dot */}
-                  <div className="absolute left-[15px] md:left-1/2 w-4 h-4 rounded-full bg-[#2563EB] -translate-x-1/2 outline outline-4 outline-[#FAFAFA] shadow-md z-10" />
+                  <div className="absolute left-[15px] md:left-1/2 w-4 h-4 rounded-full bg-[#2563EB] -translate-x-1/2 outline outline-4 outline-white shadow-md z-10" />
                   
                   {/* Spacer for desktop layout balance */}
                   <div className="hidden md:block w-5/12" />
                   
                   {/* Timeline Card */}
                   <div className="w-full pl-12 md:pl-0 md:w-5/12">
-                    <div className="p-6 rounded-[20px] bg-white border border-gray-200/80 hover:border-[#2563EB]/40 transition-colors shadow-sm">
-                      <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-1 block">{item.year}</span>
+                    <div className="p-6 rounded-[20px] bg-[#FAFAFA] border border-gray-200/80 hover:border-[#2563EB]/40 transition-colors shadow-2xs">
+                      <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-1 block font-sans">{item.label}</span>
                       <h3 className="text-lg font-bold text-[#0A0A0A] mb-2 font-sans">{item.title}</h3>
                       <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
                     </div>
@@ -267,49 +343,42 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 6. HOW WE BUILD (PROCESS) */}
+        {/* 7. TEAM PHILOSOPHY: HOW WE THINK                                          */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
-          <div className="max-w-[1300px] mx-auto">
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+          <div className="max-w-[1100px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
+                <span>Our Philosophy</span>
+              </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
-                How We Build
+                How We Think
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
-                A simple 6-step approach to launching your product on time.
-              </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-              {[
-                { step: '01', title: 'Discover', desc: 'Understanding your business requirements.' },
-                { step: '02', title: 'Plan', desc: 'Mapping user flows and software layout.' },
-                { step: '03', title: 'Design', desc: 'Crafting clean UI wireframes and screens.' },
-                { step: '04', title: 'Code', desc: 'Writing fast, secure, and modular code.' },
-                { step: '05', title: 'Launch', desc: 'Testing and zero-downtime deployment.' },
-                { step: '06', title: 'Support', desc: 'Ongoing updates and feature maintenance.' },
-              ].map((process, i) => (
-                <AnimatedSection key={i} delay={i * 0.08}>
-                  <div className="p-5 rounded-[20px] bg-[#FAFAFA] border border-gray-200/80 h-full flex flex-col justify-between hover:border-[#2563EB]/40 transition-colors">
-                    <span className="text-xs font-bold text-[#2563EB] mb-3 block">{process.step}</span>
-                    <div>
-                      <h4 className="font-bold text-sm text-[#0A0A0A] mb-1 font-sans">{process.title}</h4>
-                      <p className="text-xs text-[#6B7280] font-medium leading-relaxed">{process.desc}</p>
-                    </div>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
+            <AnimatedSection delay={0.1}>
+              <div className="p-8 sm:p-12 rounded-[32px] bg-white border border-gray-200/80 shadow-2xs space-y-6 max-w-4xl mx-auto">
+                <p className="text-base sm:text-lg text-[#374151] leading-relaxed font-medium">
+                  At ProstoLabs, we believe that modern software should be simple to use, fast to render, and straightforward to maintain. We resist unnecessary code bloat and complex technical layers that add cost without improving customer experience.
+                </p>
+                <p className="text-base sm:text-lg text-[#374151] leading-relaxed font-medium">
+                  Great engineering is invisible. When a web application loads in milliseconds and guides a client naturally through a purchase or booking path, software becomes a powerful catalyst for commercial growth.
+                </p>
+                <p className="text-base sm:text-lg text-[#374151] leading-relaxed font-medium">
+                  We approach every project not as a one-time transaction, but as a long-term partnership. We succeed when our clients launch fast, eliminate operational friction, and scale confidently.
+                </p>
+              </div>
+            </AnimatedSection>
 
           </div>
         </section>
 
 
         {/* ========================================================================= */}
-        {/* 7. OUR CORE VALUES */}
+        {/* 8. OUR CORE VALUES                                                        */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
           <div className="max-w-[1300px] mx-auto">
             <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
@@ -325,13 +394,13 @@ export const About = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { title: "No Corporate Jargon", desc: "We speak plainly and explain complex technical details in simple language." },
-                { title: "Transparent Pricing", desc: "Clear scopes, fixed timelines, and no unexpected invoice surprises." },
-                { title: "Security by Default", desc: "SSL encryption, API authentication, and data protection baked into every product." },
-                { title: "Speed & Reliability", desc: "Every line of code is optimized so your software loads fast on all screens." }
+                { title: "No Corporate Jargon", desc: "We speak plainly and explain technical decisions in straightforward, actionable language." },
+                { title: "Transparent Scope", desc: "Clear milestone deliverables, predictable timelines, and zero unexpected invoice surprises." },
+                { title: "Security by Default", desc: "SSL encryption, secure API endpoints, and data privacy protocols engineered into every product." },
+                { title: "Speed & Performance", desc: "Every line of code is optimized so your software loads in sub-seconds on all mobile screens." }
               ].map((val, i) => (
                 <AnimatedSection key={i} delay={i * 0.08}>
-                  <div className="p-6 rounded-[24px] bg-white border border-gray-200/80 h-full shadow-sm">
+                  <div className="p-6 rounded-[24px] bg-[#FAFAFA] border border-gray-200/80 h-full shadow-2xs">
                     <CheckCircle2 className="w-8 h-8 text-[#2563EB] mb-4" />
                     <h3 className="font-bold text-lg text-[#0A0A0A] mb-2 font-sans">{val.title}</h3>
                     <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{val.desc}</p>
@@ -344,7 +413,77 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 8. FAQ ACCORDION */}
+        {/* 9. CONTINUE EXPLORING (INTERNAL LINKING DIRECTORY)                        */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-20 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider block font-sans mb-1">
+                Explore ProstoLabs
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A] tracking-tight font-sans">
+                Continue Exploring
+              </h3>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  title: 'Core Services',
+                  desc: 'Explore our full capabilities in custom web engineering, AI automations, and ongoing site care.',
+                  link: '/services',
+                  cta: 'View Services',
+                  icon: Code
+                },
+                {
+                  title: 'Resources & Journal',
+                  desc: 'Read in-depth technical guides, web architecture frameworks, and business automation strategies.',
+                  link: '/resources',
+                  cta: 'Explore Resources',
+                  icon: BookOpen
+                },
+                {
+                  title: 'Our Products',
+                  desc: 'Discover FlySava, our flagship luxury aviation platform engineered for instant online booking workflows.',
+                  link: '/flysava',
+                  cta: 'Explore FlySava',
+                  icon: Globe
+                }
+              ].map((card, cIdx) => (
+                <AnimatedSection key={cIdx} delay={cIdx * 0.08}>
+                  <Link
+                    to={card.link}
+                    aria-label={`${card.cta}: ${card.title}`}
+                    className="p-7 rounded-[28px] bg-white border border-gray-200/80 hover:border-[#2563EB]/40 shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                  >
+                    <div className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <card.icon size={20} />
+                      </div>
+                      <h4 className="text-lg font-bold text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors">
+                        {card.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-[#6B7280] font-medium leading-relaxed">
+                        {card.desc}
+                      </p>
+                    </div>
+
+                    <div className="pt-6 mt-4 border-t border-gray-200/60 flex items-center gap-1.5 text-xs font-bold text-[#2563EB]">
+                      <span>{card.cta}</span>
+                      <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </div>
+                  </Link>
+                </AnimatedSection>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 10. FAQ ACCORDION                                                         */}
         {/* ========================================================================= */}
         <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
           <div className="max-w-[900px] mx-auto">
@@ -358,26 +497,9 @@ export const About = () => {
             </AnimatedSection>
 
             <div className="space-y-4">
-              {[
-                { 
-                  q: "What types of products do you build?", 
-                  a: "We design and develop custom websites, complex web applications, cross-platform mobile apps, and custom AI tools tailored to your operational workflows." 
-                },
-                { 
-                  q: "How long does a typical project take?", 
-                  a: "Project timelines vary by scope. Standard websites and landing pages take 2 to 4 weeks, while complex web portals and software apps take 6 to 12 weeks." 
-                },
-                { 
-                  q: "Do you provide maintenance after launch?", 
-                  a: "Yes! We offer ongoing product care packages that cover security updates, 24/7 server monitoring, speed optimization, and feature updates." 
-                },
-                { 
-                  q: "How do we communicate during development?", 
-                  a: "You will have direct access to your lead developers and designers via Slack/WhatsApp, along with weekly video updates and live preview staging links." 
-                }
-              ].map((faq, idx) => (
+              {faqData.map((faq, idx) => (
                 <AnimatedSection key={idx} delay={idx * 0.05}>
-                  <FAQItem question={faq.q} answer={faq.a} />
+                  <FAQItem question={faq.question} answer={faq.answer} />
                 </AnimatedSection>
               ))}
             </div>
@@ -386,35 +508,104 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 9. FINAL CALL TO ACTION */}
+        {/* 11. FEATURED RESOURCES STREAM (DYNAMICALLY SORTED LATEST 3)                */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
+                  <span>From Our Journal</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight font-sans">
+                  Featured Resources
+                </h2>
+              </div>
+              <Link to="/resources" aria-label="View all publication resources">
+                <button className="px-5 py-2.5 rounded-xl bg-white border border-gray-300 text-[#0A0A0A] hover:bg-gray-100 font-bold text-xs flex items-center gap-2 cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2">
+                  <span>View All Resources</span>
+                  <ArrowRight size={14} />
+                </button>
+              </Link>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {latestArticles.map((art, i) => (
+                <AnimatedSection key={art.slug} delay={i * 0.1}>
+                  <Link
+                    to={`/resources/${art.slug}`}
+                    aria-label={`Read resource: ${art.title}`}
+                    className="group rounded-[28px] bg-white border border-gray-200/90 shadow-2xs hover:shadow-xl hover:border-[#2563EB]/40 transition-all duration-300 p-6 flex flex-col justify-between overflow-hidden cursor-pointer h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                  >
+                    <div className="space-y-4">
+                      <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100">
+                        <img 
+                          src={art.thumbnail} 
+                          alt={art.title} 
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300" 
+                        />
+                      </div>
+                      <div className="flex items-center justify-between text-xs font-bold">
+                        <span className="text-[#2563EB]">{art.category}</span>
+                        <span className="text-gray-400 flex items-center gap-1"><Clock size={12} /> {art.readingTime}</span>
+                      </div>
+                      <h3 className="text-lg font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors leading-snug font-sans">
+                        {art.title}
+                      </h3>
+                      <p className="text-xs text-[#6B7280] font-medium leading-relaxed line-clamp-3">
+                        {art.excerpt}
+                      </p>
+                    </div>
+
+                    <div className="pt-4 mt-6 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-gray-400">
+                      <span>{art.date}</span>
+                      <span className="text-[#2563EB] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>Read Story</span>
+                        <ArrowUpRight size={14} />
+                      </span>
+                    </div>
+                  </Link>
+                </AnimatedSection>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 12. FINAL CALL TO ACTION (CONFIDENCE-BUILDING COPY)                      */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
           <div className="max-w-[1300px] mx-auto">
             <AnimatedSection className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-[#2563EB] via-[#1D4ED8] to-[#1E3A8A] text-white text-center py-16 md:py-20 px-6 sm:px-12 shadow-xl">
               <div className="relative z-10 max-w-2xl mx-auto space-y-6">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight font-sans leading-tight">
-                  Let's build something great together.
+                  Ready to build your digital product with confidence?
                 </h2>
                 <p className="text-sm sm:text-base text-blue-100 font-medium leading-relaxed">
-                  Whether you need a custom web app, mobile software, or an AI integration, our team is ready to deliver.
+                  Partner with ProstoLabs to engineer high-speed web apps, custom software, or AI automations. Receive a clear, transparent project proposal today.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-3.5 pt-2">
-                  <Link to="/start-project">
+                  <Link to="/start-project" aria-label="Start your digital project with ProstoLabs">
                     <motion.button 
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto h-12 px-7 bg-white text-[#2563EB] rounded-2xl font-bold text-sm shadow-md hover:bg-blue-50 transition-colors cursor-pointer"
+                      className="w-full sm:w-auto h-12 px-7 bg-white text-[#2563EB] rounded-2xl font-bold text-sm shadow-md hover:bg-blue-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
                     >
                       Start Your Project
                     </motion.button>
                   </Link>
-                  <Link to="/contact">
+                  <Link to="/contact" aria-label="Talk to the ProstoLabs engineering team">
                     <motion.button 
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto h-12 px-7 bg-white/10 text-white rounded-2xl font-bold text-sm border border-white/20 hover:bg-white/20 transition-colors cursor-pointer"
+                      className="w-full sm:w-auto h-12 px-7 bg-white/10 text-white rounded-2xl font-bold text-sm border border-white/20 hover:bg-white/20 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
                     >
-                      Contact Us
+                      Talk to Our Team
                     </motion.button>
                   </Link>
                 </div>

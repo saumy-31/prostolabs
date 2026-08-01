@@ -9,7 +9,6 @@ import {
   AlertTriangle, ArrowRight, Building2
 } from 'lucide-react'
 import { SEO } from '../components/seo/SEO'
-import { Helmet } from 'react-helmet-async'
 
 export function ResourceArticle() {
   const { slug } = useParams<{ slug: string }>()
@@ -59,27 +58,6 @@ export function ResourceArticle() {
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank')
   }
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": article.title,
-    "description": article.seoDescription,
-    "image": article.thumbnail,
-    "datePublished": article.date,
-    "author": {
-      "@type": "Organization",
-      "name": article.author
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "ProstoLabs",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://prostolabs.com/logo.png"
-      }
-    }
-  }
-
   const tocHeadings = article.contentBlocks.filter((b) => b.type === 'h2')
   const relatedArticles = resources.filter((r) => r.slug !== article.slug).slice(0, 2)
 
@@ -92,18 +70,21 @@ export function ResourceArticle() {
         style={{ scaleX }} 
       />
 
-      <SEO 
-        title={`${article.title} | ProstoLabs Resources`}
+      <SEO
+        title={article.title}
         description={article.seoDescription}
-        keywords={article.keywords}
         path={`/resources/${article.slug}`}
+        image={article.thumbnail}
+        type="article"
+        published={article.date}
+        modified={article.date}
+        author="ProstoLabs Editorial"
+        breadcrumbs={[
+          { name: "Home", path: "/" },
+          { name: "Resources", path: "/resources" },
+          { name: article.title, path: `/resources/${article.slug}` }
+        ]}
       />
-
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify(articleSchema)}
-        </script>
-      </Helmet>
 
       {/* ARTICLE HEADER CONTAINER */}
       <header className="pt-8 pb-12 px-6 border-b border-gray-200/80 bg-white">

@@ -3,37 +3,21 @@ import { Link } from 'react-router-dom'
 import { Button } from '../components/ui/Button'
 import { SEO } from '../components/seo/SEO'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
-import { Helmet } from 'react-helmet-async'
+import { resources } from '../data/resourcesData'
 import { 
   Code, Palette, Bot, LineChart, Wrench,
   Briefcase, Zap, Layers, Heart, MessageSquare, Search, Rocket, Headphones,
   ArrowRight, Activity, Target, 
   ShoppingBag, Cloud,
-  Sparkles, BarChart3, ShieldCheck, Smartphone
+  Sparkles, BarChart3, ShieldCheck, Smartphone, Clock, ArrowUpRight, BookOpen
 } from 'lucide-react'
 
 // --- SAAS EASING CURVE ---
 const easeSaaS = [0.16, 1, 0.3, 1] as const
 
 export const Home = () => {
-  // --- SEO Schema Configuration ---
-  const orgSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "ProstoLabs",
-    "url": "https://prostolabs.com/",
-    "logo": "https://prostolabs.com/logo.png",
-    "description": "ProstoLabs builds custom web applications, mobile apps, AI integrations, and digital products for growing businesses.",
-    "sameAs": [
-      "https://www.linkedin.com/company/prostolabs",
-      "https://twitter.com/prostolabs"
-    ],
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "customer service",
-      "availableLanguage": ["English"]
-    }
-  };
+  // Get 3 latest articles for the homepage stream
+  const latestArticles = resources.slice(0, 3)
 
   // --- Hero Mouse Parallax Configuration ---
   const mouseX = useMotionValue(0)
@@ -65,18 +49,10 @@ export const Home = () => {
   return (
     <>
       <SEO 
-        title="ProstoLabs | Software Development, AI & Web Products"
+        title="ProstoLabs | Web Development, AI & Digital Solutions"
         description="ProstoLabs engineers custom web applications, mobile apps, AI automations, and UI/UX design to help businesses innovate and grow."
         path="/"
-        keywords="ProstoLabs, Custom Software Development, AI Automations, Web Applications, Mobile Apps, UI UX Design"
       />
-      
-      {/* Schema Markup Injection */}
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify(orgSchema)}
-        </script>
-      </Helmet>
 
       <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900">
         
@@ -279,6 +255,8 @@ export const Home = () => {
                   <img 
                     src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
                     alt="ProstoLabs Team working together" 
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
@@ -383,7 +361,7 @@ export const Home = () => {
         </section>
 
 
-       {/* ========================================================================= */}
+        {/* ========================================================================= */}
         {/* 5. OUR PROCESS SECTION (PREMIUM ROADMAP) */}
         {/* ========================================================================= */}
         <section className="py-20 md:py-32 px-6 bg-[#FAFAFA] relative overflow-hidden" id="process">
@@ -506,7 +484,84 @@ export const Home = () => {
 
 
         {/* ========================================================================= */}
-        {/* 7. FINAL CTA BANNER */}
+        {/* 7. LATEST RESOURCES SECTION */}
+        {/* ========================================================================= */}
+        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+          <div className="max-w-[1300px] mx-auto">
+            
+            <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
+                  <span>From Our Journal</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight font-sans">
+                  Latest Insights & Guides
+                </h2>
+              </div>
+              <Link to="/resources">
+                <Button variant="outline" className="border-gray-300 text-[#0A0A0A] hover:bg-gray-100 font-bold text-xs">
+                  View All Resources <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {latestArticles.map((art, i) => (
+                <AnimatedSection key={art.slug} delay={i * 0.1}>
+                  <Link
+                    to={`/resources/${art.slug}`}
+                    className="group rounded-[28px] bg-white border border-gray-200/90 shadow-sm hover:shadow-xl hover:border-[#2563EB]/40 transition-all duration-300 p-6 flex flex-col justify-between overflow-hidden cursor-pointer h-full"
+                  >
+                    <div className="space-y-4">
+                      <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100">
+                        <img 
+                          src={art.thumbnail} 
+                          alt={art.title} 
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300" 
+                        />
+                      </div>
+                      <div className="flex items-center justify-between text-xs font-bold">
+                        <span className="text-[#2563EB]">{art.category}</span>
+                        <span className="text-gray-400 flex items-center gap-1"><Clock size={12} /> {art.readingTime}</span>
+                      </div>
+                      <h3 className="text-lg font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors leading-snug">
+                        {art.title}
+                      </h3>
+                      <p className="text-xs text-[#6B7280] font-medium leading-relaxed line-clamp-3">
+                        {art.excerpt}
+                      </p>
+                    </div>
+
+                    <div className="pt-4 mt-6 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-gray-400">
+                      <span>{art.date}</span>
+                      <span className="text-[#2563EB] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                        <span>Read Story</span>
+                        <ArrowUpRight size={14} />
+                      </span>
+                    </div>
+                  </Link>
+                </AnimatedSection>
+              ))}
+            </div>
+
+            {/* SECONDARY RESOURCE CTA */}
+            <AnimatedSection delay={0.2} className="mt-12 text-center">
+              <p className="text-sm font-semibold text-gray-500">
+                Not ready to start?{' '}
+                <Link to="/resources" className="text-[#2563EB] hover:underline font-bold inline-flex items-center gap-1">
+                  Explore our free resources <BookOpen size={14} />
+                </Link>
+              </p>
+            </AnimatedSection>
+
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 8. FINAL CTA BANNER */}
         {/* ========================================================================= */}
         <section className="py-16 md:py-24 px-6">
           <div className="max-w-[1300px] mx-auto">
