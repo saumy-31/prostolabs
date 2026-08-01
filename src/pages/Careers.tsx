@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 
 // --- SAAS EASING CURVE ---
-const easeSaaS = [0.16, 1, 0.3, 1] as const
+
 
 // --- INTERNSHIP PROGRAM DATA STRUCTURE ---
 export interface InternshipTrack {

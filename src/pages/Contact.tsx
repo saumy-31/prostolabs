@@ -6,7 +6,7 @@ import { SEO } from '../components/seo/SEO'
 import { resources } from '../data/resourcesData'
 import { 
   Mail, Sparkles, MessageSquare, ShieldCheck, Instagram, Briefcase, 
-  ArrowRight, ArrowUpRight, ChevronDown, CheckCircle2, Zap, Clock, 
+  ArrowRight, ArrowUpRight, ChevronDown, Zap, Clock, 
   Target, Layers, Cpu, Heart, BookOpen, Code, Globe
 } from 'lucide-react'
 

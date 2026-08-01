@@ -5,9 +5,9 @@ import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { SEO } from '../components/seo/SEO'
 import { resources } from '../data/resourcesData'
 import { 
-  Plane, Tags, Map, Smartphone, ArrowRight, CheckCircle2, Sparkles, ExternalLink,
+  Plane, Tags, Smartphone, ArrowRight, CheckCircle2, Sparkles, ExternalLink,
   ShieldCheck, Cpu, Clock, ArrowUpRight, BookOpen, Code, Globe, Laptop, Briefcase,
-  Zap, Calendar, Compass, Search, ChevronDown, Layers
+  Zap, Calendar, Compass, Search, ChevronDown
 } from 'lucide-react'
 
 // --- FAQ DATA FOR COMPONENT & AUTOMATIC SCHEMA INJECTION ---

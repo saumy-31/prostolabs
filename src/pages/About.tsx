@@ -7,7 +7,7 @@ import { resources } from '../data/resourcesData'
 import { 
   Code, Palette, Lightbulb, Target, Activity, Sparkles,
   ChevronDown, CheckCircle2, ShieldCheck, Cpu, Clock,
-  ArrowUpRight, ArrowRight, MessageSquare, Layers, Briefcase, Globe,
+  ArrowUpRight, ArrowRight, MessageSquare, Layers, Globe,
   BookOpen
 } from 'lucide-react'
 
