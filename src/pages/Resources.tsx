@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
+
 import { 
   Sparkles, Clock, ArrowRight, ArrowUpRight, 
   Search, ShieldCheck, Code2, Palette, TrendingUp, Settings,
