@@ -105,9 +105,7 @@ export const FlySava = () => {
   }
 
   // Sort resources by date (newest first) and grab the top 3
-  const latestArticles = [...resources]
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3)
+  
 
   return (
     <>
@@ -518,57 +516,6 @@ export const FlySava = () => {
         </section>
 
 
-        {/* ========================================================================= */}
-        {/* 7. PRODUCT GALLERY (RESPONSIVE MOCKUP SCREENS) */}
-        {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-white border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
-            
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
-                Visual Gallery
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
-                Multi-Device Experience
-              </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
-                Seamless design across desktop, tablet, and mobile viewports.
-              </p>
-            </AnimatedSection>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-              {[
-                { title: 'Desktop Search Engine', device: 'Desktop View', desc: 'Full-featured flight comparison matrix with filter sidebars.', icon: Laptop },
-                { title: 'Tablet Route Explorer', device: 'Tablet View', desc: 'Adaptive layout optimized for touch interaction.', icon: Globe },
-                { title: 'Mobile Travel Companion', device: 'Mobile View', desc: 'Thumb-friendly search controls for flight bookings on the go.', icon: Smartphone }
-              ].map((item, idx) => (
-                <AnimatedSection key={idx} delay={idx * 0.1}>
-                  <div className="group rounded-[32px] bg-white border border-gray-200/80 p-8 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-[#2563EB]/30 transition-all duration-500 space-y-6">
-                    <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#0A0F1C] to-blue-950 border border-gray-800 p-6 flex flex-col justify-between overflow-hidden relative shadow-inner">
-                      <div className="flex items-center justify-between text-white/60 text-[11px] font-mono tracking-widest uppercase">
-                        <span>{item.device}</span>
-                        <item.icon size={16} className="text-blue-400" />
-                      </div>
-                      <div className="my-auto space-y-3 text-white">
-                        <div className="w-12 h-2.5 rounded-full bg-blue-500/80 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-                        <div className="w-3/4 h-2 rounded-full bg-white/40" />
-                        <div className="w-1/2 h-2 rounded-full bg-white/20" />
-                      </div>
-                      <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-[10px] text-gray-300 font-mono flex items-center justify-center backdrop-blur-md">
-                        <ShieldCheck size={12} className="mr-2 text-emerald-400" /> flysava.com
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-xl text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors tracking-tight">{item.title}</h3>
-                      <p className="text-[15px] text-[#6B7280] font-medium mt-2 leading-relaxed">{item.desc}</p>
-                    </div>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
-
-          </div>
-        </section>
 
 
         {/* ========================================================================= */}
