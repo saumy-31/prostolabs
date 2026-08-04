@@ -11,6 +11,9 @@ import {
   BookOpen
 } from 'lucide-react'
 
+// --- SAAS EASING CURVE ---
+const easeSaaS = [0.16, 1, 0.3, 1] as const
+
 // --- FAQ DATA FOR COMPONENT & AUTOMATIC SCHEMA INJECTION ---
 const faqData = [
   {
@@ -36,17 +39,19 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="border border-gray-200/80 rounded-2xl bg-white overflow-hidden transition-all">
+    <div className="border border-gray-200/50 rounded-2xl bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label={`Toggle answer for: ${question}`}
-        className="w-full p-6 text-left flex items-center justify-between gap-4 font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 transition-colors font-sans"
+        className="w-full p-6 text-left flex items-center justify-between gap-4 font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 transition-colors font-sans group"
       >
-        <span>{question}</span>
-        <ChevronDown 
-          className={`w-5 h-5 text-[#2563EB] transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
-        />
+        <span className="tracking-tight">{question}</span>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${isOpen ? 'bg-blue-50' : 'bg-gray-50 group-hover:bg-blue-50'}`}>
+          <ChevronDown 
+            className={`w-5 h-5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-180 text-[#2563EB]' : 'text-gray-400 group-hover:text-[#2563EB]'}`} 
+          />
+        </div>
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -54,9 +59,9 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: easeSaaS }}
           >
-            <div className="px-6 pb-6 text-sm md:text-base text-[#6B7280] font-medium leading-relaxed border-t border-gray-100 pt-4">
+            <div className="px-6 pb-6 text-sm md:text-[15px] text-[#6B7280] font-medium leading-relaxed border-t border-gray-100/80 pt-4">
               {answer}
             </div>
           </motion.div>
@@ -83,39 +88,46 @@ export const About = () => {
         faq={faqData}
       />
       
-      <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900" ref={containerRef}>
+      <div className="relative overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-500/30 selection:text-blue-900" ref={containerRef}>
         
+        {/* GLOBAL PREMIUM BACKGROUND ELEMENTS */}
+        <div className="absolute top-0 left-0 right-0 h-[120vh] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-blue-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
+        <div className="absolute top-[20%] left-[-10%] w-[30%] h-[40%] rounded-full bg-cyan-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
+
         {/* ========================================================================= */}
-        {/* 1. HERO SECTION (MEMORABLE & BRAND-FOCUSED STORYTELLING)                  */}
+        {/* 1. HERO SECTION */}
         {/* ========================================================================= */}
-        <section className="relative flex items-center justify-center px-6 pt-16 sm:pt-20 md:pt-24 pb-16 md:pb-20 overflow-hidden">
+        <section className="relative flex items-center justify-center px-6 pt-24 sm:pt-32 md:pt-40 pb-20 md:pb-24 overflow-hidden">
           
-          <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-20">
+          {/* Animated 3D-like Rings */}
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
             <motion.div 
-              animate={{ rotate: 360 }}
-              transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-              className="w-[80vw] h-[80vw] max-w-[700px] max-h-[700px] border border-blue-200 rounded-full absolute"
+              animate={{ rotate: 360, scale: [1, 1.02, 1] }}
+              transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+              className="w-[80vw] h-[80vw] max-w-[700px] max-h-[700px] border-[1.5px] border-blue-200/50 rounded-full absolute shadow-[0_0_50px_rgba(37,99,235,0.1)]"
             />
             <motion.div 
-              animate={{ rotate: -360 }}
-              transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-              className="w-[60vw] h-[60vw] max-w-[500px] max-h-[500px] border border-blue-300 rounded-full absolute border-dashed"
+              animate={{ rotate: -360, scale: [1, 1.05, 1] }}
+              transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+              className="w-[60vw] h-[60vw] max-w-[500px] max-h-[500px] border border-blue-300/40 rounded-full absolute border-dashed shadow-[inset_0_0_40px_rgba(37,99,235,0.05)]"
             />
+            <div className="w-[40vw] h-[40vw] max-w-[300px] max-h-[300px] bg-gradient-to-tr from-blue-500/5 to-cyan-400/5 rounded-full absolute blur-3xl" />
           </div>
 
           <div className="max-w-[1100px] mx-auto text-center relative z-10">
             <AnimatedSection>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-xs md:text-sm font-bold text-[#2563EB] mb-6">
-                <Sparkles size={14} className="text-[#2563EB]" />
-                <span>The Engineering Studio</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_rgb(0,0,0,0.03)] text-xs md:text-sm font-bold text-[#2563EB] mb-8 transform-gpu">
+                <Sparkles size={16} className="text-[#2563EB]" />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">The Engineering Studio</span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6 text-[#0A0A0A] font-sans">
+              <h1 className="text-5xl sm:text-7xl lg:text-[80px] font-extrabold tracking-[-0.03em] leading-[1.05] mb-8 text-[#0A0A0A] font-sans">
                 Engineering Modern Digital Products for <br className="hidden sm:block" />
-                <span className="text-[#2563EB]">Ambitious Businesses Worldwide.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-[#2563EB] to-cyan-500">Ambitious Businesses Worldwide.</span>
               </h1>
 
-              <p className="text-base sm:text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto leading-relaxed font-medium">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#6B7280] max-w-3xl mx-auto leading-[1.6] font-medium tracking-tight">
                 ProstoLabs is an independent technology studio. We pair clean software engineering with functional UI/UX design to build fast, scalable web platforms, AI tools, and digital products that drive long-term business performance.
               </p>
             </AnimatedSection>
@@ -124,45 +136,45 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 2. REALISTIC TRUST METRICS                                                */}
+        {/* 2. REALISTIC TRUST METRICS */}
         {/* ========================================================================= */}
-        <section className="py-12 px-6 bg-white border-y border-gray-200/80">
-          <div className="max-w-[1300px] mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {[
-                { value: "Custom", label: "Digital Products" },
-                { value: "AI-Powered", label: "Workflow Solutions" },
-                { value: "Modern", label: "Technology Stack" },
-                { value: "Global", label: "Client Collaboration" },
-              ].map((stat, idx) => (
-                <AnimatedSection key={idx} delay={idx * 0.05}>
-                  <div className="p-4">
-                    <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#2563EB] tracking-tight font-sans">{stat.value}</p>
-                    <p className="text-xs sm:text-sm font-bold text-[#6B7280] mt-2 uppercase tracking-wider">{stat.label}</p>
-                  </div>
-                </AnimatedSection>
-              ))}
+        <section className="py-12 px-6 relative z-20 -mt-8">
+          <div className="max-w-[1200px] mx-auto">
+            <div className="bg-white/60 backdrop-blur-xl border border-white rounded-[32px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 md:p-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x divide-gray-200/50">
+                {[
+                  { value: "Custom", label: "Digital Products" },
+                  { value: "AI-Powered", label: "Workflow Solutions" },
+                  { value: "Modern", label: "Technology Stack" },
+                  { value: "Global", label: "Client Collaboration" },
+                ].map((stat, idx) => (
+                  <AnimatedSection key={idx} delay={idx * 0.05} className="px-4 hover:scale-105 transition-transform duration-500">
+                    <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-blue-700 to-blue-500 tracking-tight font-sans mb-1">{stat.value}</p>
+                    <p className="text-[11px] sm:text-xs font-bold text-[#6B7280] mt-2 uppercase tracking-widest">{stat.label}</p>
+                  </AnimatedSection>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
 
         {/* ========================================================================= */}
-        {/* 3. WHO WE ARE                                                             */}
+        {/* 3. WHO WE ARE */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+        <section className="py-24 md:py-32 px-6 relative">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Who We Are
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 A dedicated engineering team focused on technical craft, speed, and business outcomes.
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               {[
                 { 
                   icon: Code, 
@@ -181,13 +193,16 @@ export const About = () => {
                 }
               ].map((item, i) => (
                 <AnimatedSection key={i} delay={i * 0.1}>
-                  <div className="p-8 rounded-[28px] bg-white border border-gray-200/80 h-full group hover:shadow-xl hover:border-[#2563EB]/40 transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <item.icon className="w-6 h-6" />
+                  <div className="group relative p-8 md:p-10 rounded-[32px] bg-white/70 backdrop-blur-xl border border-gray-200/80 h-full hover:shadow-[0_20px_40px_rgba(37,99,235,0.06)] hover:border-[#2563EB]/30 transition-all duration-500 flex flex-col justify-between overflow-hidden">
+                    {/* Hover Glow Blob */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2 group-hover:scale-150 group-hover:bg-blue-500/10 transition-all duration-500" />
+                    
+                    <div className="relative z-10">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-white shadow-sm border border-blue-100 text-[#2563EB] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                        <item.icon className="w-6 h-6" strokeWidth={1.5} />
                       </div>
-                      <h3 className="text-xl font-bold text-[#0A0A0A] mb-3 font-sans">{item.title}</h3>
-                      <p className="text-sm text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
+                      <h3 className="text-2xl font-bold text-[#0A0A0A] mb-4 font-sans tracking-tight">{item.title}</h3>
+                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -199,19 +214,19 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 4. WHY BUSINESSES CHOOSE PROSTOLABS                                       */}
+        {/* 4. WHY BUSINESSES CHOOSE PROSTOLABS */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                <span>The ProstoLabs Difference</span>
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                The ProstoLabs Difference
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
-                Why Businesses Choose ProstoLabs
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+                Why Businesses Choose <span className="text-[#2563EB]">ProstoLabs</span>
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 We combine technical rigor with commercial awareness to deliver digital assets that perform.
               </p>
             </AnimatedSection>
@@ -225,14 +240,14 @@ export const About = () => {
                 { icon: ShieldCheck, title: 'Long-Term Partnership', text: 'Ongoing cloud care, security monitoring, and product enhancements long after initial deployment.' },
                 { icon: Sparkles, title: 'Continuous Innovation', text: 'Integrating modern web standards, AI engines, and automation tools to keep your business ahead of competitors.' },
               ].map((item, i) => (
-                <AnimatedSection key={i} delay={i * 0.08}>
-                  <div className="p-8 rounded-[28px] bg-[#FAFAFA] border border-gray-200/80 shadow-2xs hover:shadow-lg hover:border-[#2563EB]/30 transition-all duration-300 h-full flex flex-col justify-between">
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
-                        <item.icon size={22} />
+                <AnimatedSection key={i} delay={i * 0.1}>
+                  <div className="p-8 rounded-[32px] bg-white border border-gray-200/80 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:border-[#2563EB]/30 transition-all duration-300 h-full flex flex-col justify-between group">
+                    <div className="space-y-5">
+                      <div className="w-14 h-14 rounded-[20px] bg-gray-50 border border-gray-100 text-[#2563EB] flex items-center justify-center group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
+                        <item.icon size={26} strokeWidth={1.5} />
                       </div>
-                      <h3 className="font-bold text-xl text-[#0A0A0A] font-sans">{item.title}</h3>
-                      <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{item.text}</p>
+                      <h3 className="font-bold text-xl md:text-2xl text-[#0A0A0A] font-sans tracking-tight">{item.title}</h3>
+                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{item.text}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -244,23 +259,26 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 5. MISSION & VISION                                                       */}
+        {/* 5. MISSION & VISION */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
           <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
             
             {/* OUR MISSION */}
             <AnimatedSection>
-              <div className="p-8 sm:p-12 rounded-[32px] bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] text-white h-full flex flex-col justify-between shadow-xl">
-                <div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-blue-100 font-bold text-xs uppercase tracking-wider mb-6 border border-white/20">
+              <div className="relative p-10 sm:p-14 rounded-[40px] bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] text-white h-full flex flex-col justify-between shadow-[0_20px_50px_rgba(37,99,235,0.2)] overflow-hidden">
+                {/* Decorative Mesh Overlay */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.15)_0%,_transparent_60%)] pointer-events-none" />
+                
+                <div className="relative z-10">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white font-bold text-xs uppercase tracking-widest mb-8 border border-white/20">
                     <Target size={14} />
                     <span>Our Mission</span>
                   </div>
-                  <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 font-sans leading-tight">
+                  <h2 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-6 font-sans leading-[1.15]">
                     Building reliable technology that helps businesses grow.
                   </h2>
-                  <p className="text-sm sm:text-base text-blue-100 leading-relaxed font-medium">
+                  <p className="text-[15px] sm:text-[17px] text-blue-100/90 leading-relaxed font-medium">
                     We help companies launch fast, secure, and user-friendly web products that increase lead generation, streamline operational workflows, and deliver lasting brand equity.
                   </p>
                 </div>
@@ -269,16 +287,16 @@ export const About = () => {
 
             {/* OUR VISION */}
             <AnimatedSection delay={0.15}>
-              <div className="p-8 sm:p-12 rounded-[32px] bg-white border border-gray-200/80 text-[#0A0A0A] h-full flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-                <div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-6">
+              <div className="relative p-10 sm:p-14 rounded-[40px] bg-white/70 backdrop-blur-xl border border-gray-200/80 text-[#0A0A0A] h-full flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-shadow duration-500">
+                <div className="relative z-10">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-8">
                     <Activity size={14} />
                     <span>Our Vision</span>
                   </div>
-                  <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 font-sans text-[#0A0A0A] leading-tight">
+                  <h2 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.02em] mb-6 font-sans text-[#0A0A0A] leading-[1.15]">
                     Creating a simpler, smarter digital future.
                   </h2>
-                  <p className="text-sm sm:text-base text-[#6B7280] leading-relaxed font-medium">
+                  <p className="text-[15px] sm:text-[17px] text-[#6B7280] leading-relaxed font-medium">
                     Our goal is to be a trusted global partner for ambitious companies, delivering clean software platforms and smart AI integrations that produce measurable real-world impact.
                   </p>
                 </div>
@@ -290,23 +308,23 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 6. OUR JOURNEY (REALISTIC STORY-DRIVEN MILESTONES)                        */}
+        {/* 6. OUR JOURNEY */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
           <div className="max-w-[1000px] mx-auto">
             
-            <AnimatedSection className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+            <AnimatedSection className="text-center mb-20">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Our Journey
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 How we evolved into an independent web engineering and AI product studio.
               </p>
             </AnimatedSection>
 
             <div className="relative">
-              {/* Vertical Center Line */}
-              <div className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gray-200 -translate-x-1/2" />
+              {/* Animated Vertical Line */}
+              <div className="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-blue-200 to-transparent -translate-x-1/2" />
 
               {[
                 { label: 'Founding', title: 'Establishing ProstoLabs', desc: 'ProstoLabs was established with a focus on pairing clean software architecture with conversion-driven UI/UX design.' },
@@ -317,21 +335,23 @@ export const About = () => {
               ].map((item, i) => (
                 <AnimatedSection 
                   key={i} 
-                  delay={i * 0.08} 
-                  className={`relative flex items-center justify-between mb-12 md:mb-16 ${i % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'}`}
+                  delay={i * 0.1} 
+                  className={`relative flex items-center justify-between mb-16 md:mb-20 group ${i % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'}`}
                 >
-                  {/* Timeline Dot */}
-                  <div className="absolute left-[15px] md:left-1/2 w-4 h-4 rounded-full bg-[#2563EB] -translate-x-1/2 outline outline-4 outline-white shadow-md z-10" />
+                  {/* Timeline Node */}
+                  <div className="absolute left-[19px] md:left-1/2 w-5 h-5 rounded-full bg-white border-[4px] border-blue-100 group-hover:border-[#2563EB] -translate-x-1/2 shadow-sm z-10 transition-colors duration-300">
+                    <div className="absolute inset-0 bg-[#2563EB] rounded-full scale-0 group-hover:scale-100 transition-transform duration-300" />
+                  </div>
                   
                   {/* Spacer for desktop layout balance */}
                   <div className="hidden md:block w-5/12" />
                   
                   {/* Timeline Card */}
-                  <div className="w-full pl-12 md:pl-0 md:w-5/12">
-                    <div className="p-6 rounded-[20px] bg-[#FAFAFA] border border-gray-200/80 hover:border-[#2563EB]/40 transition-colors shadow-2xs">
-                      <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-1 block font-sans">{item.label}</span>
-                      <h3 className="text-lg font-bold text-[#0A0A0A] mb-2 font-sans">{item.title}</h3>
-                      <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
+                  <div className="w-full pl-14 md:pl-0 md:w-5/12">
+                    <div className="p-8 rounded-[28px] bg-white/60 backdrop-blur-md border border-gray-200/80 hover:border-[#2563EB]/40 transition-all duration-300 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_15px_40px_rgba(37,99,235,0.06)] group-hover:-translate-y-1">
+                      <span className="text-[11px] font-bold text-[#2563EB] uppercase tracking-widest mb-3 block font-sans">{item.label}</span>
+                      <h3 className="text-xl md:text-2xl font-bold text-[#0A0A0A] mb-3 font-sans tracking-tight">{item.title}</h3>
+                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -343,31 +363,38 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 7. TEAM PHILOSOPHY: HOW WE THINK                                          */}
+        {/* 7. TEAM PHILOSOPHY: HOW WE THINK */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
           <div className="max-w-[1100px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                <span>Our Philosophy</span>
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200 text-[#0A0A0A] font-bold text-xs uppercase tracking-widest mb-6">
+                Our Philosophy
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] font-sans leading-[1.1]">
                 How We Think
               </h2>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.1}>
-              <div className="p-8 sm:p-12 rounded-[32px] bg-white border border-gray-200/80 shadow-2xs space-y-6 max-w-4xl mx-auto">
-                <p className="text-base sm:text-lg text-[#374151] leading-relaxed font-medium">
-                  At ProstoLabs, we believe that modern software should be simple to use, fast to render, and straightforward to maintain. We resist unnecessary code bloat and complex technical layers that add cost without improving customer experience.
-                </p>
-                <p className="text-base sm:text-lg text-[#374151] leading-relaxed font-medium">
-                  Great engineering is invisible. When a web application loads in milliseconds and guides a client naturally through a purchase or booking path, software becomes a powerful catalyst for commercial growth.
-                </p>
-                <p className="text-base sm:text-lg text-[#374151] leading-relaxed font-medium">
-                  We approach every project not as a one-time transaction, but as a long-term partnership. We succeed when our clients launch fast, eliminate operational friction, and scale confidently.
-                </p>
+            <AnimatedSection delay={0.15}>
+              <div className="relative p-10 sm:p-16 rounded-[40px] bg-white/70 backdrop-blur-xl border border-gray-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-4xl mx-auto overflow-hidden">
+                {/* Decorative Quote Mark Watermark */}
+                <div className="absolute top-4 left-6 text-[180px] leading-none text-blue-50/50 font-serif font-black select-none pointer-events-none">
+                  "
+                </div>
+                
+                <div className="relative z-10 space-y-8">
+                  <p className="text-lg md:text-xl text-[#374151] leading-[1.7] font-medium">
+                    At ProstoLabs, we believe that modern software should be simple to use, fast to render, and straightforward to maintain. We resist unnecessary code bloat and complex technical layers that add cost without improving customer experience.
+                  </p>
+                  <p className="text-lg md:text-xl text-[#374151] leading-[1.7] font-medium">
+                    Great engineering is invisible. When a web application loads in milliseconds and guides a client naturally through a purchase or booking path, software becomes a powerful catalyst for commercial growth.
+                  </p>
+                  <p className="text-lg md:text-xl text-[#374151] leading-[1.7] font-medium">
+                    We approach every project not as a one-time transaction, but as a long-term partnership. We succeed when our clients launch fast, eliminate operational friction, and scale confidently.
+                  </p>
+                </div>
               </div>
             </AnimatedSection>
 
@@ -376,18 +403,18 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 8. OUR CORE VALUES                                                        */}
+        {/* 8. OUR CORE VALUES */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
           <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                <span>Our Culture</span>
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                Our Culture
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Our Guiding Principles
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 How we operate and collaborate with every client partner.
               </p>
             </AnimatedSection>
@@ -399,11 +426,13 @@ export const About = () => {
                 { title: "Security by Default", desc: "SSL encryption, secure API endpoints, and data privacy protocols engineered into every product." },
                 { title: "Speed & Performance", desc: "Every line of code is optimized so your software loads in sub-seconds on all mobile screens." }
               ].map((val, i) => (
-                <AnimatedSection key={i} delay={i * 0.08}>
-                  <div className="p-6 rounded-[24px] bg-[#FAFAFA] border border-gray-200/80 h-full shadow-2xs">
-                    <CheckCircle2 className="w-8 h-8 text-[#2563EB] mb-4" />
-                    <h3 className="font-bold text-lg text-[#0A0A0A] mb-2 font-sans">{val.title}</h3>
-                    <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{val.desc}</p>
+                <AnimatedSection key={i} delay={i * 0.1}>
+                  <div className="p-8 rounded-[32px] bg-[#FAFAFA] border border-gray-200/60 h-full hover:bg-white hover:shadow-[0_15px_30px_rgba(0,0,0,0.05)] hover:border-gray-200 transition-all duration-300">
+                    <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                      <CheckCircle2 className="w-6 h-6 text-[#2563EB]" strokeWidth={2} />
+                    </div>
+                    <h3 className="font-bold text-xl text-[#0A0A0A] mb-3 font-sans tracking-tight">{val.title}</h3>
+                    <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{val.desc}</p>
                   </div>
                 </AnimatedSection>
               ))}
@@ -413,16 +442,16 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 9. CONTINUE EXPLORING (INTERNAL LINKING DIRECTORY)                        */}
+        {/* 9. CONTINUE EXPLORING */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-20 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+        <section className="py-20 md:py-28 px-6 relative border-t border-gray-200/50">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-10">
-              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider block font-sans mb-1">
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
+              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans mb-3">
                 Explore ProstoLabs
               </span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A] tracking-tight font-sans">
+              <h3 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-[-0.02em] font-sans">
                 Continue Exploring
               </h3>
             </AnimatedSection>
@@ -451,27 +480,27 @@ export const About = () => {
                   icon: Globe
                 }
               ].map((card, cIdx) => (
-                <AnimatedSection key={cIdx} delay={cIdx * 0.08}>
+                <AnimatedSection key={cIdx} delay={cIdx * 0.1}>
                   <Link
                     to={card.link}
                     aria-label={`${card.cta}: ${card.title}`}
-                    className="p-7 rounded-[28px] bg-white border border-gray-200/80 hover:border-[#2563EB]/40 shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                    className="p-8 md:p-10 rounded-[32px] bg-white/70 backdrop-blur-xl border border-gray-200/80 hover:border-[#2563EB]/40 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)] transition-all duration-300 flex flex-col justify-between h-full group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
                   >
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center group-hover:scale-105 transition-transform">
-                        <card.icon size={20} />
+                    <div className="space-y-4">
+                      <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 text-[#0A0A0A] flex items-center justify-center group-hover:bg-blue-50 group-hover:text-[#2563EB] transition-colors duration-300">
+                        <card.icon size={22} strokeWidth={1.5} />
                       </div>
-                      <h4 className="text-lg font-bold text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors">
+                      <h4 className="text-xl md:text-2xl font-bold text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors tracking-tight">
                         {card.title}
                       </h4>
-                      <p className="text-xs sm:text-sm text-[#6B7280] font-medium leading-relaxed">
+                      <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed">
                         {card.desc}
                       </p>
                     </div>
 
-                    <div className="pt-6 mt-4 border-t border-gray-200/60 flex items-center gap-1.5 text-xs font-bold text-[#2563EB]">
+                    <div className="pt-6 mt-8 border-t border-gray-200/60 flex items-center gap-2 text-sm font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors">
                       <span>{card.cta}</span>
-                      <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                     </div>
                   </Link>
                 </AnimatedSection>
@@ -483,15 +512,15 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 10. FAQ ACCORDION                                                         */}
+        {/* 10. FAQ ACCORDION */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
           <div className="max-w-[900px] mx-auto">
-            <AnimatedSection className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+            <AnimatedSection className="text-center mb-16 sm:mb-20">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Frequently Asked Questions
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 Everything you need to know about partnering with ProstoLabs.
               </p>
             </AnimatedSection>
@@ -508,64 +537,68 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 11. FEATURED RESOURCES STREAM (DYNAMICALLY SORTED LATEST 3)                */}
+        {/* 11. FEATURED RESOURCES STREAM */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50 bg-white">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+            <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                  <span>From Our Journal</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                  From Our Journal
                 </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight font-sans">
+                <h2 className="text-4xl sm:text-5xl font-extrabold text-[#0A0A0A] tracking-[-0.03em] font-sans leading-tight">
                   Featured Resources
                 </h2>
               </div>
-              <Link to="/resources" aria-label="View all publication resources">
-                <button className="px-5 py-2.5 rounded-xl bg-white border border-gray-300 text-[#0A0A0A] hover:bg-gray-100 font-bold text-xs flex items-center gap-2 cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2">
+              <Link to="/resources" className="shrink-0" aria-label="View all publication resources">
+                <button className="rounded-full px-8 h-12 border border-gray-300 text-[#0A0A0A] hover:bg-gray-50 hover:border-gray-400 font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2">
                   <span>View All Resources</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={16} />
                 </button>
               </Link>
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {latestArticles.map((art, i) => (
-                <AnimatedSection key={art.slug} delay={i * 0.1}>
+                <AnimatedSection key={art.slug} delay={i * 0.15}>
                   <Link
                     to={`/resources/${art.slug}`}
                     aria-label={`Read resource: ${art.title}`}
-                    className="group rounded-[28px] bg-white border border-gray-200/90 shadow-2xs hover:shadow-xl hover:border-[#2563EB]/40 transition-all duration-300 p-6 flex flex-col justify-between overflow-hidden cursor-pointer h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                    className="group flex flex-col h-full overflow-hidden cursor-pointer rounded-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
                   >
-                    <div className="space-y-4">
-                      <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100">
-                        <img 
-                          src={art.thumbnail} 
-                          alt={art.title} 
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300" 
-                        />
+                    <div className="aspect-[16/10] overflow-hidden bg-gray-100 relative rounded-[32px] mb-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                      <img 
+                        src={art.thumbnail} 
+                        alt={art.title} 
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-xs font-bold text-[#0A0A0A] shadow-sm">
+                          {art.category}
+                        </span>
                       </div>
-                      <div className="flex items-center justify-between text-xs font-bold">
-                        <span className="text-[#2563EB]">{art.category}</span>
-                        <span className="text-gray-400 flex items-center gap-1"><Clock size={12} /> {art.readingTime}</span>
+                    </div>
+                    
+                    <div className="flex flex-col flex-grow px-2">
+                      <div className="flex items-center gap-3 text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">
+                        <span>{art.date}</span>
+                        <span className="w-1 h-1 rounded-full bg-gray-300" />
+                        <span className="flex items-center gap-1.5"><Clock size={12} /> {art.readingTime}</span>
                       </div>
-                      <h3 className="text-lg font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors leading-snug font-sans">
+                      <h3 className="text-2xl font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors leading-[1.3] mb-4 tracking-tight">
                         {art.title}
                       </h3>
-                      <p className="text-xs text-[#6B7280] font-medium leading-relaxed line-clamp-3">
+                      <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed line-clamp-3 mb-6">
                         {art.excerpt}
                       </p>
-                    </div>
-
-                    <div className="pt-4 mt-6 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-gray-400">
-                      <span>{art.date}</span>
-                      <span className="text-[#2563EB] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      
+                      <div className="mt-auto flex items-center gap-2 text-sm font-bold text-[#2563EB] group-hover:gap-3 transition-all">
                         <span>Read Story</span>
-                        <ArrowUpRight size={14} />
-                      </span>
+                        <ArrowRight size={16} />
+                      </div>
                     </div>
                   </Link>
                 </AnimatedSection>
@@ -577,33 +610,38 @@ export const About = () => {
 
 
         {/* ========================================================================= */}
-        {/* 12. FINAL CALL TO ACTION (CONFIDENCE-BUILDING COPY)                      */}
+        {/* 12. FINAL CALL TO ACTION */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6">
           <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-[#2563EB] via-[#1D4ED8] to-[#1E3A8A] text-white text-center py-16 md:py-20 px-6 sm:px-12 shadow-xl">
-              <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight font-sans leading-tight">
-                  Ready to build your digital product with confidence?
+            <AnimatedSection className="relative rounded-[40px] overflow-hidden bg-[#0A0A0A] text-white text-center py-20 md:py-28 px-6 sm:px-12 shadow-2xl">
+              {/* Premium Gradient Overlays */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_rgba(37,99,235,0.4)_0%,_transparent_70%)] pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_bottom_right,_rgba(96,165,250,0.15)_0%,_transparent_70%)] pointer-events-none" />
+              
+              <div className="relative z-10 max-w-3xl mx-auto space-y-8">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-[-0.03em] font-sans leading-[1.1]">
+                  Ready to build your digital product <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">with confidence?</span>
                 </h2>
-                <p className="text-sm sm:text-base text-blue-100 font-medium leading-relaxed">
+                <p className="text-lg sm:text-xl text-gray-400 font-medium leading-relaxed max-w-2xl mx-auto">
                   Partner with ProstoLabs to engineer high-speed web apps, custom software, or AI automations. Receive a clear, transparent project proposal today.
                 </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-3.5 pt-2">
+                <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
                   <Link to="/start-project" aria-label="Start your digital project with ProstoLabs">
                     <motion.button 
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto h-12 px-7 bg-white text-[#2563EB] rounded-2xl font-bold text-sm shadow-md hover:bg-blue-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                      className="group relative w-full sm:w-auto h-14 px-8 bg-white text-[#0A0A0A] rounded-full font-bold text-base shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all cursor-pointer overflow-hidden flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
                     >
-                      Start Your Project
+                      <span>Start Your Project</span>
+                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </motion.button>
                   </Link>
                   <Link to="/contact" aria-label="Talk to the ProstoLabs engineering team">
                     <motion.button 
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto h-12 px-7 bg-white/10 text-white rounded-2xl font-bold text-sm border border-white/20 hover:bg-white/20 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                      className="w-full sm:w-auto h-14 px-8 bg-white/10 backdrop-blur-md text-white rounded-full font-bold text-base border border-white/20 hover:bg-white/20 transition-all cursor-pointer flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
                     >
                       Talk to Our Team
                     </motion.button>

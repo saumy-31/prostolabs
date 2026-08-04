@@ -7,8 +7,11 @@ import { resources } from '../data/resourcesData'
 import { 
   Plane, Tags, Smartphone, ArrowRight, CheckCircle2, Sparkles, ExternalLink,
   ShieldCheck, Cpu, Clock, ArrowUpRight, BookOpen, Code, Globe, Laptop, Briefcase,
-  Zap, Calendar, Compass, Search, ChevronDown
+  Zap, Calendar, Compass, Search, ChevronDown, HelpCircle
 } from 'lucide-react'
+
+// --- SAAS EASING CURVE ---
+const easeSaaS = [0.16, 1, 0.3, 1] as const
 
 // --- FAQ DATA FOR COMPONENT & AUTOMATIC SCHEMA INJECTION ---
 const faqData = [
@@ -63,18 +66,20 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="border border-gray-200/80 rounded-2xl bg-white overflow-hidden transition-all">
+    <div className="border border-gray-200/50 rounded-2xl bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label={`Toggle answer for: ${question}`}
-        className="w-full p-6 text-left flex items-center justify-between gap-4 font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 transition-colors font-sans"
+        className="w-full p-6 text-left flex items-center justify-between gap-4 font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 transition-colors font-sans group"
       >
-        <span>{question}</span>
-        <ChevronDown 
-          className={`w-5 h-5 text-[#2563EB] transition-transform duration-300 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} 
-        />
+        <span className="tracking-tight pr-4">{question}</span>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${isOpen ? 'bg-blue-50' : 'bg-gray-50 group-hover:bg-blue-50'}`}>
+          <ChevronDown 
+            className={`w-5 h-5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-180 text-[#2563EB]' : 'text-gray-400 group-hover:text-[#2563EB]'}`} 
+          />
+        </div>
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -82,9 +87,9 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: easeSaaS }}
           >
-            <div className="px-6 pb-6 text-sm md:text-base text-[#6B7280] font-medium leading-relaxed border-t border-gray-100 pt-4">
+            <div className="px-6 pb-6 pt-0 text-[15px] text-[#6B7280] font-medium leading-relaxed border-t border-gray-100/80 mt-1 pt-4">
               {answer}
             </div>
           </motion.div>
@@ -121,31 +126,36 @@ export const FlySava = () => {
       {/* Structured Product Schema */}
       <FlySavaProductSchema />
       
-      <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900">
+      <div className="relative overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-500/30 selection:text-blue-900">
         
+        {/* GLOBAL PREMIUM BACKGROUND ELEMENTS */}
+        <div className="absolute top-0 left-0 right-0 h-[120vh] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+        <div className="absolute top-[-5%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
+        <div className="absolute top-[15%] right-[-5%] w-[35%] h-[40%] rounded-full bg-cyan-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
+
         {/* ========================================================================= */}
-        {/* 1. HERO SECTION (FLAGSHIP PRODUCT LAUNCH)                                 */}
+        {/* 1. HERO SECTION */}
         {/* ========================================================================= */}
-        <section className="relative px-6 pt-16 sm:pt-20 md:pt-24 pb-16 md:pb-20 overflow-hidden text-center">
+        <section className="relative px-6 pt-24 sm:pt-32 md:pt-40 pb-16 md:pb-20 overflow-hidden text-center z-10">
           <div className="max-w-[1000px] mx-auto relative z-10">
             <AnimatedSection>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-xs md:text-sm font-bold text-[#2563EB] mb-6">
-                <Sparkles size={14} className="text-[#2563EB]" />
-                <span>Featured Product • Built by ProstoLabs</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_rgb(0,0,0,0.03)] text-xs md:text-sm font-bold text-[#2563EB] mb-8 transform-gpu">
+                <Sparkles size={16} className="text-[#2563EB]" />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">Featured Product • Built by ProstoLabs</span>
               </div>
               
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6 text-[#0A0A0A] font-sans">
+              <h1 className="text-5xl sm:text-6xl lg:text-[80px] font-extrabold tracking-[-0.03em] leading-[1.05] mb-8 text-[#0A0A0A] font-sans">
                 Travel Smarter. Book Better. <br className="hidden sm:block" />
-                <span className="text-[#2563EB]">The Modern Way to Discover Flights.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-[#2563EB] to-cyan-500">The Modern Way to Fly.</span>
               </h1>
               
-              <p className="text-base sm:text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto leading-relaxed mb-8 font-medium">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#6B7280] max-w-3xl mx-auto leading-[1.6] mb-10 font-medium tracking-tight">
                 FlySava is an intelligent travel search engine engineered by ProstoLabs. It eliminates flight booking friction by delivering real-time fare aggregation, flexible date matrices, and sub-second route search speeds.
               </p>
             </AnimatedSection>
             
             <AnimatedSection delay={0.15}>
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-3.5">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                 <a 
                   href="https://flysava.com" 
                   target="_blank" 
@@ -157,10 +167,13 @@ export const FlySava = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="button"
-                    className="w-full sm:w-auto h-12 px-7 rounded-2xl bg-[#2563EB] text-white font-bold text-sm shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer hover:bg-blue-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                    className="group relative w-full sm:w-auto h-14 px-8 rounded-full bg-[#2563EB] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 cursor-pointer transition-all overflow-hidden shadow-[0_8px_30px_rgba(37,99,235,0.3)] border border-blue-400/20"
                   >
-                    <span>Visit FlySava</span>
-                    <ExternalLink size={16} />
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="relative z-10 flex items-center gap-2">
+                      Visit FlySava
+                      <ExternalLink size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </span>
                   </motion.button>
                 </a>
                 
@@ -170,7 +183,7 @@ export const FlySava = () => {
                   type="button"
                   onClick={scrollToDetails} 
                   aria-label="Explore FlySava features and technical architecture"
-                  className="w-full sm:w-auto h-12 px-7 rounded-2xl bg-white border border-gray-200/80 text-[#0A0A0A] font-bold text-sm hover:bg-gray-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                  className="w-full sm:w-auto h-14 px-8 rounded-full bg-white/70 backdrop-blur-xl border border-gray-200/80 text-[#0A0A0A] font-bold text-sm sm:text-base hover:bg-white hover:shadow-lg hover:border-gray-300 transition-all cursor-pointer flex items-center justify-center shadow-sm"
                 >
                   Explore Features
                 </motion.button>
@@ -181,91 +194,97 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 2. PRODUCT PREVIEW (GLASSMORPHISM BROWSER & MOBILE MOCKUPS)               */}
+        {/* 2. PRODUCT PREVIEW (GLASSMORPHISM BROWSER & MOBILE MOCKUPS) */}
         {/* ========================================================================= */}
-        <section className="px-6 pb-16 md:pb-24">
+        <section className="px-6 pb-24 md:pb-32 relative z-20">
           <div className="max-w-[1200px] mx-auto">
             <AnimatedSection delay={0.2}>
-              <div className="relative rounded-[32px] bg-gradient-to-tr from-gray-900 via-gray-950 to-blue-950 p-4 sm:p-8 md:p-10 border border-gray-800 shadow-2xl overflow-hidden">
+              <div className="relative rounded-[40px] bg-[#050505] p-[1px] shadow-[0_30px_100px_rgba(0,0,0,0.4)] overflow-hidden group">
                 
-                {/* Background Radial Glow */}
-                <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
-
-                {/* Desktop Mockup Header Bar */}
-                <div className="flex items-center justify-between border-b border-gray-800 pb-4 mb-6 relative z-10">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-                  </div>
-                  <div className="px-4 py-1 rounded-lg bg-gray-900/90 border border-gray-800 text-xs font-mono text-gray-400 flex items-center gap-2 shadow-inner">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>https://flysava.com</span>
-                  </div>
-                  <div className="text-xs font-bold text-blue-400 font-mono hidden sm:block">
-                    PROSTOLABS CORE ENGINE
-                  </div>
-                </div>
-
-                {/* Main Dashboard Interactive Preview Canvas */}
-                <div className="relative rounded-2xl bg-gray-900/90 border border-gray-800/80 p-6 sm:p-8 text-white space-y-8 backdrop-blur-xl shadow-2xl z-10">
+                {/* Outer Glow Border Effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-transparent to-cyan-500/30 opacity-50" />
+                
+                <div className="relative rounded-[40px] bg-gradient-to-b from-gray-900 to-[#0A0F1C] p-4 sm:p-8 md:p-12 overflow-hidden border border-white/5">
                   
-                  {/* Flight Search Widget Header Mockup */}
-                  <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-6">
-                      <div>
-                        <span className="text-xs font-mono text-blue-400 font-bold uppercase tracking-wider block mb-1">Live Product Preview</span>
-                        <h2 className="text-2xl sm:text-3xl font-extrabold font-sans">Find & Compare Flight Deals</h2>
-                      </div>
-                      <div className="flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold text-blue-300">
-                        <Plane size={14} className="animate-pulse" />
-                        <span>Real-Time Route Engine Active</span>
-                      </div>
-                    </div>
+                  {/* Background Radial Glow Inside Mockup */}
+                  <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
+                  <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-                    {/* Flight Search Bar Mockup Controls */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                      <div className="p-3.5 rounded-xl bg-gray-800/80 border border-gray-700/80 text-xs space-y-1">
-                        <span className="text-gray-400 font-mono block text-[10px]">DEPARTING FROM</span>
-                        <span className="font-bold text-white text-sm">Bengaluru (BLR)</span>
-                      </div>
-                      <div className="p-3.5 rounded-xl bg-gray-800/80 border border-gray-700/80 text-xs space-y-1">
-                        <span className="text-gray-400 font-mono block text-[10px]">DESTINATION</span>
-                        <span className="font-bold text-white text-sm">London (LHR)</span>
-                      </div>
-                      <div className="p-3.5 rounded-xl bg-gray-800/80 border border-gray-700/80 text-xs space-y-1">
-                        <span className="text-gray-400 font-mono block text-[10px]">DATES</span>
-                        <span className="font-bold text-white text-sm">Flexible Date Matrix</span>
-                      </div>
-                      <div className="p-3.5 rounded-xl bg-[#2563EB] text-white flex items-center justify-center font-bold text-xs shadow-md shadow-blue-500/30 gap-2 cursor-pointer">
-                        <Search size={14} />
-                        <span>Search Best Fares</span>
-                      </div>
+                  {/* Desktop Mockup Header Bar */}
+                  <div className="flex items-center justify-between pb-6 mb-8 relative z-10">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#FF5F56] shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)] border border-[#E0443E]" />
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E] shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)] border border-[#DEA123]" />
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#27C93F] shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)] border border-[#1AAB29]" />
+                    </div>
+                    <div className="px-6 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-xs font-mono text-gray-300 flex items-center gap-2.5 shadow-inner flex-1 max-w-sm mx-4 justify-center">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                      <span>https://flysava.com</span>
+                    </div>
+                    <div className="text-[10px] font-bold text-blue-400 font-mono tracking-widest hidden md:block px-4 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                      PROSTOLABS CORE ENGINE
                     </div>
                   </div>
 
-                  {/* Flight Results Stream Cards Mockup */}
-                  <div className="space-y-3">
-                    <div className="p-4 rounded-xl bg-gray-800/50 border border-gray-700/50 flex items-center justify-between gap-4 text-xs font-medium">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center font-bold text-blue-300">
-                          BA
-                        </div>
+                  {/* Main Dashboard Interactive Preview Canvas */}
+                  <div className="relative rounded-[32px] bg-white/5 border border-white/10 p-6 sm:p-10 text-white space-y-10 backdrop-blur-2xl shadow-2xl z-10">
+                    
+                    {/* Flight Search Widget Header Mockup */}
+                    <div className="space-y-6">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-white/10">
                         <div>
-                          <p className="font-bold text-white">Non-stop Flight • 9h 45m</p>
-                          <p className="text-gray-400 text-[11px]">Direct Route • Daily Availability</p>
+                          <span className="text-[11px] font-mono text-blue-400 font-bold uppercase tracking-widest block mb-2">Live Product Preview</span>
+                          <h2 className="text-3xl sm:text-4xl font-extrabold font-sans tracking-tight">Find & Compare Flight Deals</h2>
+                        </div>
+                        <div className="flex items-center gap-2.5 bg-blue-500/10 border border-blue-500/20 px-4 py-2 rounded-full text-xs font-bold text-blue-300">
+                          <Plane size={16} className="animate-pulse" />
+                          <span>Real-Time Route Engine Active</span>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <span className="text-emerald-400 font-extrabold text-sm block">Best Fare Deal</span>
-                        <span className="text-gray-400 text-[10px]">Real-Time Aggregation</span>
+
+                      {/* Flight Search Bar Mockup Controls */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs space-y-1.5 hover:bg-white/10 transition-colors cursor-pointer">
+                          <span className="text-gray-400 font-mono block text-[10px] tracking-wider">DEPARTING FROM</span>
+                          <span className="font-bold text-white text-[15px]">Bengaluru (BLR)</span>
+                        </div>
+                        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs space-y-1.5 hover:bg-white/10 transition-colors cursor-pointer">
+                          <span className="text-gray-400 font-mono block text-[10px] tracking-wider">DESTINATION</span>
+                          <span className="font-bold text-white text-[15px]">London (LHR)</span>
+                        </div>
+                        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs space-y-1.5 hover:bg-white/10 transition-colors cursor-pointer">
+                          <span className="text-gray-400 font-mono block text-[10px] tracking-wider">DATES</span>
+                          <span className="font-bold text-white text-[15px]">Flexible Date Matrix</span>
+                        </div>
+                        <div className="p-4 rounded-2xl bg-[#2563EB] text-white flex items-center justify-center font-bold text-[15px] shadow-lg shadow-blue-500/30 gap-2.5 cursor-pointer hover:bg-blue-600 transition-colors">
+                          <Search size={18} />
+                          <span>Search Fares</span>
+                        </div>
                       </div>
                     </div>
+
+                    {/* Flight Results Stream Cards Mockup */}
+                    <div className="space-y-4">
+                      <div className="p-5 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-white/10 transition-colors cursor-pointer">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center font-bold text-blue-300">
+                            BA
+                          </div>
+                          <div>
+                            <p className="font-bold text-white text-base">Non-stop Flight • 9h 45m</p>
+                            <p className="text-gray-400 text-xs font-medium mt-0.5">Direct Route • Daily Availability</p>
+                          </div>
+                        </div>
+                        <div className="text-left sm:text-right">
+                          <span className="text-emerald-400 font-extrabold text-base block">Best Fare Deal</span>
+                          <span className="text-gray-400 text-[11px] uppercase tracking-wider font-mono mt-0.5 block">Real-Time Aggregation</span>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
                 </div>
-
               </div>
             </AnimatedSection>
           </div>
@@ -273,22 +292,22 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 3. WHY WE BUILT FLYSAVA (AUTHENTIC STORYTELLING)                          */}
+        {/* 3. WHY WE BUILT FLYSAVA */}
         {/* ========================================================================= */}
-        <section id="about-flysava" className="py-16 md:py-24 px-6 bg-white border-y border-gray-200/80 scroll-mt-20">
-          <div className="max-w-[1100px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <section id="about-flysava" className="py-24 md:py-32 px-6 bg-white border-t border-gray-200/50 scroll-mt-20">
+          <div className="max-w-[1300px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
               
               <AnimatedSection>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-4">
-                  <span>Product Story</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                  <span className="w-2 h-2 rounded-full bg-blue-500" /> Product Story
                 </div>
                 
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-6 leading-tight font-sans">
-                  Why ProstoLabs Engineered <span className="text-[#2563EB]">FlySava.</span>
+                <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-8 leading-[1.1] font-sans">
+                  Why ProstoLabs Engineered <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">FlySava.</span>
                 </h2>
                 
-                <div className="space-y-4 text-base sm:text-lg text-[#6B7280] font-medium leading-relaxed">
+                <div className="space-y-6 text-lg text-[#4B5563] font-medium leading-[1.7]">
                   <p>
                     Online flight search platforms have grown increasingly crowded with distracting ads, slow page reloads, hidden booking fees, and confusing user interfaces that frustrate travelers.
                   </p>
@@ -301,24 +320,26 @@ export const FlySava = () => {
                 </div>
               </AnimatedSection>
 
-              <AnimatedSection delay={0.15}>
-                <div className="p-8 sm:p-10 rounded-[32px] bg-[#FAFAFA] border border-gray-200/80 shadow-2xs space-y-6">
-                  <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider block font-sans">
+              <AnimatedSection delay={0.2}>
+                <div className="p-8 sm:p-12 rounded-[40px] bg-white/70 backdrop-blur-xl border border-gray-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-shadow duration-500 space-y-8 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl" />
+                  
+                  <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans relative z-10">
                     Product Achievements
                   </span>
                   
-                  <div className="space-y-4">
+                  <div className="space-y-6 relative z-10">
                     {[
                       { title: 'Sub-Second Search Engine', desc: 'Optimized API polling mechanics that render flight options without screen lag.' },
                       { title: 'Mobile-First Ergonomics', desc: 'Thumb-friendly search controls engineered for effortless smartphone use.' },
                       { title: 'Transparent Fare Pricing', desc: 'Clear cost breakdowns without deceptive hidden add-ons or popups.' },
                       { title: 'Scalable Cloud Architecture', desc: 'Built on serverless edge networks capable of handling high concurrency.' }
                     ].map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
+                      <div key={idx} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50/50 border border-gray-100/80 hover:bg-white transition-colors">
+                        <CheckCircle2 className="w-6 h-6 text-[#2563EB] shrink-0 mt-0.5" />
                         <div>
-                          <h3 className="font-bold text-sm text-[#0A0A0A] font-sans">{item.title}</h3>
-                          <p className="text-xs text-[#6B7280] font-medium leading-relaxed">{item.desc}</p>
+                          <h3 className="font-bold text-[17px] text-[#0A0A0A] font-sans tracking-tight mb-1">{item.title}</h3>
+                          <p className="text-[14px] text-[#6B7280] font-medium leading-relaxed">{item.desc}</p>
                         </div>
                       </div>
                     ))}
@@ -332,19 +353,19 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 4. PRODUCT FEATURES (6 CARDS WITH HIGHLIGHT BADGES)                      */}
+        {/* 4. PRODUCT FEATURES (BENTO GRID) */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
+        <section className="py-24 md:py-32 px-6 bg-transparent relative border-t border-gray-200/50">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                <span>Core Capabilities</span>
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                Core Capabilities
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Engineered for Modern Travelers
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 Six key product capabilities that set FlySava apart.
               </p>
             </AnimatedSection>
@@ -364,13 +385,13 @@ export const FlySava = () => {
                   desc: 'Compares prices across adjacent travel dates so users can identify the cheapest departure days.' 
                 },
                 { 
-                  title: 'Transparent Price Comparison', 
+                  title: 'Transparent Pricing', 
                   badge: 'Zero Hidden Fees',
                   icon: Tags, 
                   desc: 'Provides clear cost breakdowns across routes without surprise booking fees or aggressive popups.' 
                 },
                 { 
-                  title: 'Travel & Route Inspiration', 
+                  title: 'Travel Inspiration', 
                   badge: 'Destination Guides',
                   icon: Compass, 
                   desc: 'Curated flight deals and destination guides designed to spark new trip ideas for budget travelers.' 
@@ -388,19 +409,21 @@ export const FlySava = () => {
                   desc: 'Fully optimized for mobile viewports, allowing users to search and compare flights effortlessly on the go.' 
                 },
               ].map((feature, i) => (
-                <AnimatedSection key={feature.title} delay={i * 0.08}>
-                  <div className="p-8 rounded-[28px] bg-white border border-gray-200/80 hover:border-[#2563EB]/40 shadow-2xs hover:shadow-xl transition-all duration-300 h-full flex flex-col justify-between group">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <feature.icon size={22} />
+                <AnimatedSection key={feature.title} delay={i * 0.1}>
+                  <div className="group relative p-8 rounded-[32px] bg-white/70 backdrop-blur-xl border border-gray-200/80 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)] hover:border-[#2563EB]/30 transition-all duration-500 h-full flex flex-col overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2 group-hover:scale-150 group-hover:bg-blue-500/10 transition-all duration-500" />
+                    
+                    <div className="relative z-10 flex flex-col h-full">
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-white shadow-sm border border-blue-100 text-[#2563EB] flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                          <feature.icon size={26} strokeWidth={1.5} />
                         </div>
-                        <span className="px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100 text-[10px] font-extrabold text-[#2563EB] uppercase tracking-wider">
+                        <span className="px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-100 text-[10px] font-bold text-[#2563EB] uppercase tracking-widest shadow-sm">
                           {feature.badge}
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold text-[#0A0A0A] font-sans">{feature.title}</h3>
-                      <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{feature.desc}</p>
+                      <h3 className="text-2xl font-bold text-[#0A0A0A] font-sans tracking-tight mb-3">{feature.title}</h3>
+                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium mt-auto">{feature.desc}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -412,19 +435,19 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 5. PRODUCT EXPERIENCE                                                     */}
+        {/* 5. PRODUCT EXPERIENCE */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 bg-white border-t border-gray-200/50">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                <span>User-Centric Design</span>
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                User-Centric Design
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Designed Around Travelers
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 How intentional UX decisions make flight search effortless.
               </p>
             </AnimatedSection>
@@ -436,14 +459,14 @@ export const FlySava = () => {
                 { icon: ShieldCheck, title: 'Accessible Contrast', desc: 'High-contrast typography and clear layout hierarchy conforming to WCAG standards.' },
                 { icon: Cpu, title: 'Lightweight Payload', desc: 'Minified scripts and compressed media assets ensuring smooth operation on slow networks.' }
               ].map((item, i) => (
-                <AnimatedSection key={i} delay={i * 0.08}>
-                  <div className="p-6 sm:p-8 rounded-[24px] bg-[#FAFAFA] border border-gray-200/80 shadow-2xs h-full flex flex-col justify-between">
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
-                        <item.icon size={20} />
+                <AnimatedSection key={i} delay={i * 0.1}>
+                  <div className="p-8 rounded-[32px] bg-[#FAFAFA] border border-gray-200/80 hover:bg-white hover:shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:border-transparent transition-all duration-300 h-full flex flex-col justify-between group cursor-default">
+                    <div className="space-y-5">
+                      <div className="w-12 h-12 rounded-2xl bg-white border border-gray-100 shadow-sm text-[#2563EB] flex items-center justify-center group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
+                        <item.icon size={22} strokeWidth={1.5} />
                       </div>
-                      <h3 className="font-bold text-lg text-[#0A0A0A] font-sans">{item.title}</h3>
-                      <p className="text-xs sm:text-sm text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
+                      <h3 className="font-bold text-xl text-[#0A0A0A] font-sans tracking-tight">{item.title}</h3>
+                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{item.desc}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -455,22 +478,22 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 6. ELEGANT TECHNOLOGY STACK BADGES                                        */}
+        {/* 6. ELEGANT TECHNOLOGY STACK BADGES */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-20 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 bg-transparent relative border-t border-gray-200/50">
           <div className="max-w-[1100px] mx-auto text-center">
             
-            <AnimatedSection className="max-w-2xl mx-auto mb-10">
-              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider block font-sans mb-1">
+            <AnimatedSection className="max-w-2xl mx-auto mb-12">
+              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans mb-3">
                 Under The Hood
               </span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A] tracking-tight font-sans">
+              <h3 className="text-3xl md:text-4xl font-extrabold text-[#0A0A0A] tracking-[-0.02em] font-sans">
                 Engineered With Modern Web Standards
               </h3>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.1}>
-              <div className="flex flex-wrap items-center justify-center gap-3">
+            <AnimatedSection delay={0.15}>
+              <div className="flex flex-wrap items-center justify-center gap-4">
                 {[
                   'React Ecosystem', 
                   'TypeScript', 
@@ -483,7 +506,7 @@ export const FlySava = () => {
                 ].map((tech, idx) => (
                   <span 
                     key={idx} 
-                    className="px-4 py-2.5 rounded-2xl bg-white border border-gray-200/80 text-xs font-bold text-[#0A0A0A] shadow-2xs hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
+                    className="px-6 py-3.5 rounded-full bg-white/80 backdrop-blur-md border border-gray-200 shadow-sm text-[15px] font-bold text-[#0A0A0A] hover:border-[#2563EB]/50 hover:shadow-[0_8px_20px_rgba(37,99,235,0.1)] hover:-translate-y-0.5 transition-all duration-300 cursor-default select-none"
                   >
                     {tech}
                   </span>
@@ -496,19 +519,19 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 7. PRODUCT GALLERY (RESPONSIVE MOCKUP SCREENS)                           */}
+        {/* 7. PRODUCT GALLERY (RESPONSIVE MOCKUP SCREENS) */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 bg-white border-t border-gray-200/50">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                <span>Visual Gallery</span>
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                Visual Gallery
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Multi-Device Experience
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 Seamless design across desktop, tablet, and mobile viewports.
               </p>
             </AnimatedSection>
@@ -520,24 +543,24 @@ export const FlySava = () => {
                 { title: 'Mobile Travel Companion', device: 'Mobile View', desc: 'Thumb-friendly search controls for flight bookings on the go.', icon: Smartphone }
               ].map((item, idx) => (
                 <AnimatedSection key={idx} delay={idx * 0.1}>
-                  <div className="group rounded-[28px] bg-[#FAFAFA] border border-gray-200/80 p-6 shadow-2xs hover:shadow-xl hover:border-[#2563EB]/40 transition-all duration-300 space-y-4">
-                    <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-gray-900 to-blue-950 border border-gray-800 p-4 flex flex-col justify-between overflow-hidden relative">
-                      <div className="flex items-center justify-between text-white/60 text-[10px] font-mono">
+                  <div className="group rounded-[32px] bg-white border border-gray-200/80 p-8 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-[#2563EB]/30 transition-all duration-500 space-y-6">
+                    <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#0A0F1C] to-blue-950 border border-gray-800 p-6 flex flex-col justify-between overflow-hidden relative shadow-inner">
+                      <div className="flex items-center justify-between text-white/60 text-[11px] font-mono tracking-widest uppercase">
                         <span>{item.device}</span>
-                        <item.icon size={14} className="text-blue-400" />
+                        <item.icon size={16} className="text-blue-400" />
                       </div>
-                      <div className="my-auto space-y-2 text-white">
-                        <div className="w-10 h-2 rounded bg-blue-500/80" />
-                        <div className="w-3/4 h-1.5 rounded bg-white/40" />
-                        <div className="w-1/2 h-1.5 rounded bg-white/20" />
+                      <div className="my-auto space-y-3 text-white">
+                        <div className="w-12 h-2.5 rounded-full bg-blue-500/80 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
+                        <div className="w-3/4 h-2 rounded-full bg-white/40" />
+                        <div className="w-1/2 h-2 rounded-full bg-white/20" />
                       </div>
-                      <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-[9px] text-gray-300 font-mono">
-                        flysava.com/search
+                      <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-[10px] text-gray-300 font-mono flex items-center justify-center backdrop-blur-md">
+                        <ShieldCheck size={12} className="mr-2 text-emerald-400" /> flysava.com
                       </div>
                     </div>
                     <div>
-                      <h3 className="font-bold text-base text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors">{item.title}</h3>
-                      <p className="text-xs text-[#6B7280] font-medium mt-1 leading-relaxed">{item.desc}</p>
+                      <h3 className="font-bold text-xl text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors tracking-tight">{item.title}</h3>
+                      <p className="text-[15px] text-[#6B7280] font-medium mt-2 leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -549,21 +572,27 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 8. ENGINEERING PROCESS TIMELINE                                           */}
+        {/* 8. ENGINEERING PROCESS TIMELINE (DARK THEME) */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-gradient-to-br from-[#2563EB] via-[#1D4ED8] to-[#1E3A8A] text-white">
-          <div className="max-w-[1100px] mx-auto">
+        <section className="py-24 md:py-32 px-6 bg-[#0A0A0A] text-white relative overflow-hidden">
+          {/* Subtle Glows */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_rgba(37,99,235,0.15)_0%,_transparent_70%)] pointer-events-none" />
+          
+          <div className="max-w-[1300px] mx-auto relative z-10">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-3 font-sans">
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-24">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Product Engineering Timeline
               </h2>
-              <p className="text-base sm:text-lg text-blue-100 font-medium">
+              <p className="text-lg sm:text-xl text-gray-400 font-medium">
                 How ProstoLabs took FlySava from concept to live deployment.
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
+              {/* Desktop Horizontal Line */}
+              <div className="hidden lg:block absolute top-[32px] left-[5%] right-[5%] h-[2px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent z-0" />
+
               {[
                 { step: '01', title: 'Research', desc: 'Traveler friction points and flight API review.' },
                 { step: '02', title: 'UX Design', desc: 'Mobile-first wireframes and interactive UI prototypes.' },
@@ -571,11 +600,14 @@ export const FlySava = () => {
                 { step: '04', title: 'Testing', desc: 'Core Web Vitals audits and responsive QA testing.' },
                 { step: '05', title: 'Launch', desc: 'Deployment to edge networks with global caching.' }
               ].map((phase, i) => (
-                <AnimatedSection key={i} delay={i * 0.08}>
-                  <div className="p-6 rounded-[24px] bg-white/10 backdrop-blur-md border border-white/15 h-full space-y-3">
-                    <span className="text-xs font-mono font-bold text-blue-200 block">Step {phase.step}</span>
-                    <h3 className="text-lg font-bold font-sans text-white">{phase.title}</h3>
-                    <p className="text-xs text-blue-100 font-medium leading-relaxed">{phase.desc}</p>
+                <AnimatedSection key={i} delay={i * 0.1} className="relative z-10 group">
+                  <div className="p-8 sm:p-10 rounded-[32px] bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:bg-white/10 h-full flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-full bg-[#0A0A0A] border-2 border-gray-800 group-hover:border-blue-500 flex items-center justify-center text-lg font-bold text-gray-400 group-hover:text-blue-400 mb-6 transition-colors duration-500 shadow-[0_0_20px_rgba(0,0,0,0.5)] relative">
+                      {phase.step}
+                      <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                    <h3 className="text-xl font-bold font-sans text-white tracking-tight mb-3">{phase.title}</h3>
+                    <p className="text-[14px] text-gray-400 font-medium leading-relaxed">{phase.desc}</p>
                   </div>
                 </AnimatedSection>
               ))}
@@ -586,19 +618,19 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 9. QUALITATIVE ACHIEVEMENTS & RESULTS                                     */}
+        {/* 9. QUALITATIVE ACHIEVEMENTS & RESULTS */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 bg-white border-b border-gray-200/50">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                <span>Engineered Quality</span>
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                Engineered Quality
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
                 Product Outcomes
               </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
                 Qualitative benchmarks achieved by FlySava.
               </p>
             </AnimatedSection>
@@ -610,11 +642,13 @@ export const FlySava = () => {
                 { title: 'SEO-First Structure', desc: 'Semantic HTML markup and structured JSON-LD data for search crawlers.' },
                 { title: 'Scalable Foundation', desc: 'Clean React code ready to accommodate future feature integrations.' }
               ].map((res, i) => (
-                <AnimatedSection key={i} delay={i * 0.08}>
-                  <div className="p-6 rounded-[24px] bg-[#FAFAFA] border border-gray-200/80 shadow-2xs h-full space-y-2">
-                    <CheckCircle2 className="w-6 h-6 text-[#2563EB] mb-2" />
-                    <h3 className="font-bold text-base text-[#0A0A0A] font-sans">{res.title}</h3>
-                    <p className="text-xs sm:text-sm text-[#6B7280] font-medium leading-relaxed">{res.desc}</p>
+                <AnimatedSection key={i} delay={i * 0.1}>
+                  <div className="p-8 rounded-[32px] bg-[#FAFAFA] border border-gray-200/80 shadow-2xs hover:shadow-[0_15px_35px_rgba(0,0,0,0.04)] hover:bg-white transition-all duration-300 h-full space-y-4 cursor-default">
+                    <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mb-6">
+                      <CheckCircle2 className="w-6 h-6 text-[#2563EB]" strokeWidth={2} />
+                    </div>
+                    <h3 className="font-bold text-xl text-[#0A0A0A] font-sans tracking-tight">{res.title}</h3>
+                    <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed">{res.desc}</p>
                   </div>
                 </AnimatedSection>
               ))}
@@ -625,16 +659,45 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 10. CONTINUE EXPLORING (INTERNAL LINKING DIRECTORY)                       */}
+        {/* 10. FAQ ACCORDION */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-20 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 relative bg-transparent">
+          <div className="max-w-[900px] mx-auto">
+            <AnimatedSection className="text-center mb-16 sm:mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+                <HelpCircle size={14} />
+                <span>Frequently Asked Questions</span>
+              </div>
+              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+                Questions about FlySava?
+              </h2>
+              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+                Learn more about FlySava and ProstoLabs product engineering.
+              </p>
+            </AnimatedSection>
+
+            <div className="space-y-4">
+              {faqData.map((faq, idx) => (
+                <AnimatedSection key={idx} delay={idx * 0.05}>
+                  <FAQItem question={faq.question} answer={faq.answer} />
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+        {/* ========================================================================= */}
+        {/* 11. CONTINUE EXPLORING */}
+        {/* ========================================================================= */}
+        <section className="py-24 md:py-32 px-6 relative bg-white border-t border-gray-200/50">
           <div className="max-w-[1300px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-10">
-              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-wider block font-sans mb-1">
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
+              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans mb-3">
                 Explore ProstoLabs
               </span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A] tracking-tight font-sans">
+              <h3 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-[-0.02em] font-sans">
                 Continue Exploring
               </h3>
             </AnimatedSection>
@@ -674,23 +737,23 @@ export const FlySava = () => {
                   <Link
                     to={card.link}
                     aria-label={`${card.cta}: ${card.title}`}
-                    className="p-6 rounded-[24px] bg-white border border-gray-200/80 hover:border-[#2563EB]/40 shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                    className="p-8 md:p-10 rounded-[32px] bg-white/70 backdrop-blur-xl border border-gray-200/80 hover:border-[#2563EB]/40 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)] transition-all duration-300 flex flex-col justify-between h-full group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
                   >
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center group-hover:scale-105 transition-transform">
-                        <card.icon size={20} />
+                    <div className="space-y-4">
+                      <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 text-[#0A0A0A] flex items-center justify-center group-hover:bg-blue-50 group-hover:text-[#2563EB] transition-colors duration-300">
+                        <card.icon size={22} strokeWidth={1.5} />
                       </div>
-                      <h4 className="text-base font-bold text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors">
+                      <h4 className="text-xl md:text-2xl font-bold text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors tracking-tight">
                         {card.title}
                       </h4>
-                      <p className="text-xs text-[#6B7280] font-medium leading-relaxed">
+                      <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed">
                         {card.desc}
                       </p>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t border-gray-200/60 flex items-center gap-1.5 text-xs font-bold text-[#2563EB]">
+                    <div className="pt-6 mt-8 border-t border-gray-200/60 flex items-center gap-2 text-[13px] font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors">
                       <span>{card.cta}</span>
-                      <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </div>
                   </Link>
                 </AnimatedSection>
@@ -702,124 +765,32 @@ export const FlySava = () => {
 
 
         {/* ========================================================================= */}
-        {/* 11. FAQ ACCORDION                                                        */}
+        {/* 12. FINAL CALL TO ACTION BANNER */}
         {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
-          <div className="max-w-[900px] mx-auto">
-            <AnimatedSection className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-sans">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-base sm:text-lg text-[#6B7280] font-medium">
-                Learn more about FlySava and ProstoLabs product engineering.
-              </p>
-            </AnimatedSection>
-
-            <div className="space-y-4">
-              {faqData.map((faq, idx) => (
-                <AnimatedSection key={idx} delay={idx * 0.05}>
-                  <FAQItem question={faq.question} answer={faq.answer} />
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-        </section>
-
-
-        {/* ========================================================================= */}
-        {/* 12. FEATURED RESOURCES STREAM (DYNAMICALLY SORTED LATEST 3)               */}
-        {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA] border-t border-gray-200/80">
+        <section className="py-24 md:py-32 px-6 bg-transparent">
           <div className="max-w-[1300px] mx-auto">
-            
-            <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-              <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] font-bold text-xs uppercase tracking-wider mb-3">
-                  <span>From Our Journal</span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-tight font-sans">
-                  Featured Resources
+            <AnimatedSection className="relative rounded-[40px] overflow-hidden bg-[#0A0A0A] text-white text-center py-20 md:py-28 px-6 sm:px-12 shadow-2xl">
+              {/* Premium Gradient Overlays */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_rgba(37,99,235,0.4)_0%,_transparent_70%)] pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_bottom_right,_rgba(96,165,250,0.15)_0%,_transparent_70%)] pointer-events-none" />
+              
+              <div className="relative z-10 max-w-3xl mx-auto space-y-8">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-[-0.03em] font-sans leading-[1.1]">
+                  Ready to Build Your Own <br className="hidden sm:block" /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Digital Product?</span>
                 </h2>
-              </div>
-              <Link to="/resources" aria-label="View all publication resources">
-                <button 
-                  type="button"
-                  className="px-5 py-2.5 rounded-xl bg-white border border-gray-300 text-[#0A0A0A] hover:bg-gray-100 font-bold text-xs flex items-center gap-2 cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
-                >
-                  <span>View All Resources</span>
-                  <ArrowRight size={14} />
-                </button>
-              </Link>
-            </AnimatedSection>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {latestArticles.map((art, i) => (
-                <AnimatedSection key={art.slug} delay={i * 0.1}>
-                  <Link
-                    to={`/resources/${art.slug}`}
-                    aria-label={`Read resource: ${art.title}`}
-                    className="group rounded-[28px] bg-white border border-gray-200/90 shadow-2xs hover:shadow-xl hover:border-[#2563EB]/40 transition-all duration-300 p-6 flex flex-col justify-between overflow-hidden cursor-pointer h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
-                  >
-                    <div className="space-y-4">
-                      <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100">
-                        <img 
-                          src={art.thumbnail} 
-                          alt={art.title} 
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300" 
-                        />
-                      </div>
-                      <div className="flex items-center justify-between text-xs font-bold">
-                        <span className="text-[#2563EB]">{art.category}</span>
-                        <span className="text-gray-400 flex items-center gap-1"><Clock size={12} /> {art.readingTime}</span>
-                      </div>
-                      <h3 className="text-lg font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors leading-snug font-sans">
-                        {art.title}
-                      </h3>
-                      <p className="text-xs text-[#6B7280] font-medium leading-relaxed line-clamp-3">
-                        {art.excerpt}
-                      </p>
-                    </div>
-
-                    <div className="pt-4 mt-6 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-gray-400">
-                      <span>{art.date}</span>
-                      <span className="text-[#2563EB] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                        <span>Read Story</span>
-                        <ArrowUpRight size={14} />
-                      </span>
-                    </div>
-                  </Link>
-                </AnimatedSection>
-              ))}
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* ========================================================================= */}
-        {/* 13. FINAL CALL TO ACTION                                                  */}
-        {/* ========================================================================= */}
-        <section className="py-16 md:py-24 px-6 bg-white border-t border-gray-200/80">
-          <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-[#2563EB] via-[#1D4ED8] to-[#1E3A8A] text-white text-center py-16 md:py-20 px-6 sm:px-12 shadow-xl">
-              <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight font-sans leading-tight">
-                  Ready to Build Your Own Digital Product?
-                </h2>
-                <p className="text-sm sm:text-base text-blue-100 font-medium leading-relaxed">
+                <p className="text-lg sm:text-xl text-gray-400 font-medium leading-relaxed max-w-2xl mx-auto">
                   Partner with ProstoLabs to design and deploy custom web software, SaaS platforms, or AI integrations tailored to your business.
                 </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-3.5 pt-2">
+                <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
                   <Link to="/start-project" aria-label="Start your digital project with ProstoLabs">
                     <motion.button 
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       type="button"
-                      className="w-full sm:w-auto h-12 px-7 bg-white text-[#2563EB] rounded-2xl font-bold text-sm shadow-md hover:bg-blue-50 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                      className="group relative w-full sm:w-auto h-14 px-8 bg-white text-[#0A0A0A] rounded-full font-bold text-base shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all cursor-pointer overflow-hidden flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
                     >
-                      Start Your Project
+                      <span>Start Your Project</span>
+                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </motion.button>
                   </Link>
                   <a href="https://flysava.com" target="_blank" rel="noopener noreferrer" aria-label="Visit FlySava external site">
@@ -827,10 +798,10 @@ export const FlySava = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       type="button"
-                      className="w-full sm:w-auto h-12 px-7 bg-white/10 text-white rounded-2xl font-bold text-sm border border-white/20 hover:bg-white/20 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 flex items-center justify-center gap-2"
+                      className="w-full sm:w-auto h-14 px-8 bg-white/10 backdrop-blur-md text-white rounded-full font-bold text-base border border-white/20 hover:bg-white/20 transition-all cursor-pointer flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
                     >
                       <span>Visit FlySava</span>
-                      <ExternalLink size={14} />
+                      <ExternalLink size={16} />
                     </motion.button>
                   </a>
                 </div>
