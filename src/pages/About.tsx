@@ -6,8 +6,7 @@ import { SEO } from '../components/seo/SEO'
 import { resources } from '../data/resourcesData'
 import { 
   Code, Palette, Lightbulb, Target, Activity, Sparkles,
-  ChevronDown, CheckCircle2, ShieldCheck, Cpu, Clock,
-  ArrowUpRight, ArrowRight, MessageSquare, Layers, Globe,
+  ChevronDown, CheckCircle2, ShieldCheck, Cpu, Clock, ArrowRight, MessageSquare, Layers, Globe,
   BookOpen
 } from 'lucide-react'
 

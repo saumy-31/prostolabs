@@ -6,7 +6,7 @@ import { SEO } from '../components/seo/SEO'
 import { resources } from '../data/resourcesData'
 import { 
   Plane, Tags, Smartphone, ArrowRight, CheckCircle2, Sparkles, ExternalLink,
-  ShieldCheck, Cpu, Clock, ArrowUpRight, BookOpen, Code, Globe, Laptop, Briefcase,
+  ShieldCheck, Cpu, ArrowUpRight, BookOpen, Code, Globe, Laptop, Briefcase,
   Zap, Calendar, Compass, Search, ChevronDown, HelpCircle
 } from 'lucide-react'
 

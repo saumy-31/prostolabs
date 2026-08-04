@@ -8,7 +8,7 @@ import {
   Briefcase, Users, Terminal, TrendingUp, 
   MapPin, Clock, ChevronDown, CheckCircle2,
   UploadCloud, ShieldCheck, Sparkles, ArrowRight,
-  Award, Globe, ArrowUpRight, BookOpen,
+  Award, Globe, BookOpen,
   Code, Zap, Laptop, FileCheck, UserCheck, Layers, HelpCircle
 } from 'lucide-react'
 
