@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { SEO } from '../components/seo/SEO'
-import { resources } from '../data/resourcesData'
+
 import { 
   Plane, Tags, Smartphone, ArrowRight, CheckCircle2, Sparkles, ExternalLink,
-  ShieldCheck, Cpu, ArrowUpRight, BookOpen, Code, Globe, Laptop, Briefcase,
+  ShieldCheck, Cpu, ArrowUpRight, BookOpen, Code, Globe,  Briefcase,
   Zap, Calendar, Compass, Search, ChevronDown, HelpCircle
 } from 'lucide-react'
 
