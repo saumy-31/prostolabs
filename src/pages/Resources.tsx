@@ -1,6 +1,5 @@
-import { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { 
   Sparkles, Clock, ArrowRight, ArrowUpRight, 
   Search, ShieldCheck, Code2, Palette, TrendingUp, Settings,
@@ -11,7 +10,6 @@ import { Helmet } from 'react-helmet-async'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { resources, type Article } from '../data/resourcesData'
 
-// Session Storage Helpers for Preserving Page Position & State
 const STORAGE_KEY = 'prostolabs_resources_state'
 
 interface SavedResourcesState {
@@ -52,13 +50,11 @@ export function Resources() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Detect if user is returning from an article
   const savedState = getResourcesState()
   const isReturningFromArticle = Boolean(
     (location.state as { fromArticle?: boolean })?.fromArticle || savedState?.isReturning
   )
 
-  // Initialize state from sessionStorage if returning, otherwise set defaults
   const [selectedTopic, setSelectedTopic] = useState<string>(
     isReturningFromArticle && savedState ? savedState.selectedTopic : 'All'
   )
@@ -69,10 +65,8 @@ export function Resources() {
     isReturningFromArticle && savedState ? savedState.visibleCount : 6
   )
 
-  // The latest featured article becomes the entire hero
   const featuredArticle = resources[0]
 
-  // Topics/Categories Definition
   const topics = [
     { name: 'All', icon: BookOpen },
     { name: 'Web Development', icon: Code2 },
@@ -82,7 +76,6 @@ export function Resources() {
     { name: 'Maintenance', icon: Settings },
   ]
 
-  // Filtered Archive Stream
   const filteredArticles = resources.filter((art: Article) => {
     const matchesTopic = selectedTopic === 'All' || art.category === selectedTopic
     const matchesQuery = 
@@ -91,7 +84,6 @@ export function Resources() {
     return matchesTopic && matchesQuery
   })
 
-  // Paginated View
   const displayedArticles = filteredArticles.slice(0, visibleCount)
   const hasMore = visibleCount < filteredArticles.length
 
@@ -99,7 +91,6 @@ export function Resources() {
     setVisibleCount((prev) => prev + 6)
   }
 
-  // Restore scroll position after DOM renders when returning
   useLayoutEffect(() => {
     if (isReturningFromArticle && savedState?.scrollY) {
       window.scrollTo(0, savedState.scrollY)
@@ -107,7 +98,6 @@ export function Resources() {
     }
   }, [])
 
-  // Navigation Handler to store scroll position and state before viewing an article
   const handleArticleClick = (slug: string) => {
     saveResourcesState({
       selectedTopic,
@@ -135,12 +125,17 @@ export function Resources() {
   }
 
   return (
-    <div className="relative bg-[#FAFAFA] text-[#0A0A0A] font-sans min-h-screen selection:bg-blue-500/30 selection:text-blue-900 pt-24 md:pt-32 pb-20 overflow-hidden">
+    <div className="relative w-full overflow-x-clip bg-[#F8FAFC] text-[#0F172A] font-sans antialiased selection:bg-blue-600/15 selection:text-blue-600 min-h-screen pt-28 sm:pt-36 pb-20">
       
-      {/* GLOBAL PREMIUM BACKGROUND ELEMENTS */}
-      <div className="absolute top-0 left-0 right-0 h-[120vh] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-0" />
-      <div className="absolute top-[-5%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/10 blur-[120px] pointer-events-none mix-blend-multiply z-0" />
-      <div className="absolute top-[15%] right-[-5%] w-[35%] h-[40%] rounded-full bg-cyan-400/10 blur-[120px] pointer-events-none mix-blend-multiply z-0" />
+      {/* Ambient Grid Layer */}
+      <div 
+        aria-hidden="true" 
+        className="absolute inset-0 top-0 h-[650px] w-full bg-[radial-gradient(ellipse_75%_50%_at_50%_0%,rgba(37,99,235,0.06),transparent_70%)] pointer-events-none" 
+      />
+      <div 
+        aria-hidden="true" 
+        className="absolute top-0 left-0 right-0 h-[700px] bg-[linear-gradient(to_right,#E2E8F040_1px,transparent_1px),linear-gradient(to_bottom,#E2E8F040_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" 
+      />
       
       <SEO 
         title="Resources & Journal | ProstoLabs"
@@ -154,104 +149,100 @@ export function Resources() {
         </script>
       </Helmet>
 
-      <div className="max-w-[1350px] mx-auto px-6 lg:px-12 relative z-10">
+      <div className="max-w-[1240px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
         
         {/* =================================================================== */}
-        {/* SECTION 1 — FEATURED STORY AS THE HERO (CINEMATIC VIEWPORT FULL)  */}
+        {/* 1. HERO HEADER */}
+        {/* =================================================================== */}
+        <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs text-xs font-semibold text-blue-600 mb-4">
+            <Sparkles size={14} className="text-blue-600" />
+            <span>ProstoLabs Journal</span>
+          </div>
+          <h1 className="text-[36px] sm:text-[48px] md:text-[56px] font-extrabold tracking-[-0.035em] leading-[1.05] text-slate-950 mb-3">
+            Insights & Engineering
+          </h1>
+          <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
+            Practical guides, architectural frameworks, and product strategies on web development, UI/UX, and AI.
+          </p>
+        </AnimatedSection>
+
+        {/* =================================================================== */}
+        {/* 2. FEATURED COVER STORY */}
         {/* =================================================================== */}
         {featuredArticle && (
-          <AnimatedSection className="mb-16 md:mb-24">
-            {/* Header / Intro */}
-            <div className="text-center max-w-2xl mx-auto mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_rgb(0,0,0,0.03)] text-xs md:text-sm font-bold text-[#2563EB] mb-6 transform-gpu">
-                <Sparkles size={16} className="text-[#2563EB]" />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">ProstoLabs Journal</span>
-              </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-[-0.03em] leading-[1.1] mb-4 text-[#0A0A0A] font-sans">
-                Insights & Engineering
-              </h1>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium tracking-tight">
-                Practical guides, essays, and insights on web development, UI/UX design, AI automations, and growth strategy.
-              </p>
-            </div>
-
-            {/* Featured Article Card */}
+          <AnimatedSection className="mb-14 sm:mb-20">
             <div
               onClick={() => handleArticleClick(featuredArticle.slug)}
-              className="group relative block cursor-pointer rounded-[40px] overflow-hidden bg-gray-100 shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-gray-200/80 transition-transform duration-500 hover:-translate-y-1"
+              className="group cursor-pointer rounded-3xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0"
             >
-              {/* Cinematic Full-Width Hero Background */}
-              <div className="relative aspect-[16/11] sm:aspect-[21/10] lg:aspect-[21/9] w-full overflow-hidden">
+              {/* Media (7 Cols) */}
+              <div className="lg:col-span-7 relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto overflow-hidden bg-slate-100 min-h-[260px] sm:min-h-[340px]">
                 <img 
                   src={featuredArticle.thumbnail} 
                   alt={featuredArticle.title} 
                   loading="eager"
-                  className="w-full h-full object-cover scale-100 group-hover:scale-[1.05] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                  className="w-full h-full object-cover group-hover:scale-101 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+                <span className="absolute top-4 left-4 px-3 py-1 bg-white/95 backdrop-blur-md text-slate-900 rounded-md font-mono text-xs font-semibold shadow-2xs">
+                  Featured Story
+                </span>
               </div>
 
-              {/* Overlapping Editorial Content Card */}
-              <div className="p-8 sm:p-10 lg:p-12 absolute bottom-0 left-0 w-full lg:w-auto lg:bottom-8 lg:left-8 lg:max-w-2xl bg-white/80 lg:bg-white/90 backdrop-blur-2xl lg:rounded-[32px] border-t lg:border border-white/40 lg:shadow-2xl transition-all duration-500 flex flex-col justify-end lg:justify-start">
-                <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-[#2563EB] mb-4">
-                  <span className="px-3 py-1 bg-blue-50/80 rounded-full border border-blue-100 font-extrabold uppercase tracking-widest text-[10px]">
-                    Featured Cover Story
-                  </span>
-                  <span className="text-gray-300 hidden sm:block">•</span>
-                  <span className="text-gray-600 font-semibold">{featuredArticle.category}</span>
-                  <span className="text-gray-300 hidden sm:block">•</span>
-                  <span className="text-gray-500 font-medium flex items-center gap-1.5">
-                    <Clock size={14} /> {featuredArticle.readingTime}
-                  </span>
+              {/* Editorial Content (5 Cols) */}
+              <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-3">
+                    <span className="text-blue-600">{featuredArticle.category}</span>
+                    <span>•</span>
+                    <span>{featuredArticle.date}</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1"><Clock size={12} /> {featuredArticle.readingTime}</span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 leading-snug tracking-tight group-hover:text-blue-600 transition-colors mb-3">
+                    {featuredArticle.title}
+                  </h2>
+
+                  <p className="text-sm text-slate-600 leading-relaxed font-normal line-clamp-3 sm:line-clamp-4">
+                    {featuredArticle.excerpt}
+                  </p>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0A0A0A] leading-[1.15] tracking-tight group-hover:text-[#2563EB] transition-colors font-sans mb-4">
-                  {featuredArticle.title}
-                </h2>
-
-                <p className="text-[15px] sm:text-base text-[#4B5563] leading-relaxed font-medium line-clamp-3 mb-8">
-                  {featuredArticle.excerpt}
-                </p>
-
-                <div className="flex items-center justify-between mt-auto">
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{featuredArticle.date}</span>
-                  <span className="px-6 py-3 rounded-full bg-[#0A0A0A] text-white text-sm font-bold flex items-center gap-2 group-hover:bg-[#2563EB] transition-colors shadow-lg shadow-black/10">
-                    <span>Read Story</span>
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </span>
+                <div className="pt-4 border-t border-slate-100 flex items-center gap-1.5 text-sm font-bold text-blue-600 group-hover:text-blue-700">
+                  <span>Read Full Article</span>
+                  <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </div>
           </AnimatedSection>
         )}
 
-
         {/* =================================================================== */}
-        {/* SECTION 2 — BROWSE TOPICS (FILTER DIRECTORY)                        */}
+        {/* 3. TOPIC FILTERS & SEARCH BAR */}
         {/* =================================================================== */}
-        <AnimatedSection delay={0.1} className="mb-12 border-b border-gray-200/60 pb-10">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <AnimatedSection delay={0.05} className="mb-10 border-b border-slate-200/80 pb-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 className="text-2xl font-extrabold text-[#0A0A0A] tracking-tight">Browse Topics</h2>
-              <p className="text-sm text-[#6B7280] font-medium mt-1">Filter the complete archive by domain.</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight">Browse Topics</h2>
+              <p className="text-xs sm:text-sm text-slate-600 font-normal mt-0.5">Filter the complete archive by domain.</p>
             </div>
             
             {/* Search Input */}
-            <div className="relative group/search w-full md:w-80">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/search:text-[#2563EB] transition-colors" size={18} />
+            <div className="relative group/search w-full md:w-72">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/search:text-blue-600 transition-colors" size={16} />
               <input 
                 type="text" 
-                placeholder="Search archive..."
+                placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setVisibleCount(6); }}
-                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/60 backdrop-blur-md border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all shadow-sm"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-2xs"
               />
             </div>
           </div>
 
-          {/* Topic Pills */}
-          <div className="flex flex-wrap items-center gap-3">
+          {/* Topic Badges */}
+          <div className="flex flex-wrap items-center gap-2">
             {topics.map((t) => {
               const IconComp = t.icon
               const isSelected = selectedTopic === t.name
@@ -262,21 +253,21 @@ export function Resources() {
                     setSelectedTopic(t.name)
                     setVisibleCount(6)
                   }}
-                  className={`px-5 py-2.5 rounded-full border transition-all duration-300 cursor-pointer font-bold text-sm flex items-center gap-2.5 ${
+                  className={`px-3.5 py-2 rounded-xl border transition-all duration-200 cursor-pointer text-xs font-semibold flex items-center gap-2 ${
                     isSelected
-                      ? 'bg-[#0A0A0A] text-white border-[#0A0A0A] shadow-[0_4px_15px_rgba(0,0,0,0.15)]'
-                      : 'bg-white/60 backdrop-blur-md border-gray-200/80 text-[#4B5563] hover:border-gray-300 hover:bg-white hover:text-[#0A0A0A] shadow-sm hover:shadow-md'
+                      ? 'bg-slate-950 text-white border-slate-950 shadow-2xs'
+                      : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-950 shadow-2xs'
                   }`}
                 >
-                  <IconComp size={16} className={isSelected ? 'text-white' : 'text-gray-400'} strokeWidth={2.5} />
+                  <IconComp size={14} className={isSelected ? 'text-blue-400' : 'text-slate-400'} strokeWidth={2} />
                   <span>{t.name}</span>
                 </button>
               )
             })}
             {selectedTopic !== 'All' && (
               <button 
-                onClick={() => { setSelectedTopic('All'); setVisibleCount(6); }}
-                className="ml-auto text-xs font-bold text-[#2563EB] hover:text-blue-700 hover:underline cursor-pointer transition-colors hidden sm:block px-2"
+                onClick={() => { setSelectedTopic('All'); setSearchQuery(''); setVisibleCount(6); }}
+                className="ml-auto text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline cursor-pointer transition-colors hidden sm:block px-2"
               >
                 Clear Filters
               </button>
@@ -284,78 +275,76 @@ export function Resources() {
           </div>
         </AnimatedSection>
 
-
         {/* =================================================================== */}
-        {/* SECTION 3 — LATEST ARTICLES (THE COMPLETE ARCHIVE)                  */}
+        {/* 4. ARTICLE GRID */}
         {/* =================================================================== */}
-        <section className="py-8 border-b border-gray-200/60 pb-16">
+        <section className="py-4 border-b border-slate-200/80 pb-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-extrabold text-[#0A0A0A] tracking-tight">
+            <h2 className="text-xl font-bold text-slate-950 tracking-tight">
               {selectedTopic === 'All' && !searchQuery ? 'All Publications' : 'Search Results'}
             </h2>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest px-3 py-1 bg-gray-100 rounded-full">
+            <span className="text-xs font-mono text-slate-500 uppercase tracking-wider px-2.5 py-1 bg-slate-100 rounded-md">
               {displayedArticles.length} / {filteredArticles.length}
             </span>
           </div>
 
-          {/* Article Grid Stream */}
           {displayedArticles.length === 0 ? (
-            <AnimatedSection className="py-20 text-center max-w-sm mx-auto space-y-4">
-              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto border border-gray-200 shadow-sm">
-                <BookOpen size={32} className="text-gray-400" />
+            <AnimatedSection className="py-16 text-center max-w-sm mx-auto space-y-3">
+              <div className="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center mx-auto border border-slate-200 shadow-2xs">
+                <BookOpen size={22} className="text-slate-400" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-[#0A0A0A] tracking-tight">No articles found</h3>
-                <p className="text-[15px] text-[#6B7280] font-medium mt-2">Try adjusting your search query or selecting a different topic filter.</p>
+                <h3 className="text-lg font-bold text-slate-950 tracking-tight">No articles found</h3>
+                <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1">Try adjusting your search query or selecting a different topic filter.</p>
               </div>
               <button 
                 onClick={() => { setSelectedTopic('All'); setSearchQuery(''); }}
-                className="text-sm font-bold text-[#2563EB] hover:text-blue-700 hover:underline transition-colors mt-2"
+                className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors mt-2"
               >
                 Clear all filters
               </button>
             </AnimatedSection>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {displayedArticles.map((art: Article, i) => (
-                <AnimatedSection key={art.slug} delay={i * 0.05}>
+                <AnimatedSection key={art.slug} delay={i * 0.04}>
                   <div
                     onClick={() => handleArticleClick(art.slug)}
-                    className="group rounded-[32px] bg-white/70 backdrop-blur-xl border border-gray-200/80 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-[#2563EB]/40 transition-all duration-500 p-6 sm:p-8 flex flex-col justify-between overflow-hidden cursor-pointer h-full"
+                    className="group rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all p-5 sm:p-6 flex flex-col justify-between overflow-hidden cursor-pointer h-full"
                   >
-                    <div className="space-y-5">
-                      <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100 relative shadow-sm">
+                    <div className="space-y-4">
+                      <div className="aspect-[16/10] rounded-xl overflow-hidden bg-slate-100 relative shadow-2xs">
                         <img 
                           src={art.thumbnail} 
                           alt={art.title} 
                           loading="lazy"
-                          className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" 
+                          className="w-full h-full object-cover scale-100 group-hover:scale-[1.02] transition-transform duration-300" 
                         />
-                        <div className="absolute top-4 left-4">
-                          <span className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] font-bold text-[#0A0A0A] shadow-sm uppercase tracking-wider">
+                        <div className="absolute top-2.5 left-2.5">
+                          <span className="px-2.5 py-0.5 rounded-md bg-white/95 backdrop-blur-md text-[11px] font-bold text-slate-900 shadow-2xs">
                             {art.category}
                           </span>
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                      <div className="flex items-center gap-2 text-xs text-slate-400 mb-1">
                         <span>{art.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-300" />
-                        <span className="flex items-center gap-1.5"><Clock size={14} /> {art.readingTime}</span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1"><Clock size={11} /> {art.readingTime}</span>
                       </div>
                       
-                      <h3 className="text-xl sm:text-2xl font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors leading-[1.25] tracking-tight font-sans">
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-blue-600 transition-colors leading-snug tracking-tight">
                         {art.title}
                       </h3>
                       
-                      <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed line-clamp-3">
+                      <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed line-clamp-3">
                         {art.excerpt}
                       </p>
                     </div>
 
-                    <div className="pt-6 mt-8 border-t border-gray-100/80 flex items-center justify-between text-sm font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors">
+                    <div className="pt-5 mt-6 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
                       <span>Read Story</span>
-                      <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      <ArrowUpRight size={15} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </div>
                   </div>
                 </AnimatedSection>
@@ -365,53 +354,42 @@ export function Resources() {
 
           {/* Load More Button */}
           {hasMore && (
-            <div className="pt-16 text-center">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+            <div className="pt-12 text-center">
+              <button
                 onClick={handleLoadMore}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white border border-gray-200 text-[#0A0A0A] font-bold text-sm hover:border-[#2563EB] hover:text-[#2563EB] shadow-sm hover:shadow-[0_8px_20px_rgba(37,99,235,0.1)] transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]"
+                className="inline-flex items-center gap-2 h-11 px-6 rounded-full bg-white border border-slate-200 text-slate-900 font-medium text-xs sm:text-sm hover:border-slate-300 hover:bg-slate-50 shadow-2xs transition-colors cursor-pointer"
               >
                 <span>Load More Articles</span>
-                <ChevronDown size={16} />
-              </motion.button>
+                <ChevronDown size={14} />
+              </button>
             </div>
           )}
         </section>
 
-
         {/* =================================================================== */}
-        {/* SECTION 4 — FINAL CONVERSION CTA                                    */}
+        {/* 5. CONVERSION CTA */}
         {/* =================================================================== */}
-        <section className="py-24">
-          <AnimatedSection className="rounded-[40px] bg-[#0A0A0A] text-white p-10 sm:p-16 relative overflow-hidden shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10">
-            {/* Premium Dark Gradient Overlays */}
-            <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_top_left,_rgba(37,99,235,0.25)_0%,_transparent_70%)] pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_bottom_right,_rgba(96,165,250,0.15)_0%,_transparent_70%)] pointer-events-none" />
-            
-            <div className="space-y-6 max-w-2xl relative z-10 text-center lg:text-left">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#2563EB] flex items-center justify-center lg:justify-start gap-2">
-                <ShieldCheck size={16} />
+        <section className="py-16 sm:py-24">
+          <AnimatedSection className="rounded-3xl bg-slate-950 text-white p-8 sm:p-12 relative overflow-hidden shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="space-y-4 max-w-2xl text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-blue-400">
+                <ShieldCheck size={15} />
                 <span>Ready to Turn Ideas into Digital Assets?</span>
-              </span>
-              <h3 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.03em] font-sans leading-[1.1]">
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
                 Partner with ProstoLabs on your next project.
               </h3>
-              <p className="text-base sm:text-lg text-gray-400 font-medium leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed">
                 We design and engineer high-performance websites, web applications, AI automations, and growth strategy for forward-thinking brands.
               </p>
             </div>
 
-            <div className="relative z-10 shrink-0">
+            <div className="shrink-0">
               <Link to="/start-project">
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="h-14 px-8 rounded-full bg-white text-[#0A0A0A] font-bold text-base shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all cursor-pointer overflow-hidden flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A] group/btn"
-                >
+                <button className="h-12 px-7 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm sm:text-base shadow-sm transition-all cursor-pointer flex items-center justify-center gap-2">
                   <span>Start Your Project</span>
-                  <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-                </motion.button>
+                  <ArrowRight size={16} />
+                </button>
               </Link>
             </div>
           </AnimatedSection>

@@ -1,6 +1,6 @@
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Button } from '../components/ui/Button'
 import { SEO } from '../components/seo/SEO'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { resources } from '../data/resourcesData'
@@ -9,42 +9,101 @@ import {
   Briefcase, Zap, Layers, Heart, MessageSquare, Search, Rocket, Headphones,
   ArrowRight, Activity, Target, 
   ShoppingBag, Cloud,
-  Sparkles, BarChart3, ShieldCheck, Smartphone, Clock, BookOpen
+  Sparkles, ShieldCheck, Smartphone, Clock,
+  ChevronRight, CheckCircle2, ArrowUpRight
 } from 'lucide-react'
 
-// --- SAAS EASING CURVE ---
-const easeSaaS = [0.16, 1, 0.3, 1] as const
-
-export const Home = () => {
-  // Get 3 latest articles for the homepage stream
+export const Home: React.FC = () => {
   const latestArticles = resources.slice(0, 3)
+  const featuredArticle = latestArticles[0]
+  const secondaryArticles = latestArticles.slice(1, 3)
 
-  // --- Hero Mouse Parallax Configuration ---
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
+  const [activeServiceIndex, setActiveServiceIndex] = useState<number>(0)
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const { clientX, clientY, currentTarget } = e
-    const { width, height, left, top } = currentTarget.getBoundingClientRect()
-    mouseX.set((clientX - left) / width - 0.5)
-    mouseY.set((clientY - top) / height - 0.5)
-  }
+  // Real 6 Services
+  const services = [
+    {
+      num: '01',
+      title: 'Web Applications & Portals',
+      desc: 'Custom web portals, SaaS platforms, and enterprise dashboards built for speed.',
+      icon: Code,
+      tags: ['Web Portals', 'SaaS Platforms', 'Dashboards']
+    },
+    {
+      num: '02',
+      title: 'Mobile App Development',
+      desc: 'Cross-platform iOS and Android mobile applications with smooth native performance.',
+      icon: Smartphone,
+      tags: ['iOS', 'Android', 'Cross-Platform']
+    },
+    {
+      num: '03',
+      title: 'AI & Machine Learning',
+      desc: 'Custom AI chatbots, intelligent workflows, and data automations for your business.',
+      icon: Bot,
+      tags: ['AI Chatbots', 'Workflow Automation', 'Data Tools']
+    },
+    {
+      num: '04',
+      title: 'UI/UX & Product Design',
+      desc: 'Intuitive visual layouts designed to guide users seamlessly from start to finish.',
+      icon: Palette,
+      tags: ['UX Research', 'Visual Design', 'Prototypes']
+    },
+    {
+      num: '05',
+      title: 'SEO & Performance',
+      desc: 'Technical speed optimization and search configuration to maximize discoverability.',
+      icon: LineChart,
+      tags: ['Speed Tuning', 'Search Indexing', 'Core Vitals']
+    },
+    {
+      num: '06',
+      title: 'Maintenance & Product Care',
+      desc: '24/7 server monitoring, security updates, and continuous feature updates.',
+      icon: Wrench,
+      tags: ['Server Monitoring', 'Security Patches', 'Feature Updates']
+    }
+  ]
 
-  const springConfig = { stiffness: 70, damping: 20, bounce: 0 }
-  const springX = useSpring(mouseX, springConfig)
-  const springY = useSpring(mouseY, springConfig)
+  // Real 6 Process Steps
+  const processSteps = [
+    { step: '01', title: 'Discover', desc: 'Understand the business, users and goals.', icon: Search },
+    { step: '02', title: 'Plan', desc: 'Define the product structure, technology and roadmap.', icon: Target },
+    { step: '03', title: 'Design', desc: 'Create the UX/UI and visual system.', icon: Palette },
+    { step: '04', title: 'Build', desc: 'Develop and integrate the product.', icon: Code },
+    { step: '05', title: 'Launch', desc: 'Test, deploy and optimize.', icon: Rocket },
+    { step: '06', title: 'Grow', desc: 'Maintain, improve and scale.', icon: Headphones }
+  ]
 
-  const rotateX = useTransform(springY, [-0.5, 0.5], [10, -10])
-  const rotateY = useTransform(springX, [-0.5, 0.5], [-10, 10])
-  
-  const translateXBase = useTransform(springX, [-0.5, 0.5], [-20, 20])
-  const translateYBase = useTransform(springY, [-0.5, 0.5], [-20, 20])
-  
-  const translateXFloat1 = useTransform(springX, [-0.5, 0.5], [40, -40])
-  const translateYFloat1 = useTransform(springY, [-0.5, 0.5], [40, -40])
-  
-  const translateXFloat2 = useTransform(springX, [-0.5, 0.5], [-50, 50])
-  const translateYFloat2 = useTransform(springY, [-0.5, 0.5], [-50, 50])
+  // Real 6 Partner Reasons
+  const partnerReasons = [
+    { num: '01', icon: Briefcase, title: 'Value-Driven Engineering', desc: 'Every product feature is built with clear ROI and user conversion in mind.' },
+    { num: '02', icon: Zap, title: 'High-Speed Architecture', desc: 'Optimized code structures ensuring near-instantaneous load times on all devices.' },
+    { num: '03', icon: Layers, title: 'Scalable Cloud Setup', desc: 'Built to support growth effortlessly from early adopters to thousands of active users.' },
+    { num: '04', icon: MessageSquare, title: 'Direct Developer Access', desc: 'Work directly with your engineers and designers without agency middlemen.' },
+    { num: '05', icon: ShieldCheck, title: 'Enterprise Security', desc: 'Built-in SSL encryption, secure API integrations, and data protection standards.' },
+    { num: '06', icon: Heart, title: 'Long-Term Partnership', desc: 'We maintain, scale, and update your product long after the initial deployment.' }
+  ]
+
+  // Real Tech Stack
+  const technologies = [
+    'React', 'TypeScript', 'Node.js', 'Next.js', 'Tailwind CSS', 
+    'Framer Motion', 'Python', 'OpenAI API', 'GraphQL', 
+    'PostgreSQL', 'Figma', 'AWS'
+  ]
+
+  // Real Industries
+  const industries = [
+    { name: 'Healthcare', icon: Heart },
+    { name: 'SaaS', icon: Cloud },
+    { name: 'E-commerce', icon: ShoppingBag },
+    { name: 'Finance', icon: Activity },
+    { name: 'Startups', icon: Zap },
+    { name: 'Education', icon: Target }
+  ]
+
+  const ActiveIcon = services[activeServiceIndex].icon
 
   return (
     <>
@@ -54,604 +113,581 @@ export const Home = () => {
         path="/"
       />
 
-      <div className="relative overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-500/30 selection:text-blue-900">
+      <div className="relative w-full overflow-x-clip bg-[#F8FAFC] text-[#0F172A] font-sans antialiased selection:bg-blue-600/15 selection:text-blue-600">
         
-        {/* GLOBAL PREMIUM BACKGROUND ELEMENTS */}
-        <div className="absolute top-0 left-0 right-0 h-[100vh] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-[120px] pointer-events-none mix-blend-multiply" />
-        <div className="absolute top-[20%] right-[-10%] w-[30%] h-[40%] rounded-full bg-cyan-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
+        {/* Subtle Ambient Grid Layer */}
+        <div 
+          aria-hidden="true" 
+          className="absolute inset-0 top-0 h-[800px] w-full bg-[radial-gradient(ellipse_75%_50%_at_50%_0%,rgba(37,99,235,0.06),transparent_70%)] pointer-events-none" 
+        />
+        <div 
+          aria-hidden="true" 
+          className="absolute top-0 left-0 right-0 h-[800px] bg-[linear-gradient(to_right,#E2E8F040_1px,transparent_1px),linear-gradient(to_bottom,#E2E8F040_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" 
+        />
 
         {/* ========================================================================= */}
         {/* 1. HERO SECTION */}
         {/* ========================================================================= */}
-        <section 
-          onMouseMove={handleMouseMove}
-          className="relative flex justify-center px-6 pt-24 sm:pt-32 pb-16 md:pb-24 overflow-visible"
-        >
-          <div className="max-w-[1300px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-10">
+        <section className="relative flex items-center justify-center px-5 sm:px-8 lg:px-12 pt-28 sm:pt-36 pb-16 sm:pb-24">
+          <div className="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* HERO TEXT COLUMN */}
-            <div className="text-left relative z-20">
+            {/* Left Content (7 Cols) */}
+            <div className="lg:col-span-7 text-left space-y-6 z-10">
+              
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: easeSaaS }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_rgb(0,0,0,0.03)] text-xs md:text-sm font-bold text-[#2563EB] mb-6 sm:mb-8 transform-gpu"
+                transition={{ duration: 0.35 }}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-xs text-xs font-semibold text-blue-600"
               >
-                <Sparkles size={16} className="text-[#2563EB]" />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">Web Apps, AI & Digital Solutions</span>
+                <Sparkles size={14} className="text-blue-600" />
+                <span>Web Apps, AI & Digital Solutions</span>
               </motion.div>
               
               <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1, ease: easeSaaS }}
-                className="text-5xl sm:text-6xl md:text-7xl lg:text-[84px] font-extrabold tracking-[-0.03em] leading-[1.05] text-[#0A0A0A] mb-8 transform-gpu"
+                transition={{ duration: 0.45, delay: 0.05 }}
+                className="text-[38px] sm:text-[52px] md:text-[62px] lg:text-[68px] font-extrabold tracking-[-0.035em] leading-[1.04] text-slate-950"
               >
-                Modern Digital Products Built to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-[#2563EB] to-cyan-500">Grow Your Business.</span>
+                Modern Digital Products Built to{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+                  Grow Your Business.
+                </span>
               </motion.h1>
               
               <motion.p
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: easeSaaS }}
-                className="text-lg sm:text-xl md:text-2xl text-[#6B7280] max-w-xl mb-10 leading-[1.6] font-medium transform-gpu tracking-tight"
+                transition={{ duration: 0.45, delay: 0.12 }}
+                className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed font-normal"
               >
                 We design and engineer high-performance web applications, mobile software, AI integrations, and custom platforms tailored to your business goals.
               </motion.p>
               
+              {/* Refined Button Row */}
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3, ease: easeSaaS }}
-                className="flex flex-col sm:flex-row items-center gap-4"
+                transition={{ duration: 0.45, delay: 0.18 }}
+                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2"
               >
                 <Link to="/start-project" className="w-full sm:w-auto">
-                  <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="group relative w-full sm:w-auto h-14 px-8 rounded-full bg-[#2563EB] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer transition-all overflow-hidden shadow-[0_8px_30px_rgba(37,99,235,0.3)] border border-blue-400/20"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <span className="relative z-10 flex items-center gap-2">
-                      Start Your Project
-                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </motion.button>
+                  <button className="group w-full sm:w-auto h-12 px-7 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer shadow-[0_2px_12px_rgba(37,99,235,0.25)] hover:shadow-[0_4px_20px_rgba(37,99,235,0.35)] transition-all">
+                    <span>Start Your Project</span>
+                    <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                  </button>
                 </Link>
+                
                 <Link to="/services" className="w-full sm:w-auto">
-                  <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto h-14 px-8 rounded-full bg-white/70 backdrop-blur-xl border border-gray-200/80 text-[#0A0A0A] font-bold text-sm sm:text-base hover:bg-white hover:shadow-lg hover:border-gray-300 transition-all cursor-pointer flex items-center justify-center shadow-sm"
-                  >
+                  <button className="w-full sm:w-auto h-12 px-7 rounded-full bg-white hover:bg-slate-50 text-slate-900 font-semibold text-sm sm:text-base border border-slate-200 shadow-xs transition-colors cursor-pointer flex items-center justify-center">
                     Explore Solutions
-                  </motion.button>
+                  </button>
                 </Link>
               </motion.div>
-            </div>
 
-            {/* HERO INTERACTIVE 3D ILLUSTRATION */}
-            <div className="relative w-full h-[360px] sm:h-[480px] md:h-[540px] flex items-center justify-center perspective-[1200px] mt-8 lg:mt-0">
-              {/* Animated Glowing Aura */}
-              <motion.div 
-                animate={{ 
-                  scale: [1, 1.05, 1],
-                  opacity: [0.4, 0.6, 0.4]
-                }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 via-cyan-400/10 to-purple-500/10 blur-[80px] rounded-full scale-90" 
-              />
-              
-              <motion.div
-                style={{ rotateX, rotateY, x: translateXBase, y: translateYBase }}
-                initial={{ opacity: 0, scale: 0.9, y: 40 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.2, ease: easeSaaS }}
-                className="relative z-10 w-full max-w-[540px] aspect-[4/3] rounded-[32px] p-[1px] bg-gradient-to-b from-white/40 to-white/0 shadow-2xl transform-gpu"
-              >
-                <div className="absolute inset-0 bg-gradient-to-tr from-gray-900 via-[#0B1121] to-[#121B33] rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
-                  {/* Subtle Inner Grid */}
-                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px]" />
-                  
-                  <div className="w-full h-full p-4 sm:p-6 flex flex-col justify-between relative z-10">
-                    {/* macOS Style Header */}
-                    <div className="flex items-center justify-between pb-4">
-                      <div className="flex gap-2">
-                        <div className="w-3 h-3 rounded-full bg-red-500/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-500/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]" />
-                        <div className="w-3 h-3 rounded-full bg-green-500/90 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]" />
-                      </div>
-                      <div className="flex items-center gap-2 text-xs font-mono text-gray-400 bg-white/5 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
-                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                        <span>prostolabs.com</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4 my-auto w-4/5">
-                      <div className="w-full h-4 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.3)]" />
-                      <div className="w-2/3 h-3 bg-white/20 rounded-full backdrop-blur-sm" />
-                      <div className="w-5/6 h-3 bg-white/10 rounded-full backdrop-blur-sm" />
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-3 pt-4">
-                      {[
-                        { color: 'bg-blue-500' },
-                        { color: 'bg-emerald-500' },
-                        { color: 'bg-purple-500' }
-                      ].map((item, i) => (
-                        <div key={i} className="h-12 bg-white/5 backdrop-blur-md rounded-xl p-3 flex items-center gap-3 border border-white/5 hover:bg-white/10 transition-colors cursor-default">
-                          <div className={`w-3.5 h-3.5 rounded-full ${item.color} shadow-[0_0_10px_currentColor] opacity-80`} />
-                          <div className="w-full h-2 bg-white/20 rounded-full" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+              {/* Verified Trust Strip */}
+              <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-medium text-slate-500">
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 size={15} className="text-blue-600" />
+                  <span>Production-Grade Delivery</span>
                 </div>
-              </motion.div>
-
-              {/* Floating Performance Pill */}
-              <motion.div
-                style={{ x: translateXFloat1, y: translateYFloat1 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: easeSaaS }}
-                className="hidden sm:flex absolute top-10 -right-4 lg:-right-12 z-30 bg-white/80 backdrop-blur-xl p-4 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white items-center gap-4 group"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-600 flex items-center justify-center font-bold group-hover:scale-110 transition-transform duration-300">
-                  <BarChart3 className="w-6 h-6" />
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 size={15} className="text-blue-600" />
+                  <span>Direct Senior Engineers</span>
                 </div>
-                <div>
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">Performance Score</p>
-                  <p className="text-xl font-extrabold text-[#0A0A0A]">99 <span className="text-gray-400 text-sm font-medium">/ 100</span></p>
-                </div>
-              </motion.div>
-
-              {/* Floating AI Pill */}
-              <motion.div
-                style={{ x: translateXFloat2, y: translateYFloat2 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.6, ease: easeSaaS }}
-                className="hidden sm:flex absolute bottom-12 -left-4 lg:-left-12 z-30 bg-gradient-to-r from-[#2563EB] to-blue-600 text-white p-4 rounded-3xl shadow-[0_15px_30px_rgba(37,99,235,0.3)] border border-blue-400/30 items-center gap-4 group"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
-                  <Bot className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold tracking-wide">AI Automations</p>
-                  <p className="text-xs text-blue-200/90 font-medium flex items-center gap-1.5 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Workflow Active
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* ========================================================================= */}
-        {/* 2. ABOUT PROSTOLABS SECTION */}
-        {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative">
-          <div className="max-w-[1300px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-              
-              <AnimatedSection>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
-                  <span className="w-2 h-2 rounded-full bg-blue-500" /> About ProstoLabs
-                </div>
-                <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-8 leading-[1.1] font-sans">
-                  We build digital products that <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">scale your business.</span>
-                </h2>
-                <p className="text-lg sm:text-xl text-[#6B7280] mb-10 leading-relaxed font-medium">
-                  From custom web applications and mobile software to AI automations and websites, we create technology built around your exact operational goals.
-                </p>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="group p-6 rounded-[24px] bg-white/60 backdrop-blur-xl border border-gray-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
-                    <h3 className="font-bold text-lg text-[#0A0A0A] mb-3 flex items-center gap-3">
-                      <div className="p-2 rounded-xl bg-blue-50 text-[#2563EB] group-hover:scale-110 transition-transform">
-                        <Target className="w-5 h-5" />
-                      </div> 
-                      Our Mission
-                    </h3>
-                    <p className="text-sm text-[#6B7280] leading-relaxed font-medium">
-                      Deliver reliable software and digital tools that increase efficiency and revenue.
-                    </p>
-                  </div>
-                  
-                  <div className="group p-6 rounded-[24px] bg-white/60 backdrop-blur-xl border border-gray-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
-                    <h3 className="font-bold text-lg text-[#0A0A0A] mb-3 flex items-center gap-3">
-                      <div className="p-2 rounded-xl bg-blue-50 text-[#2563EB] group-hover:scale-110 transition-transform">
-                        <Activity className="w-5 h-5" />
-                      </div> 
-                      Our Vision
-                    </h3>
-                    <p className="text-sm text-[#6B7280] leading-relaxed font-medium">
-                      Be a premier global technology partner for ambitious, forward-thinking businesses.
-                    </p>
-                  </div>
-                </div>
-              </AnimatedSection>
-
-              {/* TEAM IMAGE */}
-              <AnimatedSection delay={0.2} className="hidden md:block relative">
-                {/* Decorative Elements */}
-                <div className="absolute -inset-4 bg-gradient-to-tr from-blue-100 to-white opacity-50 rounded-[40px] blur-2xl" />
-                
-                <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden bg-white border border-gray-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.1)] group">
-                  <motion.img 
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
-                    alt="ProstoLabs Team working together" 
-                    loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-80" />
-                  
-                  {/* Glass floating card over image */}
-                  <div className="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                    <p className="font-bold text-lg">Collaborative Engineering</p>
-                    <p className="text-sm text-white/80 font-medium">Building with precision and purpose.</p>
-                  </div>
-                </div>
-              </AnimatedSection>
-
-            </div>
-          </div>
-        </section>
-
-
-        {/* ========================================================================= */}
-        {/* 3. SERVICES SECTION (PREMIUM BENTO GRID) */}
-        {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
-            
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
-                Core Capabilities
               </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
-                Technology solutions for <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500">modern growth.</span>
+
+            </div>
+
+            {/* Right Interactive Product Card (5 Cols) */}
+            <div className="lg:col-span-5 relative w-full flex items-center justify-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="w-full max-w-[480px] rounded-2xl bg-[#0B1121] border border-slate-800 shadow-xl p-5 sm:p-6 text-white space-y-5 transform-gpu"
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between pb-3.5 border-b border-slate-800">
+                  <div className="flex gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
+                    <ShieldCheck size={14} className="text-emerald-400" />
+                    <span>prostolabs.com</span>
+                  </div>
+                </div>
+
+                {/* Dashboard Visualization */}
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="h-3.5 w-2/3 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-md" />
+                    <div className="h-2.5 w-5/6 bg-white/10 rounded-md" />
+                    <div className="h-2.5 w-1/2 bg-white/5 rounded-md" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5 pt-1">
+                    <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:bg-white/10 transition-colors">
+                      <div className="flex items-center gap-1.5 text-xs text-blue-400 font-semibold">
+                        <Code size={14} /> Web Platforms
+                      </div>
+                      <p className="text-xs text-slate-400">Clean Codebase</p>
+                    </div>
+                    <div className="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:bg-white/10 transition-colors">
+                      <div className="flex items-center gap-1.5 text-xs text-cyan-400 font-semibold">
+                        <Bot size={14} /> AI Automations
+                      </div>
+                      <p className="text-xs text-slate-400">Custom Workflows</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
+                  <span className="flex items-center gap-1.5 text-emerald-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Production Ready
+                  </span>
+                  <span>ProstoLabs Studio</span>
+                </div>
+              </motion.div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 2. ABOUT PROSTOLABS */}
+        {/* ========================================================================= */}
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white border-y border-slate-200/80">
+          <div className="max-w-[1280px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+              
+              <div className="lg:col-span-5 space-y-6">
+                <AnimatedSection>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                    About ProstoLabs
+                  </span>
+                  
+                  <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 leading-tight mt-1">
+                    We build digital products that <span className="text-blue-600">scale your business.</span>
+                  </h2>
+                  
+                  <p className="text-base text-slate-600 leading-relaxed font-normal">
+                    From custom web applications and mobile software to AI automations and websites, we create technology built around your exact operational goals.
+                  </p>
+                  
+                  <div className="pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 hover:border-slate-300 transition-colors">
+                      <div className="flex items-center gap-2 font-bold text-sm text-slate-900 mb-1">
+                        <Target size={16} className="text-blue-600" /> Our Mission
+                      </div>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Deliver reliable software and digital tools that increase efficiency and revenue.
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 hover:border-slate-300 transition-colors">
+                      <div className="flex items-center gap-2 font-bold text-sm text-slate-900 mb-1">
+                        <Activity size={16} className="text-blue-600" /> Our Vision
+                      </div>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Be a premier global technology partner for ambitious, forward-thinking businesses.
+                      </p>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              </div>
+
+              <div className="lg:col-span-7">
+                <AnimatedSection delay={0.1}>
+                  <div className="relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-md group aspect-[16/10]">
+                    <img 
+                      src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" 
+                      alt="ProstoLabs Team working together" 
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500 opacity-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                    
+                    <div className="absolute bottom-5 left-5 right-5 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-between">
+                      <div>
+                        <p className="text-xs font-mono uppercase tracking-wider text-blue-300">Engineering Studio</p>
+                        <p className="font-bold text-sm text-white mt-0.5">High-Velocity Collaboration</p>
+                      </div>
+                      <Link to="/about" className="inline-flex items-center gap-1 text-xs font-bold text-blue-300 hover:text-white transition-colors">
+                        <span>Our Studio Culture</span>
+                        <ArrowUpRight size={14} />
+                      </Link>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 3. CAPABILITIES / SERVICES */}
+        {/* ========================================================================= */}
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white relative">
+          <div className="max-w-[1280px] mx-auto">
+            
+            <AnimatedSection className="max-w-2xl mb-12">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Core Capabilities
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
+                Technology solutions for modern growth.
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 End-to-end digital engineering tailored to your industry.
               </p>
             </AnimatedSection>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { title: 'Web Applications & Portals', icon: Code, desc: 'Custom web portals, SaaS platforms, and enterprise dashboards built for speed.' },
-                { title: 'Mobile App Development', icon: Smartphone, desc: 'Cross-platform iOS and Android mobile applications with smooth native performance.' },
-                { title: 'AI & Machine Learning', icon: Bot, desc: 'Custom AI chatbots, intelligent workflows, and data automations for your business.' },
-                { title: 'UI/UX & Product Design', icon: Palette, desc: 'Intuitive visual layouts designed to guide users seamlessly from start to finish.' },
-                { title: 'SEO & Performance', icon: LineChart, desc: 'Technical speed optimization and search configuration to maximize discoverability.' },
-                { title: 'Maintenance & Product Care', icon: Wrench, desc: '24/7 server monitoring, security updates, and continuous feature updates.' },
-              ].map((service, i) => (
-                <AnimatedSection key={service.title} delay={i * 0.1}>
-                  <div className="group relative p-8 rounded-[32px] bg-white/70 backdrop-blur-xl border border-gray-200/80 hover:border-[#2563EB]/30 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)] transition-all duration-500 h-full flex flex-col justify-between overflow-hidden">
-                    {/* Subtle Hover Gradient Blob */}
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2 group-hover:scale-150 group-hover:bg-blue-500/10 transition-all duration-500" />
-                    
-                    <div className="relative z-10">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-white border border-blue-100 shadow-sm text-[#2563EB] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                        <service.icon size={26} strokeWidth={1.5} />
+
+            {/* Mobile View: High-Quality Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:hidden">
+              {services.map((service) => {
+                const Icon = service.icon
+                return (
+                  <div key={service.num} className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3 shadow-xs">
+                    <div className="flex items-center justify-between">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <Icon size={20} />
                       </div>
-                      <h3 className="text-xl md:text-2xl font-bold text-[#0A0A0A] mb-3 font-sans tracking-tight">{service.title}</h3>
-                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{service.desc}</p>
+                      <span className="text-xs font-mono font-bold text-slate-400">{service.num}</span>
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-slate-900">{service.title}</h3>
+                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">{service.desc}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {service.tags.map((t) => (
+                        <span key={t} className="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-[11px] text-slate-700">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Desktop View: Interactive Split */}
+            <div className="hidden lg:grid grid-cols-12 gap-10 items-start">
+              <div className="col-span-6 divide-y divide-slate-200 border-y border-slate-200">
+                {services.map((service, index) => {
+                  const isActive = activeServiceIndex === index
+                  return (
+                    <div 
+                      key={service.num}
+                      onClick={() => setActiveServiceIndex(index)}
+                      onMouseEnter={() => setActiveServiceIndex(index)}
+                      className={`py-5 cursor-pointer transition-all flex items-center justify-between group ${
+                        isActive ? 'text-slate-950 font-bold' : 'text-slate-500 hover:text-slate-800'
+                      }`}
+                    >
+                      <div className="flex items-baseline gap-4">
+                        <span className={`text-xs font-mono font-bold ${isActive ? 'text-blue-600' : 'text-slate-400'}`}>
+                          {service.num}
+                        </span>
+                        <h3 className="text-lg font-bold tracking-tight">{service.title}</h3>
+                      </div>
+                      <ArrowRight 
+                        size={16} 
+                        className={`transition-transform duration-200 ${
+                          isActive ? 'text-blue-600 translate-x-1 opacity-100' : 'opacity-0 text-slate-400'
+                        }`} 
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+
+              <div className="col-span-6 sticky top-28">
+                <div className="p-8 rounded-3xl bg-slate-50 border border-slate-200/90 shadow-sm space-y-5">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 text-blue-600 flex items-center justify-center shadow-xs">
+                    <ActiveIcon size={24} />
+                  </div>
+
+                  <div>
+                    <span className="text-xs font-mono font-bold text-blue-600">Service {services[activeServiceIndex].num}</span>
+                    <h4 className="text-2xl font-bold text-slate-950 mt-1 mb-2">
+                      {services[activeServiceIndex].title}
+                    </h4>
+                    <p className="text-base text-slate-600 leading-relaxed">
+                      {services[activeServiceIndex].desc}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {services[activeServiceIndex].tags.map((tag) => (
+                      <span key={tag} className="px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-700 shadow-2xs">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-200">
+                    <Link to="/services" className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors">
+                      <span>Explore Full Capabilities</span>
+                      <ChevronRight size={14} />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 4. WHY CHOOSE PROSTOLABS */}
+        {/* ========================================================================= */}
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-y border-slate-200/80">
+          <div className="max-w-[1280px] mx-auto">
+            
+            <div className="max-w-2xl mb-12 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950">
+                Why companies partner with <span className="text-blue-600">ProstoLabs</span>
+              </h2>
+              <p className="text-base text-slate-600 font-normal mt-2">
+                We handle design, code, security, and cloud infrastructure so you can scale.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {partnerReasons.map((item, i) => (
+                <AnimatedSection key={item.num} delay={i * 0.05}>
+                  <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all h-full flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-xs font-mono font-bold text-blue-600">{item.num}</span>
+                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                          <item.icon size={16} />
+                        </div>
+                      </div>
+                      <h3 className="text-lg font-bold text-slate-950 mb-2">{item.title}</h3>
+                      <p className="text-sm text-slate-600 leading-relaxed font-normal">{item.desc}</p>
                     </div>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
 
-            <div className="mt-16 text-center">
-              <Link to="/services">
-                <Button variant="outline" className="rounded-full px-8 h-12 border-gray-300 text-[#0A0A0A] hover:bg-gray-100 hover:border-gray-400 font-bold transition-all shadow-sm">
-                  Explore All Capabilities <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
-            </div>
-
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 4. WHY CHOOSE PROSTOLABS SECTION */}
+        {/* 5. PROCESS SECTION */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative">
-          {/* Section Divider/Accent */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-          
-          <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
-                Why companies partner with <span className="text-[#2563EB]">ProstoLabs</span>
-              </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
-                We handle design, code, security, and cloud infrastructure so you can scale.
-              </p>
-            </AnimatedSection>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-              {[
-                { icon: Briefcase, title: 'Value-Driven Engineering', text: 'Every product feature is built with clear ROI and user conversion in mind.' },
-                { icon: Zap, title: 'High-Speed Architecture', text: 'Optimized code structures ensuring near-instantaneous load times on all devices.' },
-                { icon: Layers, title: 'Scalable Cloud Setup', text: 'Built to support growth effortlessly from early adopters to thousands of active users.' },
-                { icon: MessageSquare, title: 'Direct Developer Access', text: 'Work directly with your engineers and designers without agency middlemen.' },
-                { icon: ShieldCheck, title: 'Enterprise Security', text: 'Built-in SSL encryption, secure API integrations, and data protection standards.' },
-                { icon: Heart, title: 'Long-Term Partnership', text: 'We maintain, scale, and update your product long after the initial deployment.' },
-              ].map((item, i) => (
-                <AnimatedSection key={i} delay={i * 0.1} className="flex flex-col sm:flex-row gap-5 group">
-                  <div className="flex-shrink-0 w-14 h-14 rounded-[20px] bg-white border border-gray-200 shadow-sm text-[#2563EB] flex items-center justify-center group-hover:bg-[#2563EB] group-hover:text-white group-hover:shadow-[0_8px_20px_rgba(37,99,235,0.25)] transition-all duration-300">
-                    <item.icon size={24} strokeWidth={1.5} />
-                  </div>
-                  <div className="pt-1">
-                    <h3 className="font-bold text-xl text-[#0A0A0A] mb-2 font-sans tracking-tight">{item.title}</h3>
-                    <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{item.text}</p>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* ========================================================================= */}
-        {/* 5. OUR PROCESS SECTION (LINEAR STYLE) */}
-        {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative overflow-hidden bg-white" id="process">
-          {/* Subtle Linear Gradients Background */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_rgba(37,99,235,0.03)_0%,_transparent_50%)] pointer-events-none" />
-          
-          <div className="max-w-[1300px] mx-auto relative z-10">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white" id="process">
+          <div className="max-w-[1280px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-20 sm:mb-28">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200 text-[#0A0A0A] font-bold text-xs uppercase tracking-widest mb-6">
+            <AnimatedSection className="max-w-2xl mb-12 sm:mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
                 The Roadmap
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                 A transparent path to launch.
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium px-4">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 We follow a rigorous, high-speed engineering process to turn your concept into a market-ready product.
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4 relative">
-              {/* Animated Continuous Line for Desktop */}
-              <div className="hidden lg:block absolute top-[48px] left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-              
-              {[
-                { step: '01', title: 'Discover', desc: 'Requirements analysis and goal setting.', icon: Search },
-                { step: '02', title: 'Plan', desc: 'Architecture mapping and flow design.', icon: Target },
-                { step: '03', title: 'Design', desc: 'UI/UX prototyping and visual drafting.', icon: Palette },
-                { step: '04', title: 'Build', desc: 'High-performance engineering.', icon: Code },
-                { step: '05', title: 'Test', desc: 'QA, performance, and security audits.', icon: ShieldCheck },
-                { step: '06', title: 'Deploy', desc: 'Cloud infrastructure launch.', icon: Rocket },
-                { step: '07', title: 'Support', desc: 'Maintenance and active scaling.', icon: Headphones },
-              ].map((phase, i) => {
-                const IconComp = phase.icon
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+              {processSteps.map((phase, i) => {
+                const StepIcon = phase.icon
                 return (
-                  <AnimatedSection key={phase.step} delay={i * 0.1} className="relative z-10">
-                    <motion.div 
-                      whileHover={{ y: -5 }}
-                      className="group pt-8 pb-6 px-4 rounded-3xl bg-transparent hover:bg-gray-50/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 h-full flex flex-col items-center border border-transparent hover:border-gray-100"
-                    >
-                      <div className="relative mb-6">
-                        {/* Circle Indicator on the line */}
-                        <div className="w-12 h-12 rounded-full bg-white border-2 border-gray-200 text-[#0A0A0A] flex items-center justify-center font-bold text-sm shadow-sm group-hover:border-[#2563EB] group-hover:text-[#2563EB] transition-colors duration-300 relative z-10">
-                          {phase.step}
+                  <AnimatedSection key={phase.step} delay={i * 0.05}>
+                    <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-slate-300 transition-colors h-full flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <span className="text-xs font-mono font-bold text-blue-600">{phase.step}</span>
+                          <StepIcon size={16} className="text-slate-400" />
                         </div>
-                        {/* Glow Behind Circle */}
-                        <div className="absolute inset-0 rounded-full bg-blue-500 blur-md opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                        <h3 className="text-base font-bold text-slate-950 mb-1.5">{phase.title}</h3>
+                        <p className="text-xs text-slate-600 leading-relaxed">{phase.desc}</p>
                       </div>
-                      
-                      <div className="w-10 h-10 rounded-2xl bg-gray-50 text-gray-500 flex items-center justify-center mb-4 group-hover:bg-blue-50 group-hover:text-[#2563EB] transition-colors duration-300">
-                        <IconComp size={20} strokeWidth={2} />
-                      </div>
-                      
-                      <div className="text-center">
-                        <h3 className="text-base font-bold text-[#0A0A0A] mb-2 font-sans">{phase.title}</h3>
-                        <p className="text-[13px] text-[#6B7280] font-medium leading-relaxed">{phase.desc}</p>
-                      </div>
-                    </motion.div>
+                    </div>
                   </AnimatedSection>
                 )
               })}
             </div>
-          </div>
-        </section>
-
-
-        {/* ========================================================================= */}
-        {/* 6. TECHNOLOGIES & INDUSTRIES SECTION */}
-        {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-            
-            {/* TECHNOLOGIES WE MASTER */}
-            <AnimatedSection>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0A0A0A] mb-8 font-sans tracking-tight">
-                Technologies We Master
-              </h2>
-              <div className="flex flex-wrap gap-3">
-                {[
-                  'React', 'TypeScript', 'Node.js', 'Next.js', 'Tailwind CSS', 
-                  'Framer Motion', 'Python', 'OpenAI API', 'GraphQL', 
-                  'PostgreSQL', 'Figma', 'AWS'
-                ].map((tech) => (
-                  <span 
-                    key={tech} 
-                    className="px-5 py-3 rounded-full bg-white/60 backdrop-blur-md border border-gray-200 shadow-sm text-sm font-semibold text-[#0A0A0A] hover:border-[#2563EB]/50 hover:shadow-[0_4px_15px_rgba(37,99,235,0.1)] hover:-translate-y-0.5 transition-all duration-300 cursor-default select-none"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </AnimatedSection>
-
-            {/* INDUSTRIES WE SERVE */}
-            <AnimatedSection delay={0.2}>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0A0A0A] mb-8 font-sans tracking-tight">
-                Industries We Serve
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {[
-                  { name: 'Healthcare', icon: Heart },
-                  { name: 'SaaS', icon: Cloud },
-                  { name: 'E-commerce', icon: ShoppingBag },
-                  { name: 'Finance', icon: Activity },
-                  { name: 'Startups', icon: Zap },
-                  { name: 'Education', icon: Target },
-                ].map((industry) => (
-                  <div 
-                    key={industry.name} 
-                    className="p-6 rounded-[24px] bg-white border border-gray-200/80 text-center hover:border-transparent hover:shadow-[0_15px_35px_rgba(0,0,0,0.06)] transition-all duration-300 group cursor-default relative overflow-hidden"
-                  >
-                    {/* Hover Inner Glow */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    
-                    <industry.icon className="relative z-10 w-8 h-8 mx-auto mb-4 text-gray-400 group-hover:text-[#2563EB] transition-colors" strokeWidth={1.5} />
-                    <span className="relative z-10 font-bold text-sm text-[#0A0A0A] font-sans">{industry.name}</span>
-                  </div>
-                ))}
-              </div>
-            </AnimatedSection>
 
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 7. LATEST RESOURCES SECTION */}
+        {/* 6. TECHNOLOGIES & INDUSTRIES */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-white border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-t border-slate-200/80">
+          <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
-            <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-              <div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
-                  From Our Journal
+            <div className="lg:col-span-6">
+              <AnimatedSection>
+                <h3 className="text-2xl font-bold text-slate-950 mb-5">Technologies We Master</h3>
+                <div className="flex flex-wrap gap-2.5">
+                  {technologies.map((tech) => (
+                    <span 
+                      key={tech} 
+                      className="px-4 py-2 rounded-xl bg-white border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-800 shadow-2xs hover:border-blue-300 transition-colors select-none"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
-                <h2 className="text-4xl sm:text-5xl font-extrabold text-[#0A0A0A] tracking-[-0.03em] font-sans leading-tight">
+              </AnimatedSection>
+            </div>
+
+            <div className="lg:col-span-6">
+              <AnimatedSection delay={0.1}>
+                <h3 className="text-2xl font-bold text-slate-950 mb-5">Industries We Serve</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {industries.map((ind) => (
+                    <div 
+                      key={ind.name} 
+                      className="p-4 rounded-xl bg-white border border-slate-200/90 text-center shadow-2xs flex flex-col items-center gap-2 hover:border-slate-300 transition-colors"
+                    >
+                      <ind.icon className="w-5 h-5 text-blue-600" />
+                      <span className="font-semibold text-xs text-slate-800">{ind.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </AnimatedSection>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* 7. INSIGHTS / BLOG */}
+        {/* ========================================================================= */}
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white border-t border-slate-200/80">
+          <div className="max-w-[1280px] mx-auto">
+            
+            <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">From Our Journal</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                   Latest Insights & Guides
                 </h2>
               </div>
               <Link to="/resources" className="shrink-0">
-                <Button variant="outline" className="rounded-full px-8 h-12 border-gray-300 text-[#0A0A0A] hover:bg-gray-100 hover:border-gray-400 font-bold transition-all shadow-sm">
-                  View All Resources <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors">
+                  View All Resources <ArrowRight size={14} />
+                </span>
               </Link>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {latestArticles.map((art, i) => (
-                <AnimatedSection key={art.slug} delay={i * 0.15}>
-                  <Link
-                    to={`/resources/${art.slug}`}
-                    className="group flex flex-col h-full overflow-hidden cursor-pointer rounded-[32px]"
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              
+              {featuredArticle && (
+                <AnimatedSection className="lg:col-span-7">
+                  <Link 
+                    to={`/resources/${featuredArticle.slug}`}
+                    className="group flex flex-col h-full rounded-2xl overflow-hidden bg-slate-50 border border-slate-200 p-6 hover:border-slate-300 transition-colors"
                   >
-                    <div className="aspect-[16/10] overflow-hidden bg-gray-100 relative rounded-[32px] mb-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                    <div className="aspect-[16/9] w-full rounded-xl overflow-hidden bg-slate-200 mb-5 relative">
                       <img 
-                        src={art.thumbnail} 
-                        alt={art.title} 
+                        src={featuredArticle.thumbnail} 
+                        alt={featuredArticle.title} 
                         loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                        className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                       />
-                      <div className="absolute top-4 left-4">
-                        <span className="px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-xs font-bold text-[#0A0A0A] shadow-sm">
-                          {art.category}
-                        </span>
-                      </div>
+                      <span className="absolute top-3 left-3 px-3 py-1 rounded-md bg-white text-xs font-bold text-slate-900 shadow-xs">
+                        {featuredArticle.category}
+                      </span>
                     </div>
+
+                    <div className="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                      <span>{featuredArticle.date}</span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1"><Clock size={11} /> {featuredArticle.readingTime}</span>
+                    </div>
+
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-950 group-hover:text-blue-600 transition-colors leading-snug mb-3">
+                      {featuredArticle.title}
+                    </h3>
                     
-                    <div className="flex flex-col flex-grow px-2">
-                      <div className="flex items-center gap-3 text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">
-                        <span>{art.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-300" />
-                        <span className="flex items-center gap-1.5"><Clock size={12} /> {art.readingTime}</span>
-                      </div>
-                      <h3 className="text-2xl font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors leading-[1.3] mb-4 tracking-tight">
-                        {art.title}
-                      </h3>
-                      <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed line-clamp-3 mb-6">
-                        {art.excerpt}
-                      </p>
-                      
-                      <div className="mt-auto flex items-center gap-2 text-sm font-bold text-[#2563EB] group-hover:gap-3 transition-all">
-                        <span>Read Story</span>
-                        <ArrowRight size={16} />
-                      </div>
+                    <p className="text-sm text-slate-600 leading-relaxed mb-4 font-normal">
+                      {featuredArticle.excerpt}
+                    </p>
+
+                    <div className="mt-auto flex items-center gap-1 text-xs font-bold text-blue-600">
+                      <span>Read Full Story</span>
+                      <ArrowRight size={13} />
                     </div>
                   </Link>
                 </AnimatedSection>
-              ))}
-            </div>
+              )}
 
-            {/* SECONDARY RESOURCE CTA */}
-            <AnimatedSection delay={0.2} className="mt-16 text-center">
-              <p className="text-[15px] font-semibold text-gray-500">
-                Not ready to start?{' '}
-                <Link to="/resources" className="text-[#2563EB] hover:text-blue-700 font-bold inline-flex items-center gap-1.5 transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-current after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left">
-                  Explore our free resources <BookOpen size={16} />
-                </Link>
-              </p>
-            </AnimatedSection>
+              <div className="lg:col-span-5 flex flex-col gap-4">
+                {secondaryArticles.map((art, i) => (
+                  <AnimatedSection key={art.slug} delay={i * 0.08} className="flex-1">
+                    <Link 
+                      to={`/resources/${art.slug}`}
+                      className="group flex flex-col sm:flex-row gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition-colors h-full"
+                    >
+                      <div className="w-full sm:w-36 aspect-[16/10] sm:aspect-square rounded-lg overflow-hidden bg-slate-200 shrink-0 relative">
+                        <img 
+                          src={art.thumbnail} 
+                          alt={art.title} 
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-between flex-1">
+                        <div>
+                          <span className="text-[11px] font-semibold text-slate-400">{art.category}</span>
+                          <h4 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-snug mt-1 mb-2">
+                            {art.title}
+                          </h4>
+                        </div>
+                        <span className="text-xs font-bold text-blue-600 inline-flex items-center gap-1">
+                          Read Article <ChevronRight size={12} />
+                        </span>
+                      </div>
+                    </Link>
+                  </AnimatedSection>
+                ))}
+              </div>
+
+            </div>
 
           </div>
         </section>
 
+        {/* ========================================================================= */}
+        {/* 8. FINAL CTA */}
+        {/* ========================================================================= */}
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-950 text-white text-center">
+          <div className="max-w-[760px] mx-auto space-y-6">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+              Ready to build your next <span className="text-blue-400">digital product?</span>
+            </h2>
 
-        {/* ========================================================================= */}
-        {/* 8. FINAL CTA BANNER */}
-        {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6">
-          <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="relative rounded-[40px] overflow-hidden bg-[#0A0A0A] text-white text-center py-20 md:py-28 px-6 sm:px-12 shadow-2xl">
-              {/* Premium Gradient Overlays */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_rgba(37,99,235,0.4)_0%,_transparent_70%)] pointer-events-none" />
-              <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_bottom_right,_rgba(96,165,250,0.15)_0%,_transparent_70%)] pointer-events-none" />
+            <p className="text-base text-slate-400 max-w-lg mx-auto leading-relaxed">
+              Partner with ProstoLabs to design and deploy custom software, web apps, or AI tools. Get a clear project proposal today.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <Link to="/start-project" className="w-full sm:w-auto">
+                <button className="w-full sm:w-auto h-12 px-7 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-semibold text-sm sm:text-base transition-all cursor-pointer flex items-center justify-center gap-2">
+                  <span>Start Your Project</span>
+                  <ArrowRight size={16} />
+                </button>
+              </Link>
               
-              <div className="relative z-10 max-w-3xl mx-auto space-y-8">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-[-0.03em] font-sans leading-[1.1]">
-                  Ready to build your next <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">digital product?</span>
-                </h2>
-                <p className="text-lg sm:text-xl text-gray-400 font-medium leading-relaxed max-w-2xl mx-auto">
-                  Partner with ProstoLabs to design and deploy custom software, web apps, or AI tools. Get a clear project proposal today.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-                  <Link to="/start-project">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="group relative w-full sm:w-auto h-14 px-8 bg-white text-[#0A0A0A] rounded-full font-bold text-base shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all cursor-pointer overflow-hidden flex items-center justify-center gap-2"
-                    >
-                      <span>Start Your Project</span>
-                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
-                  </Link>
-                  <Link to="/contact">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto h-14 px-8 bg-white/10 backdrop-blur-md text-white rounded-full font-bold text-base border border-white/20 hover:bg-white/20 transition-all cursor-pointer flex items-center justify-center"
-                    >
-                      Talk to Our Team
-                    </motion.button>
-                  </Link>
-                </div>
-              </div>
-            </AnimatedSection>
+              <Link to="/contact" className="w-full sm:w-auto">
+                <button className="w-full sm:w-auto h-12 px-7 bg-white/10 hover:bg-white/15 text-white rounded-full font-semibold text-sm sm:text-base border border-white/15 transition-all cursor-pointer flex items-center justify-center">
+                  Talk to Our Team
+                </button>
+              </Link>
+            </div>
           </div>
         </section>
 

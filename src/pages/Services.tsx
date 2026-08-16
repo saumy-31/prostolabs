@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import { SEO } from '../components/seo/SEO'
@@ -7,13 +7,10 @@ import {
   Code, Palette, Bot, Settings, LineChart, CheckCircle2,
   ChevronDown, Wrench, Sparkles, ArrowRight, ShieldCheck,
   Globe, Heart, Cloud, ShoppingBag, Activity, Target, Zap, Cpu,
-  Briefcase, Layers, MessageSquare, BookOpen, ArrowUpRight, HelpCircle
+  Briefcase, Layers, MessageSquare, BookOpen, ArrowUpRight, 
 } from 'lucide-react'
 
-// --- SAAS EASING CURVE ---
-const easeSaaS = [0.16, 1, 0.3, 1] as const
-
-// Structured Data for Easy Scaling to Sub-routes (/services/web-development, etc.)
+// Structured Data for Services
 export interface ServiceItem {
   id: string
   slug: string
@@ -195,7 +192,7 @@ const servicesData: ServiceItem[] = [
   }
 ]
 
-// FAQ Data for Component & Automatic Schema Injection
+// FAQ Data
 const faqData = [
   {
     question: 'How long does a web development or software project take?',
@@ -223,17 +220,18 @@ const faqData = [
   }
 ]
 
-export const Services = () => {
+export const Services: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const servicesSectionRef = useRef<HTMLElement>(null)
   const location = useLocation()
   
-  const [expandedService, setExpandedService] = useState<string | null>(null)
+  const [expandedService, setExpandedService] = useState<string | null>('web')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   
   useEffect(() => {
-    if (location.state && location.state.activeService) {
-      setExpandedService(location.state.activeService)
+    if (location.state && (location.state as { activeService?: string }).activeService) {
+      const active = (location.state as { activeService: string }).activeService
+      setExpandedService(active)
       
       setTimeout(() => {
         servicesSectionRef.current?.scrollIntoView({
@@ -258,183 +256,179 @@ export const Services = () => {
         faq={faqData}
       />
 
-      <div className="relative bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-500/30 selection:text-blue-900 overflow-hidden" ref={containerRef}>
+      <div className="relative w-full overflow-x-clip bg-[#F8FAFC] text-[#0F172A] font-sans antialiased selection:bg-blue-600/15 selection:text-blue-600" ref={containerRef}>
         
-        {/* GLOBAL PREMIUM BACKGROUND ELEMENTS */}
-        <div className="absolute top-0 left-0 right-0 h-[120vh] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-        <div className="absolute top-[-5%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
-        <div className="absolute top-[15%] right-[-5%] w-[35%] h-[40%] rounded-full bg-cyan-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
+        {/* Subtle Ambient Grid Layer */}
+        <div 
+          aria-hidden="true" 
+          className="absolute inset-0 top-0 h-[650px] w-full bg-[radial-gradient(ellipse_75%_50%_at_50%_0%,rgba(37,99,235,0.06),transparent_70%)] pointer-events-none" 
+        />
+        <div 
+          aria-hidden="true" 
+          className="absolute top-0 left-0 right-0 h-[700px] bg-[linear-gradient(to_right,#E2E8F040_1px,transparent_1px),linear-gradient(to_bottom,#E2E8F040_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" 
+        />
 
         {/* ========================================================================= */}
         {/* 1. HERO SECTION */}
         {/* ========================================================================= */}
-        <section className="relative flex items-center justify-center px-6 pt-24 sm:pt-32 md:pt-40 pb-20 md:pb-24 overflow-hidden">
-          <div className="max-w-[1100px] mx-auto text-center relative z-10">
+        <section className="relative flex items-center justify-center px-5 sm:px-8 lg:px-12 pt-28 sm:pt-36 pb-16 sm:pb-20 text-center">
+          <div className="max-w-[1000px] mx-auto relative z-10 space-y-6">
             <AnimatedSection>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_rgb(0,0,0,0.03)] text-xs md:text-sm font-bold text-[#2563EB] mb-8 transform-gpu">
-                <Sparkles size={16} className="text-[#2563EB]" />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">Capabilities & Digital Solutions</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs text-xs font-semibold text-blue-600 mb-2">
+                <Sparkles size={14} className="text-blue-600" />
+                <span>Capabilities & Digital Solutions</span>
               </div>
-              
-              <h1 className="text-5xl sm:text-6xl lg:text-[76px] font-extrabold tracking-[-0.03em] leading-[1.05] mb-8 text-[#0A0A0A] font-sans">
-                Web Development, AI Automation & Digital Solutions for <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-[#2563EB] to-cyan-500">Modern Businesses.</span>
+
+              <h1 className="text-[36px] sm:text-[50px] md:text-[60px] lg:text-[68px] font-extrabold tracking-[-0.035em] leading-[1.04] text-slate-950">
+                Web Development, AI Automation & Digital Solutions for{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+                  Modern Businesses.
+                </span>
               </h1>
-              
-              <p className="text-lg sm:text-xl md:text-2xl text-[#6B7280] max-w-3xl mx-auto leading-[1.6] mb-10 font-medium tracking-tight">
+
+              <p className="text-base sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-normal pt-2">
                 We engineer high-speed web applications, custom software, AI workflows, and conversion-first user interfaces designed to scale your operations and drive revenue.
               </p>
-              
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
                 <Link to="/start-project" className="w-full sm:w-auto">
-                  <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="group relative w-full sm:w-auto h-14 px-8 rounded-full bg-[#2563EB] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer transition-all overflow-hidden shadow-[0_8px_30px_rgba(37,99,235,0.3)] border border-blue-400/20"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <span className="relative z-10 flex items-center gap-2">
-                      Start Your Project
-                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </motion.button>
+                  <button className="w-full sm:w-auto h-12 px-7 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer shadow-[0_2px_12px_rgba(37,99,235,0.25)] hover:shadow-[0_4px_20px_rgba(37,99,235,0.35)] transition-all">
+                    <span>Start Your Project</span>
+                    <ArrowRight size={16} />
+                  </button>
                 </Link>
+                
                 <Link to="/contact" className="w-full sm:w-auto">
-                  <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto h-14 px-8 rounded-full bg-white/70 backdrop-blur-xl border border-gray-200/80 text-[#0A0A0A] font-bold text-sm sm:text-base hover:bg-white hover:shadow-lg hover:border-gray-300 transition-all cursor-pointer flex items-center justify-center shadow-sm"
-                  >
+                  <button className="w-full sm:w-auto h-12 px-7 rounded-full bg-white hover:bg-slate-50 text-slate-900 font-semibold text-sm sm:text-base border border-slate-200 shadow-xs transition-colors cursor-pointer flex items-center justify-center">
                     Talk to Our Team
-                  </motion.button>
+                  </button>
                 </Link>
               </div>
             </AnimatedSection>
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 2. EXPANDABLE SERVICES LIST (PREMIUM BENTO ACCORDIONS) */}
+        {/* 2. EXPANDABLE SERVICES LIST */}
         {/* ========================================================================= */}
-        <section ref={servicesSectionRef} className="py-24 md:py-32 px-6 bg-transparent relative scroll-mt-20">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-          
-          <div className="max-w-[1100px] mx-auto">
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+        <section ref={servicesSectionRef} className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white border-t border-slate-200/80 scroll-mt-20">
+          <div className="max-w-[1240px] mx-auto">
+            
+            <AnimatedSection className="max-w-2xl mb-12 sm:mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Core Domains
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                 Our Capabilities
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 Click any core domain below to view process steps, deliverables, and guides.
               </p>
             </AnimatedSection>
 
-            <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-4">
               {servicesData.map((service, i) => {
                 const isExpanded = expandedService === service.id
+                const IconComponent = service.icon
 
                 return (
-                  <AnimatedSection key={service.id} delay={i * 0.08}>
+                  <AnimatedSection key={service.id} delay={i * 0.04}>
                     <div
                       onClick={() => toggleService(service.id)}
-                      className={`group cursor-pointer overflow-hidden rounded-[32px] transition-all duration-500 backdrop-blur-xl border ${
+                      className={`group cursor-pointer rounded-2xl transition-all duration-200 border ${
                         isExpanded 
-                          ? 'bg-white border-[#2563EB]/40 shadow-[0_20px_60px_rgba(37,99,235,0.08)]' 
-                          : 'bg-white/60 border-gray-200/80 hover:border-gray-300/80 hover:bg-white/90 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)]'
+                          ? 'bg-slate-50 border-slate-300 shadow-sm' 
+                          : 'bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-2xs'
                       }`}
                     >
-                      {/* Card Header */}
-                      <div className="p-6 sm:p-8 md:p-10 flex items-center justify-between">
-                        <div className="flex items-center gap-5 sm:gap-8">
-                          <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-sm ${
-                            isExpanded ? 'bg-gradient-to-br from-blue-600 to-blue-500 text-white scale-105' : 'bg-gradient-to-br from-blue-50 to-white border border-blue-100 text-[#2563EB] group-hover:scale-105'
+                      {/* Header */}
+                      <div className="p-5 sm:p-6 md:p-8 flex items-center justify-between">
+                        <div className="flex items-center gap-4 sm:gap-6">
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors shrink-0 shadow-2xs ${
+                            isExpanded ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100/70'
                           }`}>
-                            <service.icon size={28} strokeWidth={1.5} />
+                            <IconComponent size={22} strokeWidth={1.75} />
                           </div>
                           <div>
-                            <h3 className="text-2xl sm:text-3xl font-bold text-[#0A0A0A] font-sans tracking-tight mb-1 sm:mb-2">{service.title}</h3>
-                            <p className="text-sm sm:text-base text-[#6B7280] font-medium hidden sm:block">{service.tagline}</p>
+                            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-950 tracking-tight">{service.title}</h3>
+                            <p className="text-xs sm:text-sm text-slate-500 font-normal hidden sm:block mt-0.5">{service.tagline}</p>
                           </div>
                         </div>
-                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-transform duration-500 shrink-0 ${
-                          isExpanded ? 'bg-blue-50 rotate-180' : 'bg-gray-50 group-hover:bg-gray-100'
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors shrink-0 ${
+                          isExpanded ? 'bg-blue-100/60 text-blue-600' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200/70'
                         }`}>
-                          <ChevronDown className={`w-5 h-5 sm:w-6 sm:h-6 ${isExpanded ? 'text-[#2563EB]' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
                         </div>
                       </div>
 
-                      {/* Card Expand Content */}
-                      <AnimatePresence>
+                      {/* Content */}
+                      <AnimatePresence initial={false}>
                         {isExpanded && (
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.4, ease: easeSaaS }}
+                            transition={{ duration: 0.25, ease: "easeInOut" }}
                           >
-                            <div className="px-6 sm:px-8 md:px-10 pb-10 pt-2 border-t border-gray-100/80 space-y-10">
+                            <div className="px-5 sm:px-6 md:px-8 pb-8 pt-2 border-t border-slate-200/80 space-y-8">
                               
-                              {/* Introductory Overview */}
-                              <p className="text-[15px] sm:text-[17px] text-[#4B5563] leading-[1.7] font-medium max-w-4xl">
+                              <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal max-w-4xl pt-2">
                                 {service.desc}
                               </p>
                               
-                              {/* Perfect For Badges */}
-                              <div className="p-6 rounded-[24px] bg-gray-50/50 border border-gray-100 space-y-4">
-                                <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans">
+                              {/* Perfect For */}
+                              <div className="p-5 rounded-xl bg-white border border-slate-200/80 space-y-3">
+                                <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider block">
                                   Perfect For
                                 </span>
-                                <div className="flex flex-wrap gap-2.5">
+                                <div className="flex flex-wrap gap-2">
                                   {service.perfectFor.map((item, pIdx) => (
-                                    <span key={pIdx} className="px-4 py-2 rounded-full bg-white border border-gray-200/80 text-sm font-semibold text-[#0A0A0A] shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                                    <span key={pIdx} className="px-3 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700">
                                       {item}
                                     </span>
                                   ))}
                                 </div>
                               </div>
 
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                {/* Our Process */}
-                                <div className="space-y-4">
-                                  <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {/* Process Steps */}
+                                <div className="space-y-3">
+                                  <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider block">
                                     Our Process
                                   </span>
-                                  <div className="grid grid-cols-1 gap-3">
+                                  <div className="grid grid-cols-1 gap-2.5">
                                     {service.processSteps.map((ps, sIdx) => (
-                                      <div key={sIdx} className="p-4 rounded-[16px] bg-blue-50/30 border border-blue-100/50 flex items-center gap-4">
-                                        <div className="w-8 h-8 rounded-full bg-white text-[#2563EB] flex items-center justify-center font-bold text-xs shadow-sm">
+                                      <div key={sIdx} className="p-3.5 rounded-xl bg-white border border-slate-200/80 flex items-center gap-3.5">
+                                        <div className="w-7 h-7 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs font-mono shrink-0">
                                           {ps.step}
                                         </div>
-                                        <span className="text-[15px] font-bold text-[#0A0A0A] font-sans">{ps.title}</span>
+                                        <span className="text-xs sm:text-sm font-semibold text-slate-900">{ps.title}</span>
                                       </div>
                                     ))}
                                   </div>
                                 </div>
 
-                                {/* What You Get */}
-                                <div className="space-y-4">
-                                  <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans">
+                                {/* Deliverables */}
+                                <div className="space-y-3">
+                                  <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider block">
                                     What You Get
                                   </span>
-                                  <div className="grid grid-cols-1 gap-3">
+                                  <div className="grid grid-cols-1 gap-2.5">
                                     {service.bullets.map((bullet, idx) => (
-                                      <div key={idx} className="flex items-center gap-3 p-4 rounded-[16px] bg-white border border-gray-200/60 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-                                        <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-                                          <CheckCircle2 className="w-4 h-4 text-[#2563EB]" />
-                                        </div>
-                                        <span className="text-[14px] text-[#0A0A0A] font-semibold font-sans">{bullet}</span>
+                                      <div key={idx} className="flex items-center gap-2.5 p-3.5 rounded-xl bg-white border border-slate-200/80">
+                                        <CheckCircle2 size={16} className="text-blue-600 shrink-0" />
+                                        <span className="text-xs sm:text-sm font-medium text-slate-800">{bullet}</span>
                                       </div>
                                     ))}
                                   </div>
                                 </div>
                               </div>
 
-                              {/* Contextual Related Resources */}
+                              {/* Related Guides */}
                               {service.relatedResources.length > 0 && (
-                                <div className="pt-8 border-t border-gray-100/80 space-y-5">
-                                  <span className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2 font-sans">
-                                    <BookOpen size={14} className="text-[#2563EB]" />
+                                <div className="pt-6 border-t border-slate-200/80 space-y-3.5">
+                                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                                    <BookOpen size={14} className="text-blue-600" />
                                     <span>Related Resources & Guides</span>
                                   </span>
                                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -443,27 +437,23 @@ export const Services = () => {
                                         key={rIdx}
                                         to={`/resources/${res.slug}`}
                                         onClick={(e) => e.stopPropagation()}
-                                        className="p-4 rounded-[16px] bg-white border border-gray-200/80 hover:border-[#2563EB]/40 hover:shadow-[0_8px_20px_rgba(37,99,235,0.06)] text-[13px] font-bold text-[#0A0A0A] hover:text-[#2563EB] transition-all flex items-start justify-between group/res cursor-pointer"
+                                        className="p-3.5 rounded-xl bg-white border border-slate-200/80 hover:border-slate-300 text-xs font-semibold text-slate-900 hover:text-blue-600 transition-colors flex items-start justify-between group/res"
                                       >
                                         <span className="leading-snug pr-2">{res.title}</span>
-                                        <ArrowUpRight size={16} className="text-gray-400 group-hover/res:text-[#2563EB] shrink-0 mt-0.5 group-hover/res:translate-x-0.5 group-hover/res:-translate-y-0.5 transition-transform" />
+                                        <ArrowUpRight size={14} className="text-slate-400 group-hover/res:text-blue-600 shrink-0 mt-0.5" />
                                       </Link>
                                     ))}
                                   </div>
                                 </div>
                               )}
 
-                              {/* Primary Action Button */}
-                              <div className="pt-4">
+                              {/* CTA */}
+                              <div className="pt-2">
                                 <Link to="/start-project" onClick={(e) => e.stopPropagation()}>
-                                  <motion.button 
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    className="h-12 px-8 rounded-full bg-[#0A0A0A] text-white font-bold text-sm shadow-[0_8px_20px_rgba(0,0,0,0.1)] flex items-center gap-2 cursor-pointer hover:bg-gray-900 transition-colors group/btn"
-                                  >
-                                    <span>Discuss this service</span>
-                                    <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                                  </motion.button>
+                                  <button className="h-11 px-6 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-medium text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-colors">
+                                    <span>Discuss this capability</span>
+                                    <ArrowRight size={14} />
+                                  </button>
                                 </Link>
                               </div>
 
@@ -479,26 +469,25 @@ export const Services = () => {
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 3. TRUST SIGNALS: THE PARTNERSHIP ADVANTAGE */}
+        {/* 3. WHY BUSINESSES CHOOSE PROSTOLABS */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-y border-slate-200/80">
+          <div className="max-w-[1240px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
+            <AnimatedSection className="max-w-2xl mb-12 sm:mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
                 The Partnership Advantage
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
-                Why Businesses Choose <span className="text-[#2563EB]">ProstoLabs</span>
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
+                Why Businesses Choose <span className="text-blue-600">ProstoLabs</span>
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 We handle design, engineering, security, and maintenance so you can focus on core growth.
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 { icon: MessageSquare, title: 'Transparent Communication', text: 'Direct access to your engineers and designers without account manager middlemen.' },
                 { icon: Zap, title: 'Modern Technology Stack', text: 'Hand-crafted React, Next.js, and TypeScript architectures ensuring peak efficiency.' },
@@ -507,14 +496,14 @@ export const Services = () => {
                 { icon: ShieldCheck, title: 'Security First', text: 'Built-in SSL, encrypted database storage, and proactive vulnerability patching.' },
                 { icon: Heart, title: 'Long-Term Partnership', text: 'Continuous product care, cloud maintenance, and feature enhancements post-launch.' },
               ].map((item, i) => (
-                <AnimatedSection key={i} delay={i * 0.1}>
-                  <div className="p-8 rounded-[32px] bg-white border border-gray-200/80 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:border-[#2563EB]/30 transition-all duration-300 h-full flex flex-col justify-between group">
-                    <div className="space-y-5">
-                      <div className="w-14 h-14 rounded-[20px] bg-gray-50 border border-gray-100 text-[#2563EB] flex items-center justify-center group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
-                        <item.icon size={26} strokeWidth={1.5} />
+                <AnimatedSection key={i} delay={i * 0.05}>
+                  <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 transition-all h-full flex flex-col justify-between">
+                    <div>
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                        <item.icon size={20} strokeWidth={1.75} />
                       </div>
-                      <h3 className="font-bold text-xl md:text-2xl text-[#0A0A0A] font-sans tracking-tight">{item.title}</h3>
-                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{item.text}</p>
+                      <h3 className="font-bold text-lg text-slate-950 mb-2 tracking-tight">{item.title}</h3>
+                      <p className="text-sm text-slate-600 leading-relaxed font-normal">{item.text}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -524,28 +513,25 @@ export const Services = () => {
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 4. DEVELOPMENT PROCESS (DARK THEME / LINEAR AESTHETIC) */}
+        {/* 4. DEVELOPMENT PROCESS */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-[#0A0A0A] text-white relative overflow-hidden">
-          {/* Subtle Glows */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_rgba(37,99,235,0.15)_0%,_transparent_70%)] pointer-events-none" />
-          
-          <div className="max-w-[1000px] mx-auto relative z-10">
-            <AnimatedSection className="text-center mb-20">
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white">
+          <div className="max-w-[960px] mx-auto">
+            
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Methodology
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                 Our Development Process
               </h2>
-              <p className="text-lg sm:text-xl text-gray-400 font-medium max-w-2xl mx-auto">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 A proven step-by-step process focused on quality, speed, and reliable delivery.
               </p>
             </AnimatedSection>
 
-            <div className="relative">
-              {/* Glowing Vertical Timeline Line */}
-              <div className="absolute left-[24px] sm:left-[36px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500/0 via-blue-500/50 to-blue-500/0" />
-
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 { num: '01', title: 'Discovery & Research', desc: 'We analyze your business goals, review system requirements, and set clear milestones.' },
                 { num: '02', title: 'Architecture & Strategy', desc: 'Selecting the optimal database structure, frontend frameworks, and cloud infrastructure for scale.' },
@@ -554,40 +540,40 @@ export const Services = () => {
                 { num: '05', title: 'QA & Security Testing', desc: 'Rigorous automated and manual testing to ensure edge cases are handled and data is secure.' },
                 { num: '06', title: 'Deployment & Support', desc: 'Zero-downtime deployment to cloud servers, followed by ongoing retainer support and maintenance.' },
               ].map((step, i) => (
-                <AnimatedSection key={i} delay={i * 0.1} className="relative pl-16 sm:pl-28 mb-12 sm:mb-16 last:mb-0 group">
-                  {/* Glowing Node */}
-                  <div className="absolute left-0 top-0 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#0A0A0A] border-2 border-gray-800 group-hover:border-blue-500 flex items-center justify-center font-bold text-gray-400 group-hover:text-blue-400 text-sm sm:text-lg shadow-[0_0_20px_rgba(0,0,0,0.5)] z-10 transition-colors duration-500">
-                    {step.num}
-                    <div className="absolute inset-0 rounded-full bg-blue-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-                  
-                  {/* Content Card */}
-                  <div className="p-8 sm:p-10 rounded-[32px] bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:bg-white/10">
-                    <h3 className="text-xl sm:text-2xl font-bold mb-3 font-sans tracking-tight text-white">{step.title}</h3>
-                    <p className="text-[15px] sm:text-[17px] text-gray-400 leading-relaxed font-medium">{step.desc}</p>
+                <AnimatedSection key={i} delay={i * 0.05}>
+                  <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-slate-300 transition-colors h-full flex flex-col justify-between">
+                    <div>
+                      <span className="text-xs font-mono font-bold text-blue-600 block mb-3">{step.num}</span>
+                      <h3 className="text-lg font-bold text-slate-950 mb-2 tracking-tight">{step.title}</h3>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">{step.desc}</p>
+                    </div>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
+
           </div>
         </section>
-
 
         {/* ========================================================================= */}
         {/* 5. INDUSTRIES WE SERVE */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative bg-white border-b border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-t border-slate-200/80">
+          <div className="max-w-[1240px] mx-auto">
+            
+            <AnimatedSection className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Domains
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                 Industries We Serve
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
-                Tailored digital engineering for diverse commercial domains.
+              <p className="text-base text-slate-600 font-normal mt-2">
+                Tailored digital engineering for diverse commercial sectors.
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
               {[
                 { name: 'Healthcare', icon: Heart },
                 { name: 'SaaS', icon: Cloud },
@@ -602,63 +588,59 @@ export const Services = () => {
               ].map((industry, i) => {
                 const Icon = industry.icon
                 return (
-                  <AnimatedSection key={i} delay={i * 0.05}>
-                    <div className="p-6 sm:p-8 rounded-[24px] bg-[#FAFAFA] border border-gray-200/80 text-center hover:bg-white hover:border-transparent hover:shadow-[0_15px_35px_rgba(0,0,0,0.06)] transition-all duration-300 group cursor-default relative overflow-hidden">
-                      {/* Hover Inner Glow */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      <Icon className="relative z-10 w-8 h-8 mx-auto mb-4 text-gray-400 group-hover:text-[#2563EB] transition-colors" strokeWidth={1.5} />
-                      <span className="relative z-10 font-bold text-sm text-[#0A0A0A] font-sans">{industry.name}</span>
+                  <AnimatedSection key={i} delay={i * 0.03}>
+                    <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 text-center hover:border-slate-300 transition-colors shadow-2xs flex flex-col items-center gap-2">
+                      <Icon className="w-5 h-5 text-blue-600" strokeWidth={1.75} />
+                      <span className="font-semibold text-xs text-slate-900">{industry.name}</span>
                     </div>
                   </AnimatedSection>
                 )
               })}
             </div>
+
           </div>
         </section>
-
 
         {/* ========================================================================= */}
         {/* 6. FAQ SECTION */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative bg-[#FAFAFA]">
-          <div className="max-w-[900px] mx-auto">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white border-t border-slate-200/80">
+          <div className="max-w-[840px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
-                <HelpCircle size={14} />
-                <span>Frequently Asked Questions</span>
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
-                Common Questions
+            <AnimatedSection className="text-center mb-12">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                FAQ
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight mt-1">
+                Frequently Asked Questions
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
-                Everything you need to know about our web engineering process, budgets, and delivery timelines.
+              <p className="text-base text-slate-600 font-normal mt-2">
+                Everything you need to know about our engineering process, scopes, and timelines.
               </p>
             </AnimatedSection>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {faqData.map((faq, fIdx) => (
-                <AnimatedSection key={fIdx} delay={fIdx * 0.05}>
-                  <div className="rounded-2xl border border-gray-200/50 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                <AnimatedSection key={fIdx} delay={fIdx * 0.03}>
+                  <div className="rounded-2xl border border-slate-200/80 bg-white shadow-2xs hover:border-slate-300 transition-colors overflow-hidden">
                     <button
                       onClick={() => setOpenFaq(openFaq === fIdx ? null : fIdx)}
-                      className="w-full p-6 text-left flex justify-between items-center font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 transition-colors font-sans group"
+                      className="w-full p-5 sm:p-6 text-left flex justify-between items-center font-bold text-base sm:text-lg text-slate-900 cursor-pointer hover:text-blue-600 transition-colors group"
                     >
                       <span className="tracking-tight pr-4">{faq.question}</span>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${openFaq === fIdx ? 'bg-blue-50' : 'bg-gray-50 group-hover:bg-blue-50'}`}>
-                        <ChevronDown className={`w-5 h-5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${openFaq === fIdx ? 'rotate-180 text-[#2563EB]' : 'text-gray-400 group-hover:text-[#2563EB]'}`} />
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors shrink-0 ${openFaq === fIdx ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-500 group-hover:bg-blue-50 group-hover:text-blue-600'}`}>
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${openFaq === fIdx ? 'rotate-180' : ''}`} />
                       </div>
                     </button>
-                    <AnimatePresence>
+                    <AnimatePresence initial={false}>
                       {openFaq === fIdx && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.4, ease: easeSaaS }}
+                          transition={{ duration: 0.25, ease: "easeInOut" }}
                         >
-                          <div className="px-6 pb-6 pt-0 text-[15px] font-medium text-[#6B7280] leading-relaxed border-t border-gray-100/80 mt-1 pt-4">
+                          <div className="px-5 sm:px-6 pb-6 text-sm sm:text-base font-normal text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
                             {faq.answer}
                           </div>
                         </motion.div>
@@ -672,18 +654,17 @@ export const Services = () => {
           </div>
         </section>
 
-
         {/* ========================================================================= */}
         {/* 7. EXPLORE MORE */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative bg-white border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-t border-slate-200/80">
+          <div className="max-w-[1240px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans mb-3">
+            <AnimatedSection className="max-w-2xl mb-12">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
                 Explore ProstoLabs
               </span>
-              <h3 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-[-0.02em] font-sans">
+              <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight mt-1">
                 Discover More About Our Ecosystem
               </h3>
             </AnimatedSection>
@@ -712,26 +693,26 @@ export const Services = () => {
                   icon: Globe
                 }
               ].map((card, cIdx) => (
-                <AnimatedSection key={cIdx} delay={cIdx * 0.1}>
+                <AnimatedSection key={cIdx} delay={cIdx * 0.05}>
                   <Link
                     to={card.link}
-                    className="p-8 md:p-10 rounded-[32px] bg-white/70 backdrop-blur-xl border border-gray-200/80 hover:border-[#2563EB]/40 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)] transition-all duration-300 flex flex-col justify-between h-full group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                    className="p-7 rounded-2xl bg-white border border-slate-200/80 hover:border-slate-300 hover:shadow-xs transition-all flex flex-col justify-between h-full group cursor-pointer"
                   >
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 text-[#0A0A0A] flex items-center justify-center group-hover:bg-blue-50 group-hover:text-[#2563EB] transition-colors duration-300">
-                        <card.icon size={22} strokeWidth={1.5} />
+                    <div className="space-y-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-2xs">
+                        <card.icon size={20} strokeWidth={1.75} />
                       </div>
-                      <h4 className="text-xl md:text-2xl font-bold text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors tracking-tight">
+                      <h4 className="text-xl font-bold text-slate-950 group-hover:text-blue-600 transition-colors tracking-tight">
                         {card.title}
                       </h4>
-                      <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed">
+                      <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
                         {card.desc}
                       </p>
                     </div>
 
-                    <div className="pt-6 mt-8 border-t border-gray-200/60 flex items-center gap-2 text-sm font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors">
+                    <div className="pt-5 mt-6 border-t border-slate-100 flex items-center gap-1 text-xs sm:text-sm font-bold text-blue-600">
                       <span>{card.cta}</span>
-                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                     </div>
                   </Link>
                 </AnimatedSection>
@@ -741,47 +722,30 @@ export const Services = () => {
           </div>
         </section>
 
-
         {/* ========================================================================= */}
         {/* 8. FINAL CALL TO ACTION */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6">
-          <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="relative rounded-[40px] overflow-hidden bg-[#0A0A0A] text-white text-center py-20 md:py-28 px-6 sm:px-12 shadow-2xl">
-              {/* Premium Gradient Overlays */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_rgba(37,99,235,0.4)_0%,_transparent_70%)] pointer-events-none" />
-              <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_bottom_right,_rgba(96,165,250,0.15)_0%,_transparent_70%)] pointer-events-none" />
-              
-              <div className="relative z-10 max-w-3xl mx-auto space-y-8">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-[-0.03em] font-sans leading-[1.1]">
-                  Ready to launch <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">your project?</span>
-                </h2>
-                <p className="text-lg sm:text-xl text-gray-400 font-medium leading-relaxed max-w-2xl mx-auto">
-                  Partner with ProstoLabs to design and deploy custom software, web apps, or AI tools. Get a clear project proposal today.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-                  <Link to="/start-project">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="group relative w-full sm:w-auto h-14 px-8 bg-white text-[#0A0A0A] rounded-full font-bold text-base shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all cursor-pointer overflow-hidden flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
-                    >
-                      <span>Start Your Project</span>
-                      <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
-                  </Link>
-                  <Link to="/contact">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto h-14 px-8 bg-white/10 backdrop-blur-md text-white rounded-full font-bold text-base border border-white/20 hover:bg-white/20 transition-all cursor-pointer flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
-                    >
-                      Talk to Our Team
-                    </motion.button>
-                  </Link>
-                </div>
-              </div>
-            </AnimatedSection>
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-950 text-white text-center">
+          <div className="max-w-[760px] mx-auto space-y-6">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+              Ready to launch <span className="text-blue-400">your project?</span>
+            </h2>
+            <p className="text-base text-slate-400 max-w-lg mx-auto leading-relaxed font-normal">
+              Partner with ProstoLabs to design and deploy custom software, web apps, or AI tools. Get a clear project proposal today.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <Link to="/start-project" className="w-full sm:w-auto">
+                <button className="w-full sm:w-auto h-12 px-7 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-semibold text-sm sm:text-base transition-all cursor-pointer flex items-center justify-center gap-2">
+                  <span>Start Your Project</span>
+                  <ArrowRight size={16} />
+                </button>
+              </Link>
+              <Link to="/contact" className="w-full sm:w-auto">
+                <button className="w-full sm:w-auto h-12 px-7 bg-white/10 hover:bg-white/15 text-white rounded-full font-semibold text-sm sm:text-base border border-white/15 transition-all cursor-pointer flex items-center justify-center">
+                  Talk to Our Team
+                </button>
+              </Link>
+            </div>
           </div>
         </section>
 

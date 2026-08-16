@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SEO } from '../components/seo/SEO'
@@ -9,11 +9,8 @@ import {
   MapPin, Clock, ChevronDown, CheckCircle2,
   UploadCloud, ShieldCheck, Sparkles, ArrowRight,
   Award, Globe, BookOpen,
-  Code, Zap, Laptop, FileCheck, UserCheck, Layers, HelpCircle
+  Code, Zap, Laptop, FileCheck, UserCheck, Layers, 
 } from 'lucide-react'
-
-// --- SAAS EASING CURVE ---
-const easeSaaS = [0.16, 1, 0.3, 1] as const
 
 // --- INTERNSHIP PROGRAM DATA STRUCTURE ---
 export interface InternshipTrack {
@@ -70,7 +67,7 @@ const internshipPrograms: InternshipTrack[] = [
   }
 ]
 
-// --- FAQ DATA FOR COMPONENT & AUTOMATIC SCHEMA GENERATION ---
+// --- FAQ DATA ---
 const faqData = [
   {
     question: "Is the internship program fully remote?",
@@ -94,9 +91,8 @@ const faqData = [
   }
 ]
 
-// --- REUSABLE JOB POSTING SCHEMA COMPONENT WITH DYNAMIC VALIDITY ---
+// --- JOB POSTING SCHEMA INJECTION ---
 function JobPostingSchema({ jobs }: { jobs: InternshipTrack[] }) {
-  // Dynamically calculate validThrough date (End of current year + 1 year) so it never expires
   const currentYear = new Date().getFullYear()
   const dynamicValidThrough = `${currentYear + 1}-12-31`
 
@@ -128,35 +124,34 @@ function JobPostingSchema({ jobs }: { jobs: InternshipTrack[] }) {
   )
 }
 
-// --- FAQ ACCORDION ITEM COMPONENT ---
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="border border-gray-200/50 rounded-2xl bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+    <div className="border border-slate-200/80 rounded-2xl bg-white shadow-2xs hover:border-slate-300 transition-colors overflow-hidden">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label={`Toggle answer for: ${question}`}
-        className="w-full p-6 text-left flex items-center justify-between gap-4 font-bold text-base md:text-lg text-[#0A0A0A] cursor-pointer hover:text-[#2563EB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 transition-colors font-sans group"
+        className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-bold text-base sm:text-lg text-slate-900 cursor-pointer hover:text-blue-600 transition-colors group"
       >
         <span className="tracking-tight pr-4">{question}</span>
-        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${isOpen ? 'bg-blue-50' : 'bg-gray-50 group-hover:bg-blue-50'}`}>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors shrink-0 ${isOpen ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-500 group-hover:bg-blue-50 group-hover:text-blue-600'}`}>
           <ChevronDown 
-            className={`w-5 h-5 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-180 text-[#2563EB]' : 'text-gray-400 group-hover:text-[#2563EB]'}`} 
+            className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
           />
         </div>
       </button>
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: easeSaaS }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
           >
-            <div className="px-6 pb-6 pt-0 text-[15px] text-[#6B7280] font-medium leading-relaxed border-t border-gray-100/80 mt-1 pt-4">
+            <div className="px-5 sm:px-6 pb-6 text-sm sm:text-base text-slate-600 font-normal leading-relaxed border-t border-slate-100 pt-4">
               {answer}
             </div>
           </motion.div>
@@ -166,7 +161,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   )
 }
 
-export const Careers = () => {
+export const Careers: React.FC = () => {
   const formRef = useRef<HTMLElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   
@@ -177,7 +172,6 @@ export const Careers = () => {
   const [fileName, setFileName] = useState<string | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  // Sort resources by date (newest first) and grab the top 3
   const latestArticles = [...resources]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3)
@@ -213,83 +207,87 @@ export const Careers = () => {
         faq={faqData}
       />
       
-      {/* Dynamic Schema Injection without Helmet */}
       <JobPostingSchema jobs={internshipPrograms} />
 
-      <div className="relative overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-500/30 selection:text-blue-900">
+      <div className="relative w-full overflow-x-clip bg-[#F8FAFC] text-[#0F172A] font-sans antialiased selection:bg-blue-600/15 selection:text-blue-600">
         
-        {/* GLOBAL PREMIUM BACKGROUND ELEMENTS */}
-        <div className="absolute top-0 left-0 right-0 h-[120vh] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-        <div className="absolute top-[-5%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
-        <div className="absolute top-[15%] right-[-5%] w-[35%] h-[40%] rounded-full bg-cyan-400/10 blur-[120px] pointer-events-none mix-blend-multiply" />
+        {/* Subtle Ambient Grid Layer */}
+        <div 
+          aria-hidden="true" 
+          className="absolute inset-0 top-0 h-[650px] w-full bg-[radial-gradient(ellipse_75%_50%_at_50%_0%,rgba(37,99,235,0.06),transparent_70%)] pointer-events-none" 
+        />
+        <div 
+          aria-hidden="true" 
+          className="absolute top-0 left-0 right-0 h-[700px] bg-[linear-gradient(to_right,#E2E8F040_1px,transparent_1px),linear-gradient(to_bottom,#E2E8F040_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" 
+        />
 
         {/* ========================================================================= */}
         {/* 1. HERO SECTION */}
         {/* ========================================================================= */}
-        <section className="relative flex items-center justify-center px-6 pt-24 sm:pt-32 md:pt-40 pb-20 md:pb-24 overflow-hidden text-center">
-          <div className="max-w-[1000px] mx-auto relative z-10 space-y-8">
+        <section className="relative flex items-center justify-center px-5 sm:px-8 lg:px-12 pt-28 sm:pt-36 pb-16 sm:pb-20 text-center">
+          <div className="max-w-[1000px] mx-auto relative z-10 space-y-6">
             <AnimatedSection>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_rgb(0,0,0,0.03)] text-xs md:text-sm font-bold text-[#2563EB] mb-8 transform-gpu">
-                <Sparkles size={16} className="text-[#2563EB]" />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">ProstoLabs Engineering Internships</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs text-xs font-semibold text-blue-600 mb-2">
+                <Sparkles size={14} className="text-blue-600" />
+                <span>ProstoLabs Engineering Internships</span>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl lg:text-[80px] font-extrabold tracking-[-0.03em] leading-[1.05] mb-8 text-[#0A0A0A] font-sans">
-                Work on Real Products. <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-[#2563EB] to-cyan-500">Learn From Real Engineers.</span>
+              <h1 className="text-[36px] sm:text-[50px] md:text-[60px] lg:text-[68px] font-extrabold tracking-[-0.035em] leading-[1.04] text-slate-950">
+                Work on Real Products.{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+                  Learn From Real Engineers.
+                </span>
               </h1>
 
-              <p className="text-lg sm:text-xl md:text-2xl text-[#6B7280] max-w-3xl mx-auto leading-[1.6] mb-10 font-medium tracking-tight">
+              <p className="text-base sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-normal pt-2">
                 Bridge the gap between academic theory and production-ready engineering. Gain practical skills through 1-on-1 mentorship, clean code reviews, and live digital products built for global clients.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="pt-4 flex justify-center">
                 <button
                   type="button"
                   onClick={() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                  className="group relative w-full sm:w-auto h-14 px-8 rounded-full bg-[#2563EB] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer transition-all overflow-hidden shadow-[0_8px_30px_rgba(37,99,235,0.3)] border border-blue-400/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                  className="w-full sm:w-auto h-12 px-7 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer shadow-[0_2px_12px_rgba(37,99,235,0.25)] hover:shadow-[0_4px_20px_rgba(37,99,235,0.35)] transition-all"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative z-10 flex items-center gap-2">
-                    Explore Open Tracks
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </span>
+                  <span>Explore Open Tracks</span>
+                  <ArrowRight size={16} />
                 </button>
               </div>
             </AnimatedSection>
 
-            {/* HERO TRUST BADGES ROW */}
-            <AnimatedSection delay={0.15}>
-              <div className="pt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-bold text-[#0A0A0A]">
+            {/* Badges Strip */}
+            <AnimatedSection delay={0.1}>
+              <div className="pt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-xs font-semibold text-slate-700">
                 {[
                   { icon: Laptop, text: '100% Remote' },
                   { icon: Layers, text: 'Real Client Projects' },
                   { icon: UserCheck, text: 'Mentor Guided' },
                   { icon: FileCheck, text: 'Completion Certificate' }
                 ].map((badge, idx) => (
-                  <div key={idx} className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/60 backdrop-blur-md border border-gray-200/80 shadow-[0_4px_15px_rgba(0,0,0,0.02)] hover:-translate-y-0.5 transition-transform cursor-default">
-                    <badge.icon size={16} className="text-[#2563EB]" strokeWidth={2.5} />
+                  <div key={idx} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                    <badge.icon size={15} className="text-blue-600" />
                     <span>{badge.text}</span>
                   </div>
                 ))}
               </div>
             </AnimatedSection>
-
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 2. WHY JOIN US (BENTO GRID) */}
+        {/* 2. WHY JOIN US */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative bg-transparent">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-          <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white border-t border-slate-200/80">
+          <div className="max-w-[1240px] mx-auto">
+            
+            <AnimatedSection className="max-w-2xl mb-12 sm:mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Growth & Experience
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                 Why Join ProstoLabs
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 Learn, build, and grow through practical industry experience.
               </p>
             </AnimatedSection>
@@ -301,117 +299,98 @@ export const Careers = () => {
                 { icon: Terminal, title: 'Modern Workflows', desc: 'Gain hands-on experience with modern tech stacks like React, TypeScript, Tailwind, Figma, and AI APIs.' },
                 { icon: TrendingUp, title: 'Career Growth', desc: 'Develop practical confidence, work samples, and a verifiable completion certificate.' }
               ].map((benefit, i) => (
-                <AnimatedSection key={benefit.title} delay={i * 0.08}>
-                  <div className="group p-8 rounded-[32px] bg-white/70 backdrop-blur-xl border border-gray-200/80 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)] hover:border-[#2563EB]/30 transition-all duration-500 h-full flex flex-col justify-between overflow-hidden relative">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-xl transform translate-x-1/2 -translate-y-1/2 group-hover:scale-150 group-hover:bg-blue-500/10 transition-all duration-500" />
-                    <div className="relative z-10">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-white shadow-sm border border-blue-100 text-[#2563EB] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <benefit.icon size={24} strokeWidth={1.5} />
+                <AnimatedSection key={benefit.title} delay={i * 0.05}>
+                  <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-slate-300 hover:shadow-xs transition-all h-full flex flex-col justify-between">
+                    <div>
+                      <div className="w-11 h-11 rounded-xl bg-white border border-slate-200 text-blue-600 flex items-center justify-center mb-5 shadow-2xs">
+                        <benefit.icon size={20} strokeWidth={1.75} />
                       </div>
-                      <h3 className="text-xl md:text-2xl font-bold text-[#0A0A0A] mb-3 font-sans tracking-tight">{benefit.title}</h3>
-                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{benefit.desc}</p>
+                      <h3 className="text-lg font-bold text-slate-950 mb-2 tracking-tight">{benefit.title}</h3>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">{benefit.desc}</p>
                     </div>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
+
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 3. EXPANDED INTERNSHIP TRACKS (PREMIUM CARDS) */}
+        {/* 3. INTERNSHIP TRACKS */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-y border-slate-200/80">
           <div className="max-w-[1100px] mx-auto">
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+            
+            <AnimatedSection className="max-w-2xl mb-12 sm:mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Open Tracks
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                 Available Internship Tracks
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 Select a track that matches your learning goals and career trajectory.
               </p>
             </AnimatedSection>
 
-            <div className="space-y-6 sm:space-y-8">
+            <div className="space-y-6">
               {internshipPrograms.map((job, i) => (
-                <AnimatedSection key={job.title} delay={i * 0.1}>
-                  <div className="p-8 sm:p-10 rounded-[32px] bg-white/80 backdrop-blur-xl border border-gray-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(37,99,235,0.08)] hover:border-[#2563EB]/40 transition-all duration-500 group flex flex-col gap-8">
+                <AnimatedSection key={job.title} delay={i * 0.06}>
+                  <div className="p-7 sm:p-9 rounded-3xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all flex flex-col gap-6">
                     
-                    {/* Header Row */}
-                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 border-b border-gray-100/80 pb-8">
-                      <div className="flex-1">
-                        <h3 className="text-2xl sm:text-3xl font-bold text-[#0A0A0A] font-sans tracking-tight mb-4 group-hover:text-[#2563EB] transition-colors">
+                    {/* Header */}
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight">
                           {job.title}
                         </h3>
-                        <div className="flex flex-wrap gap-3 text-xs sm:text-sm font-semibold text-[#4B5563]">
-                          <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-xl border border-gray-200/80">
-                            <MapPin size={16} className="text-[#2563EB]" strokeWidth={2.5} /> {job.location}
-                          </div>
-                          <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-xl border border-gray-200/80">
-                            <Clock size={16} className="text-[#2563EB]" strokeWidth={2.5} /> Duration: {job.duration}
-                          </div>
+                        <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-semibold text-slate-600">
+                          <span className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                            <MapPin size={14} className="text-blue-600" /> {job.location}
+                          </span>
+                          <span className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                            <Clock size={14} className="text-blue-600" /> Duration: {job.duration}
+                          </span>
                         </div>
                       </div>
 
-                      <motion.button 
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                      <button 
                         type="button"
-                        aria-label={`Apply for ${job.title}`}
                         onClick={() => handleApplyClick(job.value)}
-                        className="h-12 px-8 rounded-full bg-[#0A0A0A] text-white font-bold text-sm shadow-[0_8px_20px_rgba(0,0,0,0.1)] flex items-center justify-center gap-2 shrink-0 hover:bg-gray-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A0A0A] focus-visible:ring-offset-2 w-full md:w-auto"
+                        className="h-11 px-6 rounded-full bg-slate-950 hover:bg-slate-800 text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 shrink-0 transition-colors cursor-pointer w-full md:w-auto"
                       >
-                        <span>Apply Now</span>
-                        <ArrowRight size={16} />
-                      </motion.button>
+                        <span>Apply for Track</span>
+                        <ArrowRight size={14} />
+                      </button>
                     </div>
 
-                    {/* Description */}
-                    <p className="text-[15px] sm:text-[17px] text-[#4B5563] leading-[1.7] font-medium max-w-4xl">
+                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
                       {job.desc}
                     </p>
 
-                    {/* FEATURE BADGES ROW FOR INTERNSHIP CARDS */}
-                    <div className="flex flex-wrap gap-2.5 text-[12px] font-bold">
-                      <span className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200/80 text-gray-700 flex items-center gap-1.5 shadow-sm">
-                        <Laptop size={14} className="text-[#2563EB]" /> Remote
-                      </span>
-                      <span className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200/80 text-gray-700 flex items-center gap-1.5 shadow-sm">
-                        <FileCheck size={14} className="text-[#2563EB]" /> Certificate
-                      </span>
-                      <span className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200/80 text-gray-700 flex items-center gap-1.5 shadow-sm">
-                        <UserCheck size={14} className="text-[#2563EB]" /> Mentorship
-                      </span>
-                      <span className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200/80 text-gray-700 flex items-center gap-1.5 shadow-sm">
-                        <Layers size={14} className="text-[#2563EB]" /> Live Projects
-                      </span>
-                    </div>
-
-                    {/* What You'll Learn & Who Should Apply Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2">
-                      {/* What You'll Learn Tags */}
-                      <div className="space-y-4">
-                        <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans">
-                          What You'll Learn & Practice
+                    {/* Skill Tags Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                      <div className="space-y-2.5">
+                        <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider block">
+                          What You&apos;ll Practice
                         </span>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5">
                           {job.skills.map((skill, sIdx) => (
-                            <span key={sIdx} className="px-3.5 py-1.5 rounded-xl bg-blue-50/70 border border-blue-100 text-[13px] font-bold text-[#2563EB]">
+                            <span key={sIdx} className="px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100 text-xs font-semibold text-blue-700">
                               {skill}
                             </span>
                           ))}
                         </div>
                       </div>
 
-                      {/* Who Should Apply Tags */}
-                      <div className="space-y-4">
-                        <span className="text-xs font-bold text-gray-500 uppercase tracking-widest block font-sans">
-                          Ideal Applicants
+                      <div className="space-y-2.5">
+                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                          Ideal Candidates
                         </span>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5">
                           {job.whoShouldApply.map((applicant, aIdx) => (
-                            <span key={aIdx} className="px-3.5 py-1.5 rounded-xl bg-white border border-gray-200/80 text-[13px] font-semibold text-[#0A0A0A] shadow-sm">
+                            <span key={aIdx} className="px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700">
                               {applicant}
                             </span>
                           ))}
@@ -423,29 +402,29 @@ export const Careers = () => {
                 </AnimatedSection>
               ))}
             </div>
+
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 4. WHAT YOU'LL RECEIVE (BENEFITS SECTION) */}
+        {/* 4. PERKS SECTION */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 relative border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
-                <Award size={14} />
-                <span>Internship Perks</span>
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
-                What You'll Receive
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white">
+          <div className="max-w-[1240px] mx-auto">
+            
+            <AnimatedSection className="max-w-2xl mb-12 sm:mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Internship Benefits
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
+                What You&apos;ll Receive
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 Tangible benefits designed to accelerate your technical career.
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 { icon: Users, title: '1-on-1 Mentorship', text: 'Direct access to senior developers and designers for guidance, code reviews, and career advice.' },
                 { icon: Code, title: 'Real Product Experience', text: 'Work on live web applications, SaaS tools, and AI workflows that go directly into production.' },
@@ -454,136 +433,131 @@ export const Careers = () => {
                 { icon: Globe, title: 'Flexible Remote Work', text: 'Complete tasks asynchronously from home with flexible hours designed for students.' },
                 { icon: Zap, title: 'Continuous Feedback', text: 'Weekly 1-on-1 check-ins and constructive feedback to refine your engineering standards.' }
               ].map((benefit, i) => (
-                <AnimatedSection key={i} delay={i * 0.1}>
-                  <div className="p-8 rounded-[32px] bg-white border border-gray-200/80 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:border-[#2563EB]/30 transition-all duration-300 h-full flex flex-col justify-between group">
-                    <div className="space-y-5">
-                      <div className="w-14 h-14 rounded-[20px] bg-gray-50 border border-gray-100 text-[#2563EB] flex items-center justify-center group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
-                        <benefit.icon size={26} strokeWidth={1.5} />
+                <AnimatedSection key={i} delay={i * 0.05}>
+                  <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-slate-300 transition-all h-full flex flex-col justify-between">
+                    <div>
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                        <benefit.icon size={20} strokeWidth={1.75} />
                       </div>
-                      <h3 className="font-bold text-xl md:text-2xl text-[#0A0A0A] font-sans tracking-tight">{benefit.title}</h3>
-                      <p className="text-[15px] text-[#6B7280] leading-relaxed font-medium">{benefit.text}</p>
+                      <h3 className="font-bold text-lg text-slate-950 mb-2 tracking-tight">{benefit.title}</h3>
+                      <p className="text-sm text-slate-600 leading-relaxed font-normal">{benefit.text}</p>
                     </div>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
+
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 5. APPLICATION PROCESS (DARK THEME TIMELINE) */}
+        {/* 5. APPLICATION PROCESS */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-[#0A0A0A] text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_top_right,_rgba(37,99,235,0.15)_0%,_transparent_70%)] pointer-events-none" />
-          
-          <div className="max-w-[1300px] mx-auto relative z-10">
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16 sm:mb-24">
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-y border-slate-200/80">
+          <div className="max-w-[1240px] mx-auto">
+            
+            <AnimatedSection className="max-w-2xl mb-12 sm:mb-16">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Roadmap
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                 Application Process
               </h2>
-              <p className="text-lg sm:text-xl text-gray-400 font-medium">
-                A simple 4-step path from application to active building.
+              <p className="text-base text-slate-600 font-normal mt-2">
+                A structured 4-step path from application to active building.
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 { num: '01', title: 'Submit Form', desc: 'Fill out the online application below with your details and resume.' },
                 { num: '02', title: 'Profile Review', desc: 'Our team reviews your background, projects, and track alignment.' },
                 { num: '03', title: 'Onboarding Task', desc: 'Shortlisted applicants receive onboarding details and mentor pairing.' },
                 { num: '04', title: 'Start Building', desc: 'Begin building real product features under guided 1-on-1 mentorship.' }
               ].map((step, i) => (
-                <AnimatedSection key={step.num} delay={i * 0.1} className="relative group">
-                  <div className="p-8 sm:p-10 rounded-[32px] bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:bg-white/10 h-full relative z-10">
-                    <div className="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-lg mb-6 border border-blue-500/30 group-hover:scale-110 transition-transform">
-                      {step.num}
+                <AnimatedSection key={step.num} delay={i * 0.05}>
+                  <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs h-full flex flex-col justify-between">
+                    <div>
+                      <span className="text-xs font-mono font-bold text-blue-600 block mb-3">{step.num}</span>
+                      <h3 className="text-lg font-bold text-slate-950 mb-2 tracking-tight">{step.title}</h3>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">{step.desc}</p>
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-bold mb-3 font-sans tracking-tight text-white">{step.title}</h3>
-                    <p className="text-[15px] text-gray-400 leading-relaxed font-medium">{step.desc}</p>
                   </div>
-                  {/* Desktop Timeline Connector */}
-                  {i < 3 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-[2px] bg-white/10 z-0" />
-                  )}
                 </AnimatedSection>
               ))}
             </div>
+
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 6. ENRICHED INTERNSHIP APPLICATION FORM */}
+        {/* 6. APPLICATION FORM */}
         {/* ========================================================================= */}
-        <section ref={formRef} className="py-24 md:py-32 px-6 relative bg-white scroll-mt-20">
-          <div className="max-w-[850px] mx-auto">
-            <AnimatedSection className="text-center mb-16 sm:mb-20">
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+        <section ref={formRef} className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white scroll-mt-20">
+          <div className="max-w-[760px] mx-auto">
+            
+            <AnimatedSection className="text-center mb-12">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Application
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                 Apply for an Internship
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 Complete your details below to submit your application directly to our team.
               </p>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.15}>
+            <AnimatedSection delay={0.08}>
               {isSubmitted ? (
-                /* SUCCESS STATE WITH TIMELINE EXPECTATIONS */
-                <div className="bg-[#FAFAFA] rounded-[40px] p-10 sm:p-16 border border-gray-200/80 shadow-sm space-y-10">
-                  <div className="text-center max-w-lg mx-auto space-y-4">
-                    <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-emerald-100 shadow-sm">
-                      <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+                <div className="bg-slate-50 rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-2xs space-y-6">
+                  <div className="text-center max-w-md mx-auto space-y-3">
+                    <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-200 shadow-2xs">
+                      <CheckCircle2 className="w-8 h-8 text-emerald-600" />
                     </div>
-                    <h3 className="text-3xl font-extrabold text-[#0A0A0A] font-sans tracking-tight">Application Received!</h3>
-                    <p className="text-base sm:text-lg text-[#6B7280] font-medium leading-relaxed">
-                      Thank you for applying to the ProstoLabs Internship Program.
-                    </p>
-                    <p className="text-sm font-semibold text-[#2563EB] bg-blue-50/80 backdrop-blur-sm p-4 rounded-xl border border-blue-100/80 mt-4">
-                      Keep an eye on your inbox. Shortlisted applicants will receive the next steps by email.
+                    <h3 className="text-2xl font-bold text-slate-950 tracking-tight">Application Received</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Thank you for applying to the ProstoLabs Internship Program. Keep an eye on your inbox for updates.
                     </p>
                   </div>
 
-                  {/* Next Steps Timeline Box */}
-                  <div className="p-8 rounded-[24px] bg-white border border-gray-200/80 shadow-sm max-w-xl mx-auto space-y-6">
-                    <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans">
-                      What Happens Next & Timeline
+                  <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-4">
+                    <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider block">
+                      Next Steps
                     </span>
-                    <div className="space-y-5 text-[15px] font-medium text-gray-700">
-                      <div className="flex items-start gap-4">
-                        <span className="w-6 h-6 rounded-full bg-blue-50 text-[#2563EB] font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">1</span>
-                        <span className="leading-relaxed"><strong>Resume Review:</strong> Our team will review your application within 2 to 3 business days.</span>
+                    <div className="space-y-3 text-xs sm:text-sm text-slate-700">
+                      <div className="flex items-start gap-3">
+                        <span className="w-5 h-5 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5 font-mono">1</span>
+                        <span><strong>Resume Review:</strong> Our team reviews applications within 2–3 business days.</span>
                       </div>
-                      <div className="flex items-start gap-4">
-                        <span className="w-6 h-6 rounded-full bg-blue-50 text-[#2563EB] font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">2</span>
-                        <span className="leading-relaxed"><strong>Interview/Task:</strong> Shortlisted applicants will receive an email invitation for a brief chat or task.</span>
+                      <div className="flex items-start gap-3">
+                        <span className="w-5 h-5 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5 font-mono">2</span>
+                        <span><strong>Interview/Task:</strong> Shortlisted applicants receive an invite for a brief review.</span>
                       </div>
-                      <div className="flex items-start gap-4">
-                        <span className="w-6 h-6 rounded-full bg-blue-50 text-[#2563EB] font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">3</span>
-                        <span className="leading-relaxed"><strong>Onboarding:</strong> Selected interns will be paired with a lead mentor and onboarded.</span>
+                      <div className="flex items-start gap-3">
+                        <span className="w-5 h-5 rounded-full bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5 font-mono">3</span>
+                        <span><strong>Onboarding:</strong> Selected interns are paired with lead mentors.</span>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : (
-                /* ACCESSIBLE FORM ENRICHED WITH ADDITIONAL FIELDS */
                 <form 
                   action="https://formsubmit.co/hello@prostolabs.com" 
                   method="POST" 
                   encType="multipart/form-data"
-                  className="space-y-8 p-8 sm:p-12 bg-white/70 backdrop-blur-xl rounded-[40px] border border-gray-200/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-shadow duration-500"
+                  className="space-y-6 p-6 sm:p-10 bg-slate-50 rounded-3xl border border-slate-200/90 shadow-xs"
                 >
                   <input type="hidden" name="_subject" value="New Internship Application - ProstoLabs" />
                   <input type="hidden" name="_captcha" value="false" />
                   <input type="hidden" name="_template" value="table" />
                   <input type="hidden" name="_next" value={typeof window !== 'undefined' ? `${window.location.origin}/careers?submitted=true` : ''} />
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {/* Full Name */}
-                    <div className="space-y-2">
-                      <label htmlFor="applicant-name" className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
-                        Full Name <span className="text-red-500" aria-hidden="true">*</span>
+                    <div className="space-y-1.5">
+                      <label htmlFor="applicant-name" className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+                        Full Name <span className="text-red-500">*</span>
                       </label>
                       <input 
                         id="applicant-name"
@@ -591,16 +565,15 @@ export const Careers = () => {
                         name="Full Name" 
                         required 
                         autoComplete="name"
-                        aria-label="Full Name"
                         placeholder="John Doe"
-                        className="w-full px-5 py-4 rounded-2xl bg-[#FAFAFA] border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/30 transition-all shadow-sm" 
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-2xs" 
                       />
                     </div>
                     
-                    {/* Email Address */}
-                    <div className="space-y-2">
-                      <label htmlFor="applicant-email" className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
-                        Email Address <span className="text-red-500" aria-hidden="true">*</span>
+                    {/* Email */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="applicant-email" className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+                        Email Address <span className="text-red-500">*</span>
                       </label>
                       <input 
                         id="applicant-email"
@@ -608,42 +581,37 @@ export const Careers = () => {
                         name="Email Address" 
                         required 
                         autoComplete="email"
-                        aria-label="Email Address"
                         placeholder="john@example.com"
-                        className="w-full px-5 py-4 rounded-2xl bg-[#FAFAFA] border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/30 transition-all shadow-sm" 
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-2xs" 
                       />
                     </div>
-
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    
-                    {/* College / University */}
-                    <div className="space-y-2">
-                      <label htmlFor="applicant-college" className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {/* College */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="applicant-college" className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
                         College / University
                       </label>
                       <input 
                         id="applicant-college"
                         type="text" 
                         name="College / University" 
-                        aria-label="College or University"
-                        placeholder="e.g. SRM University, IIT, Self-Taught"
-                        className="w-full px-5 py-4 rounded-2xl bg-[#FAFAFA] border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/30 transition-all shadow-sm" 
+                        placeholder="e.g. SRM, IIT, Self-Taught"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-2xs" 
                       />
                     </div>
 
-                    {/* Current Year */}
-                    <div className="space-y-2">
-                      <label htmlFor="applicant-year" className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
-                        Current Year / Status
+                    {/* Status */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="applicant-year" className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+                        Current Status
                       </label>
                       <div className="relative">
                         <select
                           id="applicant-year"
                           name="Current Year"
-                          aria-label="Current Year or Education Status"
-                          className="w-full px-5 py-4 rounded-2xl bg-[#FAFAFA] border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/30 transition-all cursor-pointer appearance-none shadow-sm"
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all cursor-pointer appearance-none shadow-2xs"
                         >
                           <option value="1st Year">1st Year Student</option>
                           <option value="2nd Year">2nd Year Student</option>
@@ -652,16 +620,15 @@ export const Careers = () => {
                           <option value="Recent Graduate">Recent Graduate</option>
                           <option value="Self-Taught / Switching">Self-Taught / Career Switcher</option>
                         </select>
-                        <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                       </div>
                     </div>
-
                   </div>
 
-                  {/* Select Track */}
-                  <div className="space-y-2">
-                    <label htmlFor="applicant-position" className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
-                      Select Internship Track <span className="text-red-500" aria-hidden="true">*</span>
+                  {/* Track Selection */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="applicant-position" className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+                      Select Internship Track <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <select 
@@ -670,8 +637,7 @@ export const Careers = () => {
                         required 
                         value={selectedPosition}
                         onChange={(e) => setSelectedPosition(e.target.value)}
-                        aria-label="Select Internship Track"
-                        className="w-full px-5 py-4 rounded-2xl bg-[#FAFAFA] border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/30 transition-all appearance-none cursor-pointer shadow-sm"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all appearance-none cursor-pointer shadow-2xs"
                       >
                         <option value="" disabled>Choose an internship track...</option>
                         <option value="Web Development">Web Development</option>
@@ -679,83 +645,78 @@ export const Careers = () => {
                         <option value="AI & Machine Learning">AI & Machine Learning</option>
                         <option value="Digital Marketing">Digital Marketing</option>
                       </select>
-                      <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    
-                    {/* LinkedIn Profile */}
-                    <div className="space-y-2">
-                      <label htmlFor="applicant-linkedin" className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {/* LinkedIn */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="applicant-linkedin" className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
                         LinkedIn Profile
                       </label>
                       <input 
                         id="applicant-linkedin"
                         type="url" 
                         name="LinkedIn Profile" 
-                        aria-label="LinkedIn Profile URL"
                         placeholder="https://linkedin.com/in/username"
-                        className="w-full px-5 py-4 rounded-2xl bg-[#FAFAFA] border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/30 transition-all shadow-sm" 
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-2xs" 
                       />
                     </div>
 
-                    {/* Portfolio / GitHub */}
-                    <div className="space-y-2">
-                      <label htmlFor="applicant-portfolio" className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
+                    {/* Portfolio/GitHub */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="applicant-portfolio" className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
                         Portfolio / GitHub URL
                       </label>
                       <input 
                         id="applicant-portfolio"
                         type="url" 
                         name="Portfolio or GitHub" 
-                        aria-label="Portfolio or GitHub URL"
-                        placeholder="https://github.com/username or site"
-                        className="w-full px-5 py-4 rounded-2xl bg-[#FAFAFA] border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/30 transition-all shadow-sm" 
+                        placeholder="https://github.com/username"
+                        className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-2xs" 
                       />
                     </div>
-
                   </div>
 
-                  {/* Motivation Text */}
-                  <div className="space-y-2">
-                    <label htmlFor="applicant-motivation" className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
+                  {/* Motivation */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="applicant-motivation" className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
                       Why do you want to join ProstoLabs?
                     </label>
                     <textarea 
                       id="applicant-motivation"
                       name="Why Join ProstoLabs" 
-                      rows={4} 
-                      aria-label="Motivation for joining ProstoLabs"
+                      rows={3} 
                       placeholder="Briefly tell us what you hope to learn during your internship..." 
-                      className="w-full px-5 py-4 rounded-2xl bg-[#FAFAFA] border border-gray-200/80 text-[15px] font-medium text-[#0A0A0A] focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/30 transition-all resize-none shadow-sm" 
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm font-normal text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all resize-none shadow-2xs" 
                     />
                   </div>
 
-                  {/* Resume Upload Box */}
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-[#0A0A0A] uppercase tracking-widest block font-sans">
-                      Upload Resume <span className="text-red-500" aria-hidden="true">*</span>
+                  {/* Resume Upload */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+                      Upload Resume <span className="text-red-500">*</span>
                     </label>
                     <div 
                       onClick={() => fileInputRef.current?.click()}
-                      className={`border-2 border-dashed rounded-[24px] p-10 text-center bg-[#FAFAFA] transition-all cursor-pointer shadow-sm ${
-                        fileName ? 'border-[#2563EB] bg-blue-50/20' : 'border-gray-200/80 hover:border-[#2563EB]/40 hover:bg-white'
+                      className={`border-2 border-dashed rounded-2xl p-6 text-center bg-white transition-all cursor-pointer shadow-2xs ${
+                        fileName ? 'border-blue-600 bg-blue-50/20' : 'border-slate-200 hover:border-slate-300'
                       }`}
                     >
                       {fileName ? (
                         <>
-                          <CheckCircle2 className="w-10 h-10 text-[#2563EB] mx-auto mb-3" />
-                          <p className="text-sm font-bold text-[#0A0A0A]">Resume Attached</p>
-                          <p className="text-[13px] text-[#2563EB] font-medium mt-1">{fileName}</p>
+                          <CheckCircle2 className="w-7 h-7 text-blue-600 mx-auto mb-1.5" />
+                          <p className="text-xs font-bold text-slate-900">Resume Attached</p>
+                          <p className="text-xs text-blue-600 font-medium mt-0.5">{fileName}</p>
                         </>
                       ) : (
                         <>
-                          <div className="w-16 h-16 rounded-full bg-white border border-gray-100 flex items-center justify-center mx-auto mb-4 shadow-sm">
-                            <UploadCloud className="w-8 h-8 text-gray-400" />
+                          <div className="w-11 h-11 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mx-auto mb-2">
+                            <UploadCloud className="w-5 h-5 text-slate-400" />
                           </div>
-                          <p className="text-[15px] font-bold text-[#0A0A0A]">Click to upload your resume</p>
-                          <p className="text-xs text-[#6B7280] font-medium mt-1.5">PDF, DOC, or DOCX (Max 10MB)</p>
+                          <p className="text-xs sm:text-sm font-semibold text-slate-800">Click to upload your resume</p>
+                          <p className="text-[11px] text-slate-500 font-normal mt-0.5">PDF, DOC, or DOCX (Max 10MB)</p>
                         </>
                       )}
                       <input 
@@ -763,7 +724,6 @@ export const Careers = () => {
                         type="file" 
                         name="Resume" 
                         required
-                        aria-label="Upload Resume"
                         ref={fileInputRef}
                         onChange={handleFileChange}
                         className="hidden" 
@@ -772,42 +732,39 @@ export const Careers = () => {
                     </div>
                   </div>
 
-                  {/* Form Footer */}
-                  <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
-                    <div className="flex items-center gap-2.5 text-[13px] text-[#6B7280] font-medium bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
+                  {/* Footer */}
+                  <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 text-xs text-slate-500 font-normal">
                       <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Your information is strictly confidential.</span>
+                      <span>Your data is confidential.</span>
                     </div>
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                    <button 
                       type="submit" 
-                      aria-label="Submit internship application"
-                      className="w-full sm:w-auto h-14 px-10 bg-[#0A0A0A] text-white rounded-full font-bold text-sm shadow-[0_8px_20px_rgba(0,0,0,0.1)] cursor-pointer hover:bg-gray-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A0A0A] focus-visible:ring-offset-2 flex items-center justify-center gap-2 group/btn"
+                      className="w-full sm:w-auto h-12 px-8 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-semibold text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
                     >
                       <span>Submit Application</span>
-                      <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                    </motion.button>
+                      <ArrowRight size={15} />
+                    </button>
                   </div>
 
                 </form>
               )}
             </AnimatedSection>
+
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 7. INTERNSHIP PRINCIPLES (TRUST CARDS) */}
+        {/* 7. INTERNSHIP PRINCIPLES */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-transparent relative border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-y border-slate-200/80">
+          <div className="max-w-[1240px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans mb-3">
-                Our Internship Principles
+            <AnimatedSection className="max-w-2xl mb-12">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Culture
               </span>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A0A0A] tracking-[-0.02em] font-sans">
+              <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight mt-1">
                 How We Treat Our Interns
               </h3>
             </AnimatedSection>
@@ -830,16 +787,16 @@ export const Careers = () => {
                   icon: TrendingUp
                 }
               ].map((principle, pIdx) => (
-                <AnimatedSection key={pIdx} delay={pIdx * 0.08}>
-                  <div className="p-8 sm:p-10 rounded-[32px] bg-white border border-gray-200/80 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:border-[#2563EB]/30 transition-all duration-300 space-y-3 h-full flex flex-col justify-between group">
-                    <div className="space-y-5">
-                      <div className="w-14 h-14 rounded-[20px] bg-gray-50 border border-gray-100 text-[#2563EB] flex items-center justify-center group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
-                        <principle.icon size={26} strokeWidth={1.5} />
+                <AnimatedSection key={pIdx} delay={pIdx * 0.05}>
+                  <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 transition-all h-full flex flex-col justify-between">
+                    <div>
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                        <principle.icon size={20} strokeWidth={1.75} />
                       </div>
-                      <h4 className="text-xl md:text-2xl font-bold text-[#0A0A0A] font-sans tracking-tight">
+                      <h4 className="text-lg font-bold text-slate-950 tracking-tight mb-2">
                         {principle.title}
                       </h4>
-                      <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed">
+                      <p className="text-sm text-slate-600 leading-relaxed font-normal">
                         {principle.desc}
                       </p>
                     </div>
@@ -851,28 +808,26 @@ export const Careers = () => {
           </div>
         </section>
 
-
         {/* ========================================================================= */}
         {/* 8. FAQ ACCORDION */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-white border-t border-gray-200/50">
-          <div className="max-w-[900px] mx-auto">
-            <AnimatedSection className="text-center mb-16 sm:mb-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
-                <HelpCircle size={14} />
-                <span>Frequently Asked Questions</span>
-              </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-[#0A0A0A] tracking-[-0.03em] mb-6 font-sans leading-[1.1]">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white">
+          <div className="max-w-[840px] mx-auto">
+            <AnimatedSection className="text-center mb-12">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                FAQ
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight mt-1">
                 Questions about joining?
               </h2>
-              <p className="text-lg sm:text-xl text-[#6B7280] font-medium">
+              <p className="text-base text-slate-600 font-normal mt-2">
                 Everything you need to know about the ProstoLabs Internship Program.
               </p>
             </AnimatedSection>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {faqData.map((faq, idx) => (
-                <AnimatedSection key={idx} delay={idx * 0.05}>
+                <AnimatedSection key={idx} delay={idx * 0.03}>
                   <FAQItem question={faq.question} answer={faq.answer} />
                 </AnimatedSection>
               ))}
@@ -880,72 +835,61 @@ export const Careers = () => {
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 9. LATEST CAREER & ENGINEERING RESOURCES */}
+        {/* 9. LATEST RESOURCES */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-[#FAFAFA] border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-t border-slate-200/80">
+          <div className="max-w-[1240px] mx-auto">
             
-            <AnimatedSection className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+            <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
               <div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50/80 backdrop-blur-sm border border-blue-100/50 text-[#2563EB] font-bold text-xs uppercase tracking-widest mb-6">
-                  From Our Journal
-                </div>
-                <h2 className="text-4xl sm:text-5xl font-extrabold text-[#0A0A0A] tracking-[-0.03em] font-sans leading-tight">
+                <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">From Our Journal</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
                   Latest Career & Tech Guides
                 </h2>
               </div>
-              <Link to="/resources" aria-label="View all publication resources" className="shrink-0">
-                <button 
-                  type="button"
-                  className="rounded-full px-8 h-12 border border-gray-300 text-[#0A0A0A] hover:bg-white hover:border-gray-400 font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
-                >
-                  <span>View All Resources</span>
-                  <ArrowRight size={16} />
-                </button>
+              <Link to="/resources" className="shrink-0">
+                <span className="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700">
+                  View All Resources <ArrowRight size={14} />
+                </span>
               </Link>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {latestArticles.map((art, i) => (
-                <AnimatedSection key={art.slug} delay={i * 0.1}>
+                <AnimatedSection key={art.slug} delay={i * 0.05}>
                   <Link
                     to={`/resources/${art.slug}`}
-                    aria-label={`Read resource: ${art.title}`}
-                    className="group flex flex-col h-full overflow-hidden cursor-pointer rounded-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                    className="group flex flex-col h-full rounded-2xl overflow-hidden bg-white border border-slate-200/90 p-5 hover:border-slate-300 transition-colors shadow-2xs"
                   >
-                    <div className="aspect-[16/10] overflow-hidden bg-gray-100 relative rounded-[32px] mb-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                    <div className="aspect-[16/9] overflow-hidden bg-slate-100 relative rounded-xl mb-4">
                       <img 
                         src={art.thumbnail} 
                         alt={art.title} 
                         loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                        className="w-full h-full object-cover group-hover:scale-101 transition-transform duration-300" 
                       />
-                      <div className="absolute top-4 left-4">
-                        <span className="px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-xs font-bold text-[#0A0A0A] shadow-sm">
-                          {art.category}
-                        </span>
-                      </div>
+                      <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-white text-[11px] font-bold text-slate-900 shadow-2xs">
+                        {art.category}
+                      </span>
                     </div>
                     
-                    <div className="flex flex-col flex-grow px-2">
-                      <div className="flex items-center gap-3 text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">
+                    <div className="flex flex-col flex-grow">
+                      <div className="flex items-center gap-2 text-xs text-slate-400 mb-1.5">
                         <span>{art.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-300" />
-                        <span className="flex items-center gap-1.5"><Clock size={12} /> {art.readingTime}</span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1"><Clock size={11} /> {art.readingTime}</span>
                       </div>
-                      <h3 className="text-2xl font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors leading-[1.3] mb-4 tracking-tight">
+                      <h4 className="text-base sm:text-lg font-bold text-slate-950 group-hover:text-blue-600 transition-colors leading-snug mb-2">
                         {art.title}
-                      </h3>
-                      <p className="text-[15px] text-[#6B7280] font-medium leading-relaxed line-clamp-3 mb-6">
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed line-clamp-2 mb-4">
                         {art.excerpt}
                       </p>
                       
-                      <div className="mt-auto flex items-center gap-2 text-sm font-bold text-[#2563EB] group-hover:gap-3 transition-all">
+                      <div className="mt-auto flex items-center gap-1 text-xs font-bold text-blue-600">
                         <span>Read Story</span>
-                        <ArrowRight size={16} />
+                        <ArrowRight size={13} />
                       </div>
                     </div>
                   </Link>
@@ -956,23 +900,22 @@ export const Careers = () => {
           </div>
         </section>
 
-
         {/* ========================================================================= */}
         {/* 10. CONTINUE EXPLORING */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-white border-t border-gray-200/50">
-          <div className="max-w-[1300px] mx-auto">
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-white border-t border-slate-200/80">
+          <div className="max-w-[1240px] mx-auto">
             
-            <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-              <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block font-sans mb-3">
+            <AnimatedSection className="max-w-2xl mb-12">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
                 Explore ProstoLabs
               </span>
-              <h3 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-[-0.02em] font-sans">
+              <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight mt-1">
                 Continue Exploring
               </h3>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
                 {
                   title: 'About ProstoLabs',
@@ -1003,27 +946,26 @@ export const Careers = () => {
                   icon: Globe
                 }
               ].map((card, cIdx) => (
-                <AnimatedSection key={cIdx} delay={cIdx * 0.06}>
+                <AnimatedSection key={cIdx} delay={cIdx * 0.04}>
                   <Link
                     to={card.link}
-                    aria-label={`${card.cta}: ${card.title}`}
-                    className="p-6 md:p-8 rounded-[32px] bg-[#FAFAFA] border border-gray-200/80 hover:border-[#2563EB]/40 shadow-2xs hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)] hover:bg-white transition-all duration-300 flex flex-col justify-between h-full group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+                    className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-slate-300 hover:shadow-xs transition-all flex flex-col justify-between h-full group cursor-pointer"
                   >
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 text-[#0A0A0A] flex items-center justify-center group-hover:bg-blue-50 group-hover:text-[#2563EB] transition-colors duration-300">
-                        <card.icon size={22} strokeWidth={1.5} />
+                    <div className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-blue-600 flex items-center justify-center shadow-2xs">
+                        <card.icon size={18} strokeWidth={1.75} />
                       </div>
-                      <h4 className="text-lg md:text-xl font-bold text-[#0A0A0A] font-sans group-hover:text-[#2563EB] transition-colors tracking-tight">
+                      <h4 className="text-base sm:text-lg font-bold text-slate-950 group-hover:text-blue-600 transition-colors tracking-tight">
                         {card.title}
                       </h4>
-                      <p className="text-[14px] text-[#6B7280] font-medium leading-relaxed">
+                      <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
                         {card.desc}
                       </p>
                     </div>
 
-                    <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center gap-2 text-[13px] font-bold text-[#0A0A0A] group-hover:text-[#2563EB] transition-colors">
+                    <div className="pt-4 mt-5 border-t border-slate-200/70 flex items-center gap-1 text-xs font-bold text-blue-600">
                       <span>{card.cta}</span>
-                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
                     </div>
                   </Link>
                 </AnimatedSection>
@@ -1033,47 +975,35 @@ export const Careers = () => {
           </div>
         </section>
 
-
         {/* ========================================================================= */}
-        {/* 11. FINAL CALL TO ACTION BANNER */}
+        {/* 11. FINAL CTA */}
         {/* ========================================================================= */}
-        <section className="py-24 md:py-32 px-6 bg-[#FAFAFA]">
-          <div className="max-w-[1300px] mx-auto">
-            <AnimatedSection className="relative rounded-[40px] overflow-hidden bg-[#0A0A0A] text-white text-center py-20 md:py-28 px-6 sm:px-12 shadow-2xl">
-              {/* Premium Gradient Overlays */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_rgba(37,99,235,0.4)_0%,_transparent_70%)] pointer-events-none" />
-              <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle_at_bottom_right,_rgba(96,165,250,0.15)_0%,_transparent_70%)] pointer-events-none" />
-              
-              <div className="relative z-10 max-w-3xl mx-auto space-y-8">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-[-0.03em] font-sans leading-[1.1]">
-                  Your First Professional <br className="hidden sm:block" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Project Starts Here.</span>
-                </h2>
-                <p className="text-lg sm:text-xl text-gray-400 font-medium leading-relaxed max-w-2xl mx-auto">
-                  Join ProstoLabs as an intern and build real-world experience under expert 1-on-1 mentorship.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-                  <button 
-                    type="button"
-                    onClick={() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                    aria-label="Scroll to internship application form"
-                    className="group relative w-full sm:w-auto h-14 px-8 bg-white text-[#0A0A0A] rounded-full font-bold text-base shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all cursor-pointer overflow-hidden flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
-                  >
-                    <span>Apply for Internship</span>
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </button>
-                  <Link to="/resources" aria-label="Explore ProstoLabs career guides and resources">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="button"
-                      className="w-full sm:w-auto h-14 px-8 bg-white/10 backdrop-blur-md text-white rounded-full font-bold text-base border border-white/20 hover:bg-white/20 transition-all cursor-pointer flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
-                    >
-                      Explore Our Resources
-                    </motion.button>
-                  </Link>
-                </div>
-              </div>
-            </AnimatedSection>
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-950 text-white text-center">
+          <div className="max-w-[760px] mx-auto space-y-6">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+              Your First Professional <br className="hidden sm:block" /> <span className="text-blue-400">Project Starts Here.</span>
+            </h2>
+            <p className="text-base text-slate-400 max-w-lg mx-auto leading-relaxed font-normal">
+              Join ProstoLabs as an intern and build real-world experience under expert 1-on-1 mentorship.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <button 
+                type="button"
+                onClick={() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="w-full sm:w-auto h-12 px-7 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-semibold text-sm sm:text-base transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>Apply for Internship</span>
+                <ArrowRight size={16} />
+              </button>
+              <Link to="/resources" className="w-full sm:w-auto">
+                <button 
+                  type="button"
+                  className="w-full sm:w-auto h-12 px-7 bg-white/10 hover:bg-white/15 text-white rounded-full font-semibold text-sm sm:text-base border border-white/15 transition-all cursor-pointer flex items-center justify-center"
+                >
+                  Explore Our Resources
+                </button>
+              </Link>
+            </div>
           </div>
         </section>
 
