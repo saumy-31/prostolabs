@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { SEO } from '../components/seo/SEO'
-import { UploadCloud, ShieldCheck, ChevronDown, CheckCircle2, Sparkles, Send, ArrowRight } from 'lucide-react'
+import { UploadCloud, ShieldCheck, ChevronDown, CheckCircle2, Sparkles, Send,  } from 'lucide-react'
 
 export const StartProject: React.FC = () => {
   const [fileName, setFileName] = useState<string | null>(null)
