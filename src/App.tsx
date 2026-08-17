@@ -17,6 +17,7 @@ import { TermsConditions } from './pages/TermsConditions'
 import { Resources } from './pages/Resources'
 import { ResourceArticle } from './pages/ResourceArticle'
 import { NotFound } from './pages/NotFound'
+import {  Navigate } from 'react-router-dom'
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
               <Route path="/careers" element={<Careers />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/start-project" element={<StartProject />} />
+              <Route path="/start-project/" element={<Navigate to="/start-project" replace />} />
               <Route path="/thank-you" element={<ThankYou />} />
               <Route path="/flysava" element={<FlySava />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />

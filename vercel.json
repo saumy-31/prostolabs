@@ -1,4 +1,12 @@
 {
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/start-project/",
+      "destination": "/start-project",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
