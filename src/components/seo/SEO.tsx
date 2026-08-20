@@ -4,9 +4,9 @@ import { Helmet } from 'react-helmet-async'
 const SITE_CONFIG = {
   name: 'ProstoLabs',
   domain: 'https://prostolabs.com',
-  defaultTitle: 'ProstoLabs | Web Engineering, AI Automations & Product Systems',
+  defaultTitle: 'ProstoLabs | Web Development, AI & Digital Solutions',
   titleTemplate: '%s | ProstoLabs',
-  defaultDescription: 'We design and engineer high-performance websites, custom web applications, AI automations, and growth strategy for forward-thinking brands.',
+  defaultDescription: 'ProstoLabs engineers custom web applications, mobile apps, AI automations, and UI/UX design to help businesses innovate and grow.',
   defaultImage: 'https://prostolabs.com/og-image.jpg',
   themeColor: '#2563EB',
   locale: 'en_US',
@@ -24,6 +24,12 @@ export interface FAQItem {
   answer: string
 }
 
+export interface ServiceItem {
+  name: string
+  description: string
+  serviceType?: string
+}
+
 export interface SEOProps {
   title?: string
   description?: string
@@ -35,7 +41,19 @@ export interface SEOProps {
   author?: string
   breadcrumbs?: BreadcrumbItem[]
   faq?: FAQItem[]
+  services?: ServiceItem[]
   noIndex?: boolean
+}
+
+/**
+ * Standardize path to clean, lowercase format without trailing slashes
+ */
+function normalizePath(rawPath: string = ''): string {
+  const trimmed = rawPath.trim().toLowerCase()
+  if (!trimmed || trimmed === '/') return '/'
+  
+  const withLeading = trimmed.startsWith('/') ? trimmed : `/${trimmed}`
+  return withLeading.endsWith('/') ? withLeading.slice(0, -1) : withLeading
 }
 
 /**
@@ -44,7 +62,6 @@ export interface SEOProps {
 function formatIsoDate(dateString?: string): string | undefined {
   if (!dateString) return undefined
   
-  // If already in YYYY-MM-DD or ISO format
   if (/^\d{4}-\d{2}-\d{2}/.test(dateString)) {
     return dateString.substring(0, 10)
   }
@@ -68,172 +85,190 @@ export function SEO({
   author = 'ProstoLabs Editorial',
   breadcrumbs,
   faq,
+  services,
   noIndex = false
 }: SEOProps) {
-  // Construct Absolute URLs
-  const canonicalUrl = `${SITE_CONFIG.domain}${path.startsWith('/') ? path : `/${path}`}`
+  // Normalize path & build canonical URL
+  const cleanPath = normalizePath(path)
+  const canonicalUrl = cleanPath === '/' ? `${SITE_CONFIG.domain}/` : `${SITE_CONFIG.domain}${cleanPath}`
+
   const formattedTitle = title 
     ? (title.includes(SITE_CONFIG.name) ? title : `${title} | ${SITE_CONFIG.name}`)
     : SITE_CONFIG.defaultTitle
 
-  // Format dates to clean ISO 8601 (YYYY-MM-DD)
   const isoPublished = formatIsoDate(published)
   const isoModified = formatIsoDate(modified) || isoPublished
 
   // =========================================================================
-  // STRUCTURED DATA (SCHEMA.ORG) GRAPH GENERATOR
+  // STRUCTURED DATA (SCHEMA.ORG) GRAPH GENERATOR (Skipped on noIndex pages)
   // =========================================================================
   const schemaGraph: any[] = []
 
-  // 1. Organization Schema
-  const organizationSchema = {
-  '@type': 'Organization',
-  '@id': `${SITE_CONFIG.domain}/#organization`,
-  name: SITE_CONFIG.name,
-  url: SITE_CONFIG.domain,
-  logo: {
-    '@type': 'ImageObject',
-    url: SITE_CONFIG.logoUrl
-  },
-  email: 'hello@prostolabs.com',
-  description: SITE_CONFIG.defaultDescription,
-  sameAs: [
-    'https://instagram.com/prostolabs'
-  ]
-}
-  schemaGraph.push(organizationSchema)
+  if (!noIndex) {
+    // 1. Organization Schema
+    const organizationSchema = {
+      '@type': 'Organization',
+      '@id': `${SITE_CONFIG.domain}/#organization`,
+      name: SITE_CONFIG.name,
+      url: `${SITE_CONFIG.domain}/`,
+      logo: {
+        '@type': 'ImageObject',
+        '@id': `${SITE_CONFIG.domain}/#logo`,
+        url: SITE_CONFIG.logoUrl,
+        caption: SITE_CONFIG.name
+      },
+      email: 'hello@prostolabs.com',
+      description: SITE_CONFIG.defaultDescription,
+      sameAs: [
+        'https://instagram.com/prostolabs'
+      ]
+    }
+    schemaGraph.push(organizationSchema)
 
-  // 2. WebSite Schema
-  const websiteSchema = {
-  '@type': 'WebSite',
-  '@id': `${SITE_CONFIG.domain}/#website`,
-  url: SITE_CONFIG.domain,
-  name: SITE_CONFIG.name,
-  description: SITE_CONFIG.defaultDescription,
-  publisher: {
-    '@id': `${SITE_CONFIG.domain}/#organization`
-  },
-  inLanguage: 'en-US',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${SITE_CONFIG.domain}/resources?search={search_term_string}`,
-    'query-input': 'required name=search_term_string'
-  }
-}
-  schemaGraph.push(websiteSchema)
+    // 2. WebSite Schema
+    const websiteSchema = {
+      '@type': 'WebSite',
+      '@id': `${SITE_CONFIG.domain}/#website`,
+      url: `${SITE_CONFIG.domain}/`,
+      name: SITE_CONFIG.name,
+      description: SITE_CONFIG.defaultDescription,
+      publisher: {
+        '@id': `${SITE_CONFIG.domain}/#organization`
+      },
+      inLanguage: 'en-US'
+    }
+    schemaGraph.push(websiteSchema)
 
-  // 3. Page Schema (WebPage, CollectionPage, or BlogPosting)
-  if (type === 'article') {
-    const blogPostingSchema = {
-      '@type': 'BlogPosting',
-      '@id': `${canonicalUrl}/#article`,
-      'isPartOf': {
+    // 3. Page Schema (WebPage, CollectionPage, or BlogPosting)
+    if (type === 'article') {
+      const blogPostingSchema = {
+        '@type': 'BlogPosting',
+        '@id': `${canonicalUrl}/#article`,
+        isPartOf: {
+          '@type': 'WebPage',
+          '@id': canonicalUrl,
+          url: canonicalUrl,
+          name: formattedTitle
+        },
+        headline: title || formattedTitle,
+        description: description,
+        image: image,
+        datePublished: isoPublished,
+        dateModified: isoModified,
+        author: {
+          '@type': 'Organization',
+          name: author,
+          url: `${SITE_CONFIG.domain}/`
+        },
+        publisher: {
+          '@id': `${SITE_CONFIG.domain}/#organization`
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': canonicalUrl
+        },
+        inLanguage: 'en-US'
+      }
+      schemaGraph.push(blogPostingSchema)
+    } else if (type === 'collection') {
+      const collectionPageSchema = {
+        '@type': 'CollectionPage',
+        '@id': `${canonicalUrl}/#webpage`,
+        url: canonicalUrl,
+        name: formattedTitle,
+        description: description,
+        isPartOf: {
+          '@id': `${SITE_CONFIG.domain}/#website`
+        },
+        publisher: {
+          '@id': `${SITE_CONFIG.domain}/#organization`
+        },
+        inLanguage: 'en-US'
+      }
+      schemaGraph.push(collectionPageSchema)
+    } else {
+      const webPageSchema = {
         '@type': 'WebPage',
-        '@id': canonicalUrl,
-        'url': canonicalUrl,
-        'name': formattedTitle
-      },
-      'headline': title || formattedTitle,
-      'description': description,
-      'image': image,
-      'datePublished': isoPublished,
-      'dateModified': isoModified,
-      'author': {
-        '@type': 'Organization',
-        'name': author,
-        'url': SITE_CONFIG.domain
-      },
-      'publisher': {
-        '@id': `${SITE_CONFIG.domain}/#organization`
-      },
-      'mainEntityOfPage': {
-        '@type': 'WebPage',
-        '@id': canonicalUrl
-      },
-      'inLanguage': 'en-US'
+        '@id': `${canonicalUrl}/#webpage`,
+        url: canonicalUrl,
+        name: formattedTitle,
+        description: description,
+        isPartOf: {
+          '@id': `${SITE_CONFIG.domain}/#website`
+        },
+        publisher: {
+          '@id': `${SITE_CONFIG.domain}/#organization`
+        },
+        inLanguage: 'en-US'
+      }
+      schemaGraph.push(webPageSchema)
     }
-    schemaGraph.push(blogPostingSchema)
-  } else if (type === 'collection') {
-    const collectionPageSchema = {
-      '@type': 'CollectionPage',
-      '@id': `${canonicalUrl}/#webpage`,
-      'url': canonicalUrl,
-      'name': formattedTitle,
-      'description': description,
-      'isPartOf': {
-        '@id': `${SITE_CONFIG.domain}/#website`
-      },
-      'publisher': {
-        '@id': `${SITE_CONFIG.domain}/#organization`
-      },
-      'inLanguage': 'en-US'
+
+    // 4. BreadcrumbList Schema
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      const breadcrumbSchema = {
+        '@type': 'BreadcrumbList',
+        '@id': `${canonicalUrl}/#breadcrumb`,
+        itemListElement: breadcrumbs.map((item, index) => {
+          const itemCleanPath = normalizePath(item.path)
+          const itemUrl = itemCleanPath === '/' ? `${SITE_CONFIG.domain}/` : `${SITE_CONFIG.domain}${itemCleanPath}`
+          return {
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.name,
+            item: itemUrl
+          }
+        })
+      }
+      schemaGraph.push(breadcrumbSchema)
     }
-    schemaGraph.push(collectionPageSchema)
-  } else {
-    const webPageSchema = {
-      '@type': 'WebPage',
-      '@id': `${canonicalUrl}/#webpage`,
-      'url': canonicalUrl,
-      'name': formattedTitle,
-      'description': description,
-      'isPartOf': {
-        '@id': `${SITE_CONFIG.domain}/#website`
-      },
-      'publisher': {
-        '@id': `${SITE_CONFIG.domain}/#organization`
-      },
-      'inLanguage': 'en-US'
+
+    // 5. Service Schema (For Services page)
+    if (services && services.length > 0) {
+      services.forEach((srv, idx) => {
+        schemaGraph.push({
+          '@type': 'Service',
+          '@id': `${canonicalUrl}/#service-${idx + 1}`,
+          name: srv.name,
+          description: srv.description,
+          serviceType: srv.serviceType || srv.name,
+          provider: {
+            '@id': `${SITE_CONFIG.domain}/#organization`
+          }
+        })
+      })
     }
-    schemaGraph.push(webPageSchema)
+
+    // 6. FAQPage Schema
+    if (faq && faq.length > 0) {
+      const faqSchema = {
+        '@type': 'FAQPage',
+        '@id': `${canonicalUrl}/#faq`,
+        mainEntity: faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer
+          }
+        }))
+      }
+      schemaGraph.push(faqSchema)
+    }
   }
 
-  // 4. BreadcrumbList Schema
-  if (breadcrumbs && breadcrumbs.length > 0) {
-    const breadcrumbSchema = {
-      '@type': 'BreadcrumbList',
-      '@id': `${canonicalUrl}/#breadcrumb`,
-      'itemListElement': breadcrumbs.map((item, index) => ({
-        '@type': 'ListItem',
-        'position': index + 1,
-        'name': item.name,
-        'item': `${SITE_CONFIG.domain}${item.path.startsWith('/') ? item.path : `/${item.path}`}`
-      }))
-    }
-    schemaGraph.push(breadcrumbSchema)
-  }
-
-  // 5. FAQPage Schema
-  if (faq && faq.length > 0) {
-    const faqSchema = {
-      '@type': 'FAQPage',
-      '@id': `${canonicalUrl}/#faq`,
-      'mainEntity': faq.map((item) => ({
-        '@type': 'Question',
-        'name': item.question,
-        'acceptedAnswer': {
-          '@type': 'Answer',
-          'text': item.answer
-        }
-      }))
-    }
-    schemaGraph.push(faqSchema)
-  }
-
-  // Final Unified JSON-LD Output
-  const jsonLdData = {
+  const jsonLdData = schemaGraph.length > 0 ? {
     '@context': 'https://schema.org',
     '@graph': schemaGraph
-  }
+  } : null
 
   return (
     <Helmet>
-      {/* =================================================================== */}
-      {/* 1. STANDARD META TAGS                                               */}
-      {/* =================================================================== */}
+      {/* 1. STANDARD META TAGS */}
       <title>{formattedTitle}</title>
       <meta name="description" content={description} />
       <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
-      <link rel="canonical" href={canonicalUrl} />
+      {!noIndex && <link rel="canonical" href={canonicalUrl} />}
       <meta name="theme-color" content={SITE_CONFIG.themeColor} />
       <meta httpEquiv="content-language" content="en" />
       <meta property="og:image" content={image} />
@@ -241,13 +276,11 @@ export function SEO({
       <meta name="twitter:image" content={image} />
       <meta name="twitter:image:alt" content={formattedTitle} />
 
-      {/* =================================================================== */}
-      {/* 2. OPEN GRAPH TAGS                                                  */}
-      {/* =================================================================== */}
+      {/* 2. OPEN GRAPH TAGS */}
       <meta property="og:title" content={formattedTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
-      <meta property="og:url" content={canonicalUrl} />
+      {!noIndex && <meta property="og:url" content={canonicalUrl} />}
       <meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
       <meta property="og:site_name" content={SITE_CONFIG.name} />
       <meta property="og:locale" content={SITE_CONFIG.locale} />
@@ -263,9 +296,7 @@ export function SEO({
         <meta property="article:author" content={author} />
       )}
 
-      {/* =================================================================== */}
-      {/* 3. TWITTER CARDS                                                    */}
-      {/* =================================================================== */}
+      {/* 3. TWITTER CARDS */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content={SITE_CONFIG.twitterHandle} />
       <meta name="twitter:creator" content={SITE_CONFIG.twitterHandle} />
@@ -273,12 +304,12 @@ export function SEO({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
 
-      {/* =================================================================== */}
-      {/* 4. JSON-LD STRUCTURED DATA GRAPH                                    */}
-      {/* =================================================================== */}
-      <script type="application/ld+json">
-        {JSON.stringify(jsonLdData)}
-      </script>
+      {/* 4. JSON-LD STRUCTURED DATA GRAPH */}
+      {jsonLdData && (
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLdData)}
+        </script>
+      )}
     </Helmet>
   )
 }

@@ -11,6 +11,7 @@ export const ThankYou = () => {
         title="Thank You | ProstoLabs"
         description="Thank you for submitting your inquiry to ProstoLabs. Our team will get back to you within one business day."
         path="/thank-you"
+        noIndex={true}
       />
       
       <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900 min-h-[80vh] flex items-center justify-center">

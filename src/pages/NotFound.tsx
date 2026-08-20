@@ -10,7 +10,7 @@ export const NotFound = () => {
       <SEO 
         title="Page Not Found | ProstoLabs"
         description="The page you are looking for does not exist or has been moved."
-        path="/404"
+        noIndex={true}
       />
       
       <div className="overflow-hidden bg-[#FAFAFA] text-[#0A0A0A] font-sans selection:bg-blue-100 selection:text-blue-900 min-h-[85vh] flex items-center justify-center">
@@ -32,7 +32,7 @@ export const NotFound = () => {
             </h2>
 
             <p className="text-base sm:text-lg text-[#6B7280] leading-relaxed max-w-md mx-auto font-medium mb-8">
-              Sorry, we couldn't find the page you're looking for. It might have been moved, renamed, or temporarily removed.
+              Sorry, we couldn&apos;t find the page you&apos;re looking for. It might have been moved, renamed, or temporarily removed.
             </p>
 
             {/* Action Button */}

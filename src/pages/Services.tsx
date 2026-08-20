@@ -253,6 +253,15 @@ export const Services: React.FC = () => {
         title="Our Services | Web Development, AI & Software Solutions"
         description="Explore ProstoLabs' core capabilities: custom web application engineering, AI automations, UI/UX design, business workflow automation, and 24/7 website care."
         path="/services"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Services', path: '/services' }
+        ]}
+        services={servicesData.map((s) => ({
+          name: s.title,
+          description: s.desc,
+          serviceType: s.title
+        }))}
         faq={faqData}
       />
 
@@ -625,7 +634,7 @@ export const Services: React.FC = () => {
                   <div className="rounded-2xl border border-slate-200/80 bg-white shadow-2xs hover:border-slate-300 transition-colors overflow-hidden">
                     <button
                       onClick={() => setOpenFaq(openFaq === fIdx ? null : fIdx)}
-                      className="w-full p-5 sm:p-6 text-left flex justify-between items-center font-bold text-base sm:text-lg text-slate-900 cursor-pointer hover:text-blue-600 transition-colors group"
+                      className="w-full p-5 sm:p-6 text-left flex justify-between items-center font-bold text-base sm:text-lg text-slate-950 cursor-pointer hover:text-blue-600 transition-colors group"
                     >
                       <span className="tracking-tight pr-4">{faq.question}</span>
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors shrink-0 ${openFaq === fIdx ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-500 group-hover:bg-blue-50 group-hover:text-blue-600'}`}>

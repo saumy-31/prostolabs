@@ -13,8 +13,7 @@ import { SEO } from '../components/seo/SEO'
 export function ResourceArticle() {
   const { slug } = useParams<{ slug: string }>()
   
-  // Find article matching route slug or fallback to first article
-  const article = resources.find((r) => r.slug === slug) || resources[0]
+  const article = resources.find((r) => r.slug === slug)
 
   const [activeId, setActiveId] = useState<string>('')
   const [isTocOpen, setIsTocOpen] = useState(false)
@@ -25,12 +24,12 @@ export function ResourceArticle() {
     window.scrollTo(0, 0)
   }, [slug])
 
-  // Scroll Progress Bar
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 25 })
 
-  // Auto-detect active H2 in Table of Contents
   useEffect(() => {
+    if (!article) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -45,6 +44,38 @@ export function ResourceArticle() {
 
     return () => observer.disconnect()
   }, [article])
+
+  if (!article) {
+    return (
+      <div className="bg-[#F8FAFC] text-[#0F172A] min-h-[70vh] flex items-center justify-center px-5 pt-28 pb-16">
+        <SEO 
+          title="Article Not Found | ProstoLabs"
+          description="The requested resource article could not be found."
+          noIndex={true}
+        />
+        <div className="max-w-md mx-auto text-center space-y-6">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-200">
+            Resource Missing
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
+            Article Not Found
+          </h1>
+          <p className="text-sm text-slate-600 leading-relaxed">
+            The article you are looking for doesn&apos;t exist or has been moved.
+          </p>
+          <div>
+            <Link
+              to="/resources"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold transition-colors shadow-sm cursor-pointer"
+            >
+              <ArrowLeft size={16} />
+              <span>Back to All Resources</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href)
@@ -89,19 +120,29 @@ export function ResourceArticle() {
       <header className="pt-8 pb-12 px-5 sm:px-8 lg:px-12 border-b border-slate-200/80 bg-white">
         <div className="max-w-4xl mx-auto space-y-5">
           
+          {/* Breadcrumb Hierarchy */}
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
             <Link 
+              to="/" 
+              className="hover:text-blue-600 transition-colors"
+            >
+              Home
+            </Link>
+            <span className="text-slate-300">/</span>
+            <Link 
               to="/resources" 
-              state={{ fromArticle: true }}
               className="hover:text-blue-600 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <ArrowLeft size={14} />
               <span>Resources</span>
             </Link>
             <span className="text-slate-300">/</span>
-            <span className="text-blue-600 font-semibold px-2.5 py-0.5 rounded-md bg-blue-50 border border-blue-100/80 text-[11px] font-mono uppercase tracking-wider">
+            <Link 
+              to="/resources"
+              className="text-blue-600 font-semibold px-2.5 py-0.5 rounded-md bg-blue-50 border border-blue-100/80 text-[11px] font-mono uppercase tracking-wider hover:bg-blue-100 transition-colors"
+            >
               {article.category}
-            </span>
+            </Link>
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-950 leading-[1.12] tracking-tight">
@@ -126,13 +167,12 @@ export function ResourceArticle() {
         </div>
       </header>
 
-      {/* MAIN LAYOUT */}
+      {/* MAIN CONTENT AREA */}
       <div className="max-w-[1240px] mx-auto px-5 sm:px-8 lg:px-12 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
         
-        {/* LEFT / MAIN COLUMN */}
+        {/* Main Column */}
         <main className="lg:col-span-8 space-y-8">
           
-          {/* Hero Image */}
           <div className="rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs aspect-[16/9] bg-slate-100">
             <img src={article.thumbnail} alt={article.title} className="w-full h-full object-cover" />
           </div>
@@ -168,7 +208,7 @@ export function ResourceArticle() {
             </div>
           )}
 
-          {/* EDITORIAL CONTENT RENDERER */}
+          {/* Blocks */}
           <div className="space-y-6 text-slate-900">
             {article.contentBlocks.map((block, idx) => {
               switch (block.type) {
@@ -365,20 +405,6 @@ export function ResourceArticle() {
                     </div>
                   )
 
-                case 'image':
-                  return (
-                    <div key={idx} className="my-6 space-y-2">
-                      <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-2xs aspect-[16/9] bg-slate-100">
-                        <img src={block.src} alt={block.alt || 'Article visual'} className="w-full h-full object-cover" />
-                      </div>
-                      {block.alt && (
-                        <span className="text-xs font-normal text-slate-400 block text-center">
-                          {block.alt}
-                        </span>
-                      )}
-                    </div>
-                  )
-
                 default:
                   return null
               }
@@ -437,11 +463,10 @@ export function ResourceArticle() {
 
         </main>
 
-        {/* RIGHT COLUMN: Desktop Sticky TOC Sidebar */}
+        {/* Sidebar */}
         <aside className="hidden lg:block lg:col-span-4">
           <div className="sticky top-28 space-y-6">
             
-            {/* TOC Box */}
             {tocHeadings.length > 0 && (
               <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-3.5">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-950">
@@ -466,7 +491,6 @@ export function ResourceArticle() {
               </div>
             )}
 
-            {/* Sidebar CTA Card */}
             <div className="p-6 rounded-2xl bg-slate-950 text-white text-center space-y-3.5 shadow-sm">
               <h4 className="text-lg font-bold leading-snug tracking-tight">
                 Ready to build your business website?
@@ -475,7 +499,7 @@ export function ResourceArticle() {
                 Partner with ProstoLabs to launch a fast, managed website with hosting, SSL, and updates included.
               </p>
               <Link 
-                to="/contact"
+                to="/start-project"
                 className="block w-full py-2.5 px-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors shadow-2xs cursor-pointer"
               >
                 Let&apos;s Build Your Website
@@ -489,3 +513,5 @@ export function ResourceArticle() {
     </div>
   )
 }
+
+export default ResourceArticle

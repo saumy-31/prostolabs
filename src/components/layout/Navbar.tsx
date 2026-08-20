@@ -1,187 +1,124 @@
-import { useState, useEffect, useRef } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, ArrowRight } from 'lucide-react'
 
-// --- MAGNETIC BUTTON COMPONENT FROM .IN ---
-interface MagneticButtonProps {
-  children: React.ReactNode
-  className?: string
-  onClick?: () => void
-}
-
-function MagneticButton({ children, className, onClick }: MagneticButtonProps) {
-  const ref = useRef<HTMLButtonElement>(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const springX = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 })
-  const springY = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 })
-
-  const handleMouse = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!ref.current) return
-    const { left, top, width, height } = ref.current.getBoundingClientRect()
-    x.set((e.clientX - (left + width / 2)) * 0.2)
-    y.set((e.clientY - (top + height / 2)) * 0.2)
-  }
-
-  return (
-    <motion.button
-      ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={() => { x.set(0); y.set(0) }}
-      onClick={onClick}
-      style={{ x: springX, y: springY }}
-      className={className}
-    >
-      {children}
-    </motion.button>
-  )
-}
-
-export const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+export function Navbar() {
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = useLocation()
-  const navigate = useNavigate()
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
-    setIsMobileMenuOpen(false)
+    setMobileMenuOpen(false)
   }, [location.pathname])
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
-    { name: 'Careers', href: '/careers' },
-    { name: 'Contact', href: '/contact' }
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Services', path: '/services' },
+    { name: 'Resources', path: '/resources' },
+    { name: 'Careers', path: '/careers' },
+    { name: 'Contact', path: '/contact' },
   ]
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    setIsMobileMenuOpen(false)
-    if (href.startsWith('#')) {
-      e.preventDefault()
-      if (location.pathname !== '/') {
-        navigate(`/${href}`)
-      } else {
-        const target = document.querySelector(href)
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' })
-        }
-      }
-    }
-  }
-
-  const handleStartProject = () => {
-    setIsMobileMenuOpen(false)
-    navigate('/start-project')
-  }
-
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
-        isScrolled 
-          ? 'bg-[#FAFAFA]/80 backdrop-blur-xl border-gray-200/60 shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-3' 
-          : 'bg-transparent border-transparent py-5'
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-2xs py-3.5'
+          : 'bg-white/80 backdrop-blur-xs py-5'
       }`}
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-[1240px] mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between">
         
-        {/* BRAND LOGO (EXACT .IN MATCH) */}
-        <Link to="/" className="flex items-center gap-2 group relative z-50 outline-none">
-          <motion.div 
-            whileHover={{ rotate: 90, scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 10 }}
-            className="w-8 h-8 bg-[#2563EB] rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20"
-          >
-            <motion.span whileHover={{ rotate: -90 }} className="text-white font-black text-lg leading-none block">
-              P
-            </motion.span>
-          </motion.div>
-          <span className="text-xl font-bold tracking-tight text-[#0A0A0A] font-sans">
+        {/* Brand Logo */}
+        <Link to="/" className="flex items-center gap-2.5 group cursor-pointer">
+          <div className="w-9 h-9 rounded-xl bg-blue-600 text-white font-bold flex items-center justify-center text-lg shadow-sm group-hover:bg-blue-500 transition-colors">
+            P
+          </div>
+          <span className="font-extrabold text-xl tracking-tight text-slate-950">
             ProstoLabs
           </span>
         </Link>
 
-        {/* DESKTOP NAVIGATION LINKS */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
           {navLinks.map((link) => {
-            const isActive = location.pathname === link.href
+            const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path))
             return (
-              <a 
-                key={link.name} 
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className={`relative group text-xs sm:text-sm font-semibold transition-colors ${
-                  isActive ? 'text-[#0A0A0A] font-bold' : 'text-[#6B7280] hover:text-[#0A0A0A]'
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`transition-colors hover:text-blue-600 ${
+                  isActive ? 'text-blue-600 font-bold' : ''
                 }`}
               >
                 {link.name}
-                <span className={`absolute -bottom-1 left-0 h-[2px] bg-[#2563EB] transition-all duration-300 rounded-full ${
-                  isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                }`} />
-              </a>
+              </Link>
             )
           })}
-          
-          {/* MAGNETIC ACTION BUTTON */}
-          <MagneticButton 
-            onClick={handleStartProject}
-            className="bg-[#2563EB] text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:bg-blue-600 transition-all cursor-pointer flex items-center gap-1.5"
-          >
-            <span>Start Your Project</span>
-          </MagneticButton>
         </nav>
 
-        {/* MOBILE TOGGLE BUTTON */}
-        <button 
-          className="md:hidden text-[#0A0A0A] relative z-50 p-2 rounded-xl bg-gray-100/80 cursor-pointer" 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle Navigation Menu"
+        {/* Desktop CTA Button */}
+        <div className="hidden md:flex items-center">
+          <Link
+            to="/start-project"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-sm shadow-blue-500/20 hover:shadow-blue-500/30 cursor-pointer"
+          >
+            <span>Start Your Project</span>
+          </Link>
+        </div>
+
+        {/* Mobile Hamburger Toggle */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+          aria-label="Toggle menu"
         >
-          {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        {/* MOBILE NAVIGATION DRAWER */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-x-0 top-0 pt-20 pb-8 px-6 bg-white/95 backdrop-blur-2xl border-b border-gray-200 shadow-2xl md:hidden z-40 flex flex-col gap-4"
-            >
-              <div className="flex flex-col gap-3 pt-2">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
-                    className="text-base font-bold text-gray-800 hover:text-[#2563EB] py-2 border-b border-gray-100 transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-
-              <button
-                onClick={handleStartProject}
-                className="w-full mt-2 bg-[#2563EB] text-white py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>Start Your Project</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
       </div>
+
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white border-b border-slate-200 px-6 py-6 space-y-4 shadow-xl">
+          <div className="space-y-2">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path || (link.path !== '/' && location.pathname.startsWith(link.path))
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`block py-2.5 text-base font-semibold transition-colors ${
+                    isActive ? 'text-blue-600 font-bold' : 'text-slate-700 hover:text-blue-600'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              )
+            })}
+          </div>
+
+          <div className="pt-4 border-t border-slate-100">
+            <Link
+              to="/start-project"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold transition-all shadow-sm"
+            >
+              <span>Start Your Project</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
