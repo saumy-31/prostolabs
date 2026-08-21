@@ -687,7 +687,7 @@ export const resources: Article[] = [
     title: 'How to Choose the Right Technology Stack for Your Business in 2026',
     category: 'Web Development',
     readingTime: '9 min read',
-    date: 'september 01, 2025',
+    date: 'September 01, 2025',
     author: 'ProstoLabs Editorial',
     excerpt: 'Selecting the wrong software stack can lead to unexpected technical debt, security bottlenecks, and costly rebuilds. Learn a practical framework to evaluate web technologies for long-term ROI.',
     thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&auto=format&fit=crop&q=80',

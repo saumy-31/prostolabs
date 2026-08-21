@@ -120,21 +120,25 @@ export const About: React.FC = () => {
         </section>
 
         {/* ========================================================================= */}
-        {/* 2. REALISTIC TRUST METRICS */}
+        {/* 2. REALISTIC TRUST METRICS (MOBILE-OPTIMIZED) */}
         {/* ========================================================================= */}
         <section className="py-6 px-5 sm:px-8 lg:px-12 relative z-20">
           <div className="max-w-[1240px] mx-auto">
-            <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-6 sm:p-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-200/80">
+            <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-4 sm:p-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 text-center divide-y-0 md:divide-x divide-slate-200/80">
                 {[
                   { value: "Custom", label: "Digital Products" },
                   { value: "AI-Powered", label: "Workflow Solutions" },
                   { value: "Modern", label: "Technology Stack" },
                   { value: "Global", label: "Client Collaboration" },
                 ].map((stat, idx) => (
-                  <div key={idx} className="pt-4 md:pt-0 px-3">
-                    <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight">{stat.value}</p>
-                    <p className="text-[11px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">{stat.label}</p>
+                  <div key={idx} className="flex flex-col items-center justify-center p-2 sm:p-3">
+                    <p className="text-lg sm:text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight whitespace-nowrap">
+                      {stat.value}
+                    </p>
+                    <p className="text-[10px] sm:text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider text-center leading-tight">
+                      {stat.label}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -281,104 +285,104 @@ export const About: React.FC = () => {
           </div>
         </section>
 
-       {/* ========================================================================= */}
-{/* 6. OUR JOURNEY (BALANCED TIMELINE & HOVER ANIMATION) */}
-{/* ========================================================================= */}
-<section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-y border-slate-200/80">
-  <div className="max-w-[1000px] mx-auto">
-    
-    <AnimatedSection className="text-center mb-16 sm:mb-20">
-      <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
-        Timeline
-      </span>
-      <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
-        Our Journey
-      </h2>
-      <p className="text-base text-slate-600 font-normal mt-2">
-        How we evolved into an independent web engineering and AI product studio.
-      </p>
-    </AnimatedSection>
-
-    <div className="relative">
-      {/* Central Spine Line */}
-      <div 
-        aria-hidden="true" 
-        className="absolute left-[17px] sm:left-1/2 top-4 bottom-4 w-px bg-slate-300 -translate-x-1/2" 
-      />
-
-      <div className="space-y-12 sm:space-y-16">
-        {[
-          { label: 'Founding', title: 'Establishing ProstoLabs', desc: 'ProstoLabs was established with a focus on pairing clean software architecture with conversion-driven UI/UX design.' },
-          { label: 'First Products', title: 'Building Core Web Platforms', desc: 'Engineered custom software applications and web portals for early client partners, setting our baseline for performance.' },
-          { label: 'Flagship Product', title: 'Building FlySava', desc: 'Designed and deployed FlySava, a custom aviation web platform featuring automated booking workflows and real-time scheduling.' },
-          { label: 'AI Expansion', title: 'Integrating AI & Automations', desc: 'Expanded our capabilities to include custom AI knowledge assistants, automated lead routers, and operational webhooks.' },
-          { label: 'Global Collaboration', title: 'Growing Client Partnerships', desc: 'Partnering with businesses internationally as a reliable long-term engineering, design, and cloud support team.' },
-        ].map((item, i) => {
-          const isEven = i % 2 === 0
-          return (
-            <AnimatedSection 
-              key={item.label} 
-              delay={i * 0.06}
-              className="relative flex items-center"
-            >
-              {/* Central Node Indicator */}
-              <div className="absolute left-[17px] sm:left-1/2 w-4 h-4 rounded-full bg-white border-[3px] border-blue-600 -translate-x-1/2 z-10 shadow-xs transition-transform duration-300 group-hover:scale-125" />
-
-              {/* Responsive Alternating Grid */}
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-0 items-center">
-                
-                {/* Left Column */}
-                <div className={`w-full ${isEven ? 'sm:text-right pr-0 sm:pr-10 lg:pr-14 pl-10 sm:pl-0' : 'hidden sm:block'}`}>
-                  {isEven && (
-                    <motion.div 
-                      whileHover={{ y: -3 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all text-left inline-block w-full"
-                    >
-                      <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block mb-1.5 font-mono">
-                        {item.label}
-                      </span>
-                      <h4 className="text-base sm:text-lg font-bold text-slate-950 mb-2 tracking-tight">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                        {item.desc}
-                      </p>
-                    </motion.div>
-                  )}
-                </div>
-
-                {/* Right Column */}
-                <div className={`w-full ${!isEven ? 'pl-10 sm:pl-10 lg:pl-14' : 'hidden sm:block'}`}>
-                  {!isEven && (
-                    <motion.div 
-                      whileHover={{ y: -3 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all text-left inline-block w-full"
-                    >
-                      <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block mb-1.5 font-mono">
-                        {item.label}
-                      </span>
-                      <h4 className="text-base sm:text-lg font-bold text-slate-950 mb-2 tracking-tight">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                        {item.desc}
-                      </p>
-                    </motion.div>
-                  )}
-                </div>
-
-              </div>
+        {/* ========================================================================= */}
+        {/* 6. OUR JOURNEY (BALANCED TIMELINE & HOVER ANIMATION) */}
+        {/* ========================================================================= */}
+        <section className="py-20 sm:py-28 px-5 sm:px-8 lg:px-12 bg-slate-100/70 border-y border-slate-200/80">
+          <div className="max-w-[1000px] mx-auto">
+            
+            <AnimatedSection className="text-center mb-16 sm:mb-20">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                Timeline
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-1">
+                Our Journey
+              </h2>
+              <p className="text-base text-slate-600 font-normal mt-2">
+                How we evolved into an independent web engineering and AI product studio.
+              </p>
             </AnimatedSection>
-          )
-        })}
-      </div>
 
-    </div>
+            <div className="relative">
+              {/* Central Spine Line */}
+              <div 
+                aria-hidden="true" 
+                className="absolute left-[17px] sm:left-1/2 top-4 bottom-4 w-px bg-slate-300 -translate-x-1/2" 
+              />
 
-  </div>
-</section>
+              <div className="space-y-12 sm:space-y-16">
+                {[
+                  { label: 'Founding', title: 'Establishing ProstoLabs', desc: 'ProstoLabs was established with a focus on pairing clean software architecture with conversion-driven UI/UX design.' },
+                  { label: 'First Products', title: 'Building Core Web Platforms', desc: 'Engineered custom software applications and web portals for early client partners, setting our baseline for performance.' },
+                  { label: 'Flagship Product', title: 'Building FlySava', desc: 'Designed and deployed FlySava, a custom aviation web platform featuring automated booking workflows and real-time scheduling.' },
+                  { label: 'AI Expansion', title: 'Integrating AI & Automations', desc: 'Expanded our capabilities to include custom AI knowledge assistants, automated lead routers, and operational webhooks.' },
+                  { label: 'Global Collaboration', title: 'Growing Client Partnerships', desc: 'Partnering with businesses internationally as a reliable long-term engineering, design, and cloud support team.' },
+                ].map((item, i) => {
+                  const isEven = i % 2 === 0
+                  return (
+                    <AnimatedSection 
+                      key={item.label} 
+                      delay={i * 0.06}
+                      className="relative flex items-center"
+                    >
+                      {/* Central Node Indicator */}
+                      <div className="absolute left-[17px] sm:left-1/2 w-4 h-4 rounded-full bg-white border-[3px] border-blue-600 -translate-x-1/2 z-10 shadow-xs transition-transform duration-300 group-hover:scale-125" />
+
+                      {/* Responsive Alternating Grid */}
+                      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-0 items-center">
+                        
+                        {/* Left Column */}
+                        <div className={`w-full ${isEven ? 'sm:text-right pr-0 sm:pr-10 lg:pr-14 pl-10 sm:pl-0' : 'hidden sm:block'}`}>
+                          {isEven && (
+                            <motion.div 
+                              whileHover={{ y: -3 }}
+                              transition={{ duration: 0.2, ease: "easeOut" }}
+                              className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all text-left inline-block w-full"
+                            >
+                              <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block mb-1.5 font-mono">
+                                {item.label}
+                              </span>
+                              <h4 className="text-base sm:text-lg font-bold text-slate-950 mb-2 tracking-tight">
+                                {item.title}
+                              </h4>
+                              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                                {item.desc}
+                              </p>
+                            </motion.div>
+                          )}
+                        </div>
+
+                        {/* Right Column */}
+                        <div className={`w-full ${!isEven ? 'pl-10 sm:pl-10 lg:pl-14' : 'hidden sm:block'}`}>
+                          {!isEven && (
+                            <motion.div 
+                              whileHover={{ y: -3 }}
+                              transition={{ duration: 0.2, ease: "easeOut" }}
+                              className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all text-left inline-block w-full"
+                            >
+                              <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block mb-1.5 font-mono">
+                                {item.label}
+                              </span>
+                              <h4 className="text-base sm:text-lg font-bold text-slate-950 mb-2 tracking-tight">
+                                {item.title}
+                              </h4>
+                              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                                {item.desc}
+                              </p>
+                            </motion.div>
+                          )}
+                        </div>
+
+                      </div>
+                    </AnimatedSection>
+                  )
+                })}
+              </div>
+
+            </div>
+
+          </div>
+        </section>
 
         {/* ========================================================================= */}
         {/* 7. TEAM PHILOSOPHY: HOW WE THINK */}
@@ -643,3 +647,5 @@ export const About: React.FC = () => {
     </>
   )
 }
+
+export default About

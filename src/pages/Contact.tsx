@@ -151,7 +151,7 @@ export const Contact: React.FC = () => {
                         <Mail size={18} strokeWidth={1.75} />
                       </div>
                       <div>
-                        <h3 className="font-bold text-base text-slate-950 tracking-tight">General Email</h3>
+                        <h3 className="font-bold text-base text-slate-950 tracking-tight">Contact Email</h3>
                         <p className="text-xs text-slate-500 font-normal mt-0.5">Quick questions & notes</p>
                       </div>
                     </div>
@@ -161,27 +161,7 @@ export const Contact: React.FC = () => {
                     </div>
                   </a>
 
-                  {/* Card 2: Business Inquiries */}
-                  <a 
-                    href="mailto:biz@prostolabs.com"
-                    aria-label="Send email for business inquiries to biz@prostolabs.com"
-                    className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between group cursor-pointer"
-                  >
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-2xs">
-                        <Briefcase size={18} strokeWidth={1.75} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-base text-slate-950 tracking-tight">Business Inquiries</h3>
-                        <p className="text-xs text-slate-500 font-normal mt-0.5">Partnerships & retainers</p>
-                      </div>
-                    </div>
-                    <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
-                      <span className="truncate">biz@prostolabs.com</span>
-                      <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
-                    </div>
-                  </a>
-
+                 
                   {/* Card 3: Project Planner */}
                   <Link 
                     to="/start-project"
